@@ -121,6 +121,7 @@ class MyLexer(object):
             print("{:<15} {:<10} {:<20} {:<20}".format(
                 nombre, info['clave'], str(info['lineas']), str(info['lugares'])
             ))
+            
     # función para depurar la tabla de símbolos por cada caso
     def clear_table(self):
         self.symbol_table = {}
@@ -128,15 +129,19 @@ class MyLexer(object):
 m = MyLexer() #crea una instancia del lexer
 m.build()      # Construye el lexer 
 
+# Listado de casos de prueba
 documento = ['conversion_metros_yardas.ld','celsius_to_fahrenheit.ld','serie_fibonnacci.ld','mayor_valor.ld']
-num_caso = 0
+num_caso = 0 # Número de caso 
+
+#Función para la lectura del listado de casos de prueba
 for caso in documento:
-    num_caso += 1
+    num_caso += 1 
     with open(caso, 'r') as file:
         codigo = file.read()
     print(f'Caso {num_caso}: {caso}')
     # Pasar el contenido completo a las funciones del lexer
     m.tabla(codigo)
+    # Limpiar la tabla de símbolos, para el siguiente caso.
     m.clear_table()
     print("\n")
 
