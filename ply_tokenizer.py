@@ -20,6 +20,7 @@ class MyLexer(object):
        'do' : 'DO',
        'var' : 'VAR',
        'int' : 'INT',
+       'float' : 'FLOAT',
        'string': 'STRING'
     }
     
@@ -27,7 +28,7 @@ class MyLexer(object):
     literals = ['+','-','*','=', ',', ':',';','/','>','<','(',')','{','}','[',']']
 
     # Lista de los tokens que se utilizan mas la lista de palabras reservadas
-    tokens = ['CONST_INT', 'FLOAT', 'CONST_STRING', 'ID', 'EQ', 'GE', 'LE', 'NE'] + list(reserved.values())
+    tokens = ['CONST_INT', 'CONST_FLOAT', 'CONST_STRING', 'ID', 'EQ', 'GE', 'LE', 'NE'] + list(reserved.values())
 
     # Se definen las expreciones regulares de los tokens utilizados
     t_EQ = r'=='
@@ -124,7 +125,7 @@ class MyLexer(object):
 
 m = MyLexer() #crea una instancia del lexer
 m.build()      # Construye el lexer 
-with open('serie_fibonnacci.ld', 'r') as file:
+with open('conversion_metros_yardas.ld', 'r') as file:
     codigo = file.read()
 
 # Pasar el contenido completo a las funciones del lexer
