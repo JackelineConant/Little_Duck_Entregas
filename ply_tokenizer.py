@@ -20,8 +20,7 @@ class MyLexer(object):
        'do' : 'DO',
        'var' : 'VAR',
        'int' : 'INT',
-       'string': 'STRING',
-       'float' : 'FLOAT'
+       'string': 'STRING'
     }
     
     #se definen literales que ply puede definir con la variable literals
