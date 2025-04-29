@@ -5,7 +5,7 @@ var yardas : float;
 
 main {
 	metros = 80;
-	float = 1.0936;
+	yardas = 1.0936;
 	resultado = metros * yardas;
 	print('Resultado: ');
 	print(resultado);
