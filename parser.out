@@ -1,1 +1,135 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CONST_FLOAT
+    CONST_INT
+    CONST_STRING
+    DO
+    FOR
+    THEN
+    VOID
+    WHILE
+    [
+    ]
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID ; vars funcs MAIN body END
+Rule 2     program -> <empty>
+Rule 3     vars -> VAR var_ayuda
+Rule 4     vars -> <empty>
+Rule 5     var_ayuda -> ID var_doble_ayuda : type ; var_ayuda
+Rule 6     var_ayuda -> <empty>
+Rule 7     var_doble_ayuda -> , ID var_doble_ayuda
+Rule 8     var_doble_ayuda -> <empty>
+Rule 9     type -> INT
+Rule 10    type -> FLOAT
+Rule 11    body -> { statement }
+Rule 12    statement -> assign
+Rule 13    statement -> condition
+Rule 14    statement -> cycle
+Rule 15    statement -> f_call
+Rule 16    statement -> statement
+Rule 17    statement -> <empty>
+Rule 18    print -> PRINT ( expression print_ayuda ) ;
+Rule 19    print -> PRINT ( STRING print_ayuda ) ;
+Rule 20    print_ayuda -> , expression print_ayuda
+Rule 21    print_ayuda -> , STRING print_ayuda
+Rule 22    print_ayuda -> <empty>
+Rule 23    cycle -> <empty>
+Rule 24    condition -> IF ( expression ) body ;
+Rule 25    condition -> IF ( expression ) body ELSE body ;
+Rule 26    assign -> ID = expression ;
+Rule 27    assign -> <empty>
+Rule 28    expression -> exp > exp
+Rule 29    expression -> exp < exp
+Rule 30    expression -> exp EQ exp
+Rule 31    expression -> exp GE exp
+Rule 32    expression -> exp LE exp
+Rule 33    expression -> exp NE exp
+Rule 34    expression -> exp
+Rule 35    expression -> <empty>
+Rule 36    cte -> INT
+Rule 37    cte -> FLOAT
+Rule 38    exp -> termino exp
+Rule 39    exp -> termino + termino
+Rule 40    exp -> termino - termino
+Rule 41    termino -> factor termino_ayuda
+Rule 42    termino_ayuda -> / factor termino_ayuda
+Rule 43    termino_ayuda -> * factor termino_ayuda
+Rule 44    termino_ayuda -> <empty>
+Rule 45    factor -> ( expression )
+Rule 46    factor -> ID
+Rule 47    factor -> + ID
+Rule 48    factor -> - ID
+Rule 49    factor -> + cte
+Rule 50    factor -> - cte
+
+Terminals, with rules where they appear
+
+(                    : 18 19 24 25 45
+)                    : 18 19 24 25 45
+*                    : 43
++                    : 39 47 49
+,                    : 7 20 21
+-                    : 40 48 50
+/                    : 42
+:                    : 5
+;                    : 1 5 18 19 24 25 26
+<                    : 29
+=                    : 26
+>                    : 28
+CONST_FLOAT          : 
+CONST_INT            : 
+CONST_STRING         : 
+DO                   : 
+ELSE                 : 25
+END                  : 1
+EQ                   : 30
+FLOAT                : 10 37
+FOR                  : 
+GE                   : 31
+ID                   : 1 5 7 26 46 47 48
+IF                   : 24 25
+INT                  : 9 36
+LE                   : 32
+MAIN                 : 1
+NE                   : 33
+PRINT                : 18 19
+PROGRAM              : 1
+STRING               : 19 21
+THEN                 : 
+VAR                  : 3
+VOID                 : 
+WHILE                : 
+[                    : 
+]                    : 
+error                : 
+{                    : 11
+}                    : 11
+
+Nonterminals, with rules where they appear
+
+assign               : 12
+body                 : 1 24 25 25
+condition            : 13
+cte                  : 49 50
+cycle                : 14
+exp                  : 28 28 29 29 30 30 31 31 32 32 33 33 34 38
+expression           : 18 20 24 25 26 45
+f_call               : 15
+factor               : 41 42 43
+funcs                : 1
+print                : 
+print_ayuda          : 18 19 20 21
+program              : 0
+statement            : 11 16
+termino              : 38 39 39 40 40
+termino_ayuda        : 41 42 43
+type                 : 5
+var_ayuda            : 3 5
+var_doble_ayuda      : 5 7
+vars                 : 1
+

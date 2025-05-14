@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = '( ) * + , - / : ; < = > CONST_FLOAT CONST_INT CONST_STRING DO ELSE END EQ FLOAT FOR GE ID IF INT LE MAIN NE PRINT PROGRAM STRING THEN VAR VOID WHILE [ ] { }program : PROGRAM ID ";"factor : CONST_INT'
+_lr_signature = '( ) * + , - / : ; < = > CONST_FLOAT CONST_INT CONST_STRING DO ELSE END EQ FLOAT FOR GE ID IF INT LE MAIN NE PRINT PROGRAM STRING THEN VAR VOID WHILE [ ] { }type : INTtype : FLOAT'
     
-_lr_action_items = {'PROGRAM':([0,],[2,]),'$end':([1,4,],[0,-1,]),'ID':([2,],[3,]),';':([3,],[4,]),}
+_lr_action_items = {'INT':([0,],[2,]),'FLOAT':([0,],[3,]),'$end':([1,2,3,],[0,-1,-2,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),}
+_lr_goto_items = {'type':([0,],[1,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,7 +26,7 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> program","S'",1,None,None,None),
-  ('program -> PROGRAM ID ;','program',3,'p_program','parser.py',20),
-  ('factor -> CONST_INT','factor',1,'p_factor','parser.py',24),
+  ("S' -> type","S'",1,None,None,None),
+  ('type -> INT','type',1,'p_type_i','parser.py',25),
+  ('type -> FLOAT','type',1,'p_type_f','parser.py',29),
 ]
