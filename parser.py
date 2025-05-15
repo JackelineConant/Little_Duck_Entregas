@@ -16,10 +16,7 @@ num_caso = 0 # Número de caso
 # Creamos el parser
 #names = { }
 
-# Program
-def p_program(p):
-    'program : PROGRAM ID ";" vars funcs MAIN body END'
-    p[0] = (p[1], p[2], ";", p[4], p[5], p[6], p[7], p[8])
+
 
 # Vars
 def p_vars_multiple(p):
@@ -270,6 +267,11 @@ def p_f_call_ayuda(p):
 def p_f_call_ayuda_empty(p):
     'f_call_ayuda :'
     p[0] = []
+    
+# Program
+def p_program(p):
+    'program : PROGRAM ID ";" vars funcs MAIN body END'
+    p[0] = (p[1], p[2], ";", p[4], p[5], p[6], p[7], p[8])
 
 # error
 def p_error(p):
@@ -298,16 +300,22 @@ for caso in documento:
     print(f'Caso {num_caso}: {caso}')
     # Pasar el contenido completo a las funciones del lexer
     m.tabla(codigo)
+    try:
+        result = parser.parse(codigo, lexer=m.lexer)
+        print(result)
+    except SyntaxError as e:
+        print(e)
+
     
     # Creamos la lista de parsers 
-    lineas = MyLexer.lineas_parser
-    parser_table(lineas)
+    #lineas = MyLexer.lineas_parser
+    #parser_table(lineas, lexer=lineas.lexer)
     #parser.parse(MyLexer.lineas_parser)
     # Limpiar la tabla de símbolos, para el siguiente caso.
     m.clear_table()
     
     # Limpiar las lineas de tokens que se mandaron al parser.
-    MyLexer.lineas_parser = []
+    #MyLexer.lineas_parser = []
     print("\n")
 
 
