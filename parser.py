@@ -283,10 +283,22 @@ def p_program(p):
 
 # error
 def p_error(p):
-    print("Syntax error at '%s'" % p.value if p else "Syntax error at EOF")
+    if p:
+         print(f"Syntax error at token '{p.value}' (type: {p.type}) on line {p.lineno}")
+         # Just discard the token and tell the parser it's okay.
+         parser.errok()
+    else:
+         print("Syntax error at EOF")
     
+    
+'''    if p:
+        respuesta = f"Syntax error at token '{p.value}' (type: {p.type}) on line {p.lineno}"
+    else:
+        respuesta = "Syntax error at EOF"
+    raise SyntaxError(respuesta)'''
     
 parser = yacc.yacc()
+
 
 
 #Función para la lectura del listado de casos de prueba
@@ -297,7 +309,9 @@ for caso in documento:
     print(f'Caso {num_caso}: {caso}')
     # Pasar el contenido completo a las funciones del lexer
     m.tabla(codigo)
+    
     try:
+        print('\n')
         result = parser.parse(codigo, lexer=m.lexer)
         print(result)
     except SyntaxError as e:
