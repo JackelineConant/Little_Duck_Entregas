@@ -81,7 +81,7 @@ def p_statement_e(p):
     'statement : print'
     p[0] = p[1]
     
-def p_statement_e(p):
+def p_statement_f(p):
     'statement : statement'
     p[0] = p[1]
     
@@ -113,9 +113,9 @@ def p_cycle(p):
     'cycle : DO body WHILE "(" expression ")" ";"'
     p[0] = ( p[1], p[2], p[3], "(", p[5], ")", ";")
 
-def p_cycle(p):
+'''def p_cycle(p):
     'cycle : '
-    pass
+    pass'''
     
 def p_condition_a(p):
     'condition : IF "(" expression ")" body ";"'
@@ -226,8 +226,45 @@ def p_factor_g(p):
     'factor : "-" cte'
     p[0] = - p[2]
     
-#def funcs 
+def p_funcs_a(p):
+    'funcs : VOID ID "("  ID ":" type funcs_ayuda ")" "[" vars body "]" ";"'
+    p[0] = (p[1],p[2],"(",p[4], ":", p[6], p[7],")","[", p[10],p[11],"]",";")
     
+def p_funcs_b(p):
+    'funcs : VOID ID "(" ")" "[" vars body "]" ";"'
+    p[0] = (p[1],p[2],"(", ")","[", p[6],p[7],"]",";")
+
+def p_funcs_c(p):
+    'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" body "]" ";"'
+    p[0] = (p[1],p[2],"(",p[4], ":", p[6], p[7],")","[", p[10],"]",";")
+ 
+def p_funcs_d(p):
+    'funcs : VOID ID "(" ")" "[" body "]" ";"'
+    p[0] = (p[1],p[2],"(", ")","[", p[6],"]",";") 
+
+def p_funcs_ayuda_a(p):
+    'funcs_ayuda : "," ID ":" type funcs_ayuda'
+    p[0] = (",", p[2], ":", p[4], p[5])
+     
+def p_funcs_ayuda_none(p): 
+    'funcs_ayuda : ' 
+    pass
+
+def p_f_call_a(p):
+    'f_call : ID "(" expression f_call_ayuda ")" ";"'
+    p[0] = (p[1], "(", p[3], p[4], ")", ";")
+
+def p_f_call_b(p):
+    'f_call : ID "(" ")" ";"'
+    p[0] = (p[1], "(", ")", ";")
+    
+def p_f_call_ayuda_a(p):
+    'f_call_ayuda : "," expression f_call_ayuda'
+    p[0] = (",", p[2],p[3])
+    
+def p_f_call_ayuda_b(p):
+    'f_call_ayuda : '
+    pass
 
 def p_error(p):
     print("Syntax error at '%s'" % p.value if p else "Syntax error at EOF")

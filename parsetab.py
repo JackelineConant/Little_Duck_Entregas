@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = '( ) * + , - / : ; < = > CONST_FLOAT CONST_INT CONST_STRING DO ELSE END EQ FLOAT FOR GE ID IF INT LE MAIN NE PRINT PROGRAM STRING THEN VAR VOID WHILE [ ] { }type : INTtype : FLOAT'
+_lr_signature = '( ) * + , - / : ; < = > CONST_FLOAT CONST_INT CONST_STRING DO ELSE END EQ FLOAT FOR GE ID IF INT LE MAIN NE PRINT PROGRAM STRING THEN VAR VOID WHILE [ ] { }program : PROGRAM ID ";" vars funcs MAIN body ENDprogram : vars : VAR var_ayudavars : var_ayuda : ID var_doble_ayuda ":" type ";" var_ayudavar_ayuda : var_doble_ayuda : "," ID var_doble_ayudavar_doble_ayuda : type : INTtype : FLOATbody : "{" statement "}"statement : assignstatement : conditionstatement : cyclestatement : f_callstatement : printstatement : statementstatement : print : PRINT "(" expression print_ayuda ")" ";"print : PRINT "(" STRING print_ayuda ")" ";"print_ayuda : "," expression print_ayudaprint_ayuda : "," STRING print_ayudaprint_ayuda : cycle : DO body WHILE "(" expression ")" ";"condition : IF "(" expression ")" body ";"condition : IF "(" expression ")" body ELSE body ";"assign : ID "=" expression ";"assign : expression : exp ">" expexpression : exp "<" expexpression : exp EQ expexpression : exp GE expexpression : exp LE expexpression : exp NE expexpression : exp expression : cte : INTcte : FLOATexp : termino expexp : termino "+" terminoexp : termino "-" termino termino : factor termino_ayudatermino_ayuda : "/" factor termino_ayudatermino_ayuda : "*" factor termino_ayudatermino_ayuda : factor : "(" expression ")"factor : IDfactor : "+" IDfactor : "-" IDfactor : "+" ctefactor : "-" ctefuncs : VOID ID "("  ID ":" type funcs_ayuda ")" "[" vars body "]" ";"funcs : VOID ID "(" ")" "[" vars body "]" ";"funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" body "]" ";"funcs : VOID ID "(" ")" "[" body "]" ";"funcs_ayuda : "," ID ":" type funcs_ayudafuncs_ayuda : f_call : ID "(" expression f_call_ayuda ")" ";"f_call : ID "(" ")" ";"f_call_ayuda : "," expression f_call_ayudaf_call_ayuda : '
     
-_lr_action_items = {'INT':([0,],[2,]),'FLOAT':([0,],[3,]),'$end':([1,2,3,],[0,-1,-2,]),}
+_lr_action_items = {'PROGRAM':([0,],[2,]),'$end':([0,1,20,],[-2,0,-1,]),'ID':([2,6,8,14,16,17,38,39,40,42,45,46,49,50,51,52,53,65,66,67,68,69,70,72,73,74,75,76,77,78,79,80,81,82,85,88,90,93,103,105,106,107,108,121,122,],[3,10,12,19,27,31,46,46,46,46,10,-47,46,74,78,-45,46,46,46,46,46,46,46,103,105,-48,-50,-37,-38,-49,-51,-42,46,46,46,46,46,118,-48,-49,-45,-45,-46,-43,-44,]),';':([3,33,34,35,37,38,46,47,48,52,55,71,74,75,76,77,78,79,80,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,111,113,116,119,121,122,127,135,142,144,],[4,45,-9,-10,-11,-36,-47,64,-35,-45,86,-39,-48,-50,-37,-38,-49,-51,-42,120,-29,-30,-31,-32,-33,-34,-40,-47,-41,-47,-45,-45,-46,123,125,128,131,134,-43,-44,136,140,145,146,]),'VAR':([4,44,132,],[6,6,6,]),'VOID':([4,5,6,9,45,63,],[-4,8,-6,-3,-6,-5,]),'{':([6,9,11,29,44,45,61,63,87,126,132,137,],[-6,-3,16,16,16,-6,16,-5,16,16,16,16,]),'MAIN':([7,120,134,145,146,],[11,-55,-53,-54,-52,]),',':([10,19,34,35,39,42,46,48,52,54,58,59,60,71,74,75,76,77,78,79,80,85,90,96,97,98,99,100,101,102,103,104,105,106,107,108,110,114,115,121,122,139,],[14,14,-9,-10,-36,-36,-47,-35,-45,85,90,90,93,-39,-48,-50,-37,-38,-49,-51,-42,-36,-36,-29,-30,-31,-32,-33,-34,-40,-47,-41,-47,-45,-45,-46,85,90,90,-43,-44,93,]),':':([10,13,19,31,36,118,],[-8,18,-8,43,-7,133,]),'(':([12,27,28,30,38,39,40,42,46,49,52,53,57,65,66,67,68,69,70,72,73,74,75,76,77,78,79,80,81,82,85,88,90,103,105,106,107,108,121,122,],[17,39,40,42,53,53,53,53,-47,53,-45,53,88,53,53,53,53,53,53,53,53,-48,-50,-37,-38,-49,-51,-42,53,53,53,53,53,-48,-49,-45,-45,-46,-43,-44,]),'END':([15,37,],[20,-11,]),'}':([16,21,22,23,24,25,26,64,86,123,125,128,131,136,140,],[-18,37,-12,-13,-14,-15,-16,-27,-59,-58,-25,-19,-20,-24,-26,]),'IF':([16,],[28,]),'DO':([16,],[29,]),'PRINT':([16,],[30,]),')':([17,34,35,39,40,42,46,48,52,53,54,56,58,59,60,71,74,75,76,77,78,79,80,83,84,85,88,89,90,91,92,96,97,98,99,100,101,102,103,104,105,106,107,108,110,112,114,115,121,122,124,129,130,139,143,],[32,-9,-10,55,-36,-36,-47,-35,-45,-36,-61,87,-23,-23,-57,-39,-48,-50,-37,-38,-49,-51,-42,108,109,-36,-36,113,-36,116,117,-29,-30,-31,-32,-33,-34,-40,-47,-41,-47,-45,-45,-46,-61,127,-23,-23,-43,-44,-60,-21,-22,-57,-56,]),'INT':([18,43,50,51,72,73,133,],[34,34,76,76,76,76,34,]),'FLOAT':([18,43,50,51,72,73,133,],[35,35,77,77,77,77,35,]),'=':([27,],[38,]),'[':([32,117,],[44,132,]),'WHILE':([37,41,],[-11,57,]),']':([37,62,94,138,141,],[-11,95,119,142,144,]),'ELSE':([37,111,],[-11,126,]),'+':([38,39,40,42,46,49,52,53,65,66,67,68,69,70,72,73,74,75,76,77,78,79,80,81,82,85,88,90,103,105,106,107,108,121,122,],[50,50,50,50,-47,72,-45,50,50,50,50,50,50,50,50,50,-48,-50,-37,-38,-49,-51,-42,50,50,50,50,50,-48,-49,-45,-45,-46,-43,-44,]),'-':([38,39,40,42,46,49,52,53,65,66,67,68,69,70,72,73,74,75,76,77,78,79,80,81,82,85,88,90,103,105,106,107,108,121,122,],[51,51,51,51,-47,73,-45,51,51,51,51,51,51,51,51,51,-48,-50,-37,-38,-49,-51,-42,51,51,51,51,51,-48,-49,-45,-45,-46,-43,-44,]),'STRING':([42,90,],[59,115,]),'/':([46,52,74,75,76,77,78,79,103,105,106,107,108,],[-47,81,-48,-50,-37,-38,-49,-51,-47,-47,81,81,-46,]),'*':([46,52,74,75,76,77,78,79,103,105,106,107,108,],[-47,82,-48,-50,-37,-38,-49,-51,-47,-47,82,82,-46,]),'>':([46,48,52,71,74,75,76,77,78,79,80,102,103,104,105,106,107,108,121,122,],[-47,65,-45,-39,-48,-50,-37,-38,-49,-51,-42,-40,-47,-41,-47,-45,-45,-46,-43,-44,]),'<':([46,48,52,71,74,75,76,77,78,79,80,102,103,104,105,106,107,108,121,122,],[-47,66,-45,-39,-48,-50,-37,-38,-49,-51,-42,-40,-47,-41,-47,-45,-45,-46,-43,-44,]),'EQ':([46,48,52,71,74,75,76,77,78,79,80,102,103,104,105,106,107,108,121,122,],[-47,67,-45,-39,-48,-50,-37,-38,-49,-51,-42,-40,-47,-41,-47,-45,-45,-46,-43,-44,]),'GE':([46,48,52,71,74,75,76,77,78,79,80,102,103,104,105,106,107,108,121,122,],[-47,68,-45,-39,-48,-50,-37,-38,-49,-51,-42,-40,-47,-41,-47,-45,-45,-46,-43,-44,]),'LE':([46,48,52,71,74,75,76,77,78,79,80,102,103,104,105,106,107,108,121,122,],[-47,69,-45,-39,-48,-50,-37,-38,-49,-51,-42,-40,-47,-41,-47,-45,-45,-46,-43,-44,]),'NE':([46,48,52,71,74,75,76,77,78,79,80,102,103,104,105,106,107,108,121,122,],[-47,70,-45,-39,-48,-50,-37,-38,-49,-51,-42,-40,-47,-41,-47,-45,-45,-46,-43,-44,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'type':([0,],[1,]),}
+_lr_goto_items = {'program':([0,],[1,]),'vars':([4,44,132,],[5,61,137,]),'funcs':([5,],[7,]),'var_ayuda':([6,45,],[9,63,]),'var_doble_ayuda':([10,19,],[13,36,]),'body':([11,29,44,61,87,126,132,137,],[15,41,62,94,111,135,138,141,]),'statement':([16,],[21,]),'assign':([16,],[22,]),'condition':([16,],[23,]),'cycle':([16,],[24,]),'f_call':([16,],[25,]),'print':([16,],[26,]),'type':([18,43,133,],[33,60,139,]),'expression':([38,39,40,42,53,85,88,90,],[47,54,56,58,83,110,112,114,]),'exp':([38,39,40,42,49,53,65,66,67,68,69,70,85,88,90,],[48,48,48,48,71,48,96,97,98,99,100,101,48,48,48,]),'termino':([38,39,40,42,49,53,65,66,67,68,69,70,72,73,85,88,90,],[49,49,49,49,49,49,49,49,49,49,49,49,102,104,49,49,49,]),'factor':([38,39,40,42,49,53,65,66,67,68,69,70,72,73,81,82,85,88,90,],[52,52,52,52,52,52,52,52,52,52,52,52,52,52,106,107,52,52,52,]),'cte':([50,51,72,73,],[75,79,75,79,]),'termino_ayuda':([52,106,107,],[80,121,122,]),'f_call_ayuda':([54,110,],[84,124,]),'print_ayuda':([58,59,114,115,],[89,91,129,130,]),'funcs_ayuda':([60,139,],[92,143,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,7 +26,66 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> type","S'",1,None,None,None),
-  ('type -> INT','type',1,'p_type_i','parser.py',25),
-  ('type -> FLOAT','type',1,'p_type_f','parser.py',29),
+  ("S' -> program","S'",1,None,None,None),
+  ('program -> PROGRAM ID ; vars funcs MAIN body END','program',8,'p_program','parser.py',20),
+  ('program -> <empty>','program',0,'p_program_none','parser.py',24),
+  ('vars -> VAR var_ayuda','vars',2,'p_vars_a','parser.py',28),
+  ('vars -> <empty>','vars',0,'p_vars_none','parser.py',32),
+  ('var_ayuda -> ID var_doble_ayuda : type ; var_ayuda','var_ayuda',6,'p_var_ayuda_a','parser.py',36),
+  ('var_ayuda -> <empty>','var_ayuda',0,'p_var_ayuda_none','parser.py',40),
+  ('var_doble_ayuda -> , ID var_doble_ayuda','var_doble_ayuda',3,'p_var_doble_ayuda_a','parser.py',44),
+  ('var_doble_ayuda -> <empty>','var_doble_ayuda',0,'p_var_doble_ayuda_none','parser.py',48),
+  ('type -> INT','type',1,'p_type_i','parser.py',52),
+  ('type -> FLOAT','type',1,'p_type_f','parser.py',57),
+  ('body -> { statement }','body',3,'p_body','parser.py',61),
+  ('statement -> assign','statement',1,'p_statement_a','parser.py',65),
+  ('statement -> condition','statement',1,'p_statement_b','parser.py',69),
+  ('statement -> cycle','statement',1,'p_statement_c','parser.py',73),
+  ('statement -> f_call','statement',1,'p_statement_d','parser.py',77),
+  ('statement -> print','statement',1,'p_statement_e','parser.py',81),
+  ('statement -> statement','statement',1,'p_statement_f','parser.py',85),
+  ('statement -> <empty>','statement',0,'p_statement_none','parser.py',89),
+  ('print -> PRINT ( expression print_ayuda ) ;','print',6,'p_print_a','parser.py',93),
+  ('print -> PRINT ( STRING print_ayuda ) ;','print',6,'p_print_b','parser.py',97),
+  ('print_ayuda -> , expression print_ayuda','print_ayuda',3,'p_print_ayuda_a','parser.py',101),
+  ('print_ayuda -> , STRING print_ayuda','print_ayuda',3,'p_print_ayuda_b','parser.py',105),
+  ('print_ayuda -> <empty>','print_ayuda',0,'p_print_ayuda_none','parser.py',109),
+  ('cycle -> DO body WHILE ( expression ) ;','cycle',7,'p_cycle','parser.py',113),
+  ('condition -> IF ( expression ) body ;','condition',6,'p_condition_a','parser.py',121),
+  ('condition -> IF ( expression ) body ELSE body ;','condition',8,'p_condition_b','parser.py',125),
+  ('assign -> ID = expression ;','assign',4,'p_assign_a','parser.py',129),
+  ('assign -> <empty>','assign',0,'p_assign_none','parser.py',133),
+  ('expression -> exp > exp','expression',3,'p_expression_a','parser.py',137),
+  ('expression -> exp < exp','expression',3,'p_expression_b','parser.py',141),
+  ('expression -> exp EQ exp','expression',3,'p_expression_c','parser.py',145),
+  ('expression -> exp GE exp','expression',3,'p_expression_d','parser.py',149),
+  ('expression -> exp LE exp','expression',3,'p_expression_f','parser.py',153),
+  ('expression -> exp NE exp','expression',3,'p_expression_g','parser.py',157),
+  ('expression -> exp','expression',1,'p_expression_h','parser.py',161),
+  ('expression -> <empty>','expression',0,'p_expression_none','parser.py',165),
+  ('cte -> INT','cte',1,'p_cte_a','parser.py',169),
+  ('cte -> FLOAT','cte',1,'p_cte_b','parser.py',173),
+  ('exp -> termino exp','exp',2,'p_exp_i','parser.py',177),
+  ('exp -> termino + termino','exp',3,'p_exp_a','parser.py',181),
+  ('exp -> termino - termino','exp',3,'p_exp_ayuda_b','parser.py',185),
+  ('termino -> factor termino_ayuda','termino',2,'p_termino','parser.py',190),
+  ('termino_ayuda -> / factor termino_ayuda','termino_ayuda',3,'p_termino_ayuda_a','parser.py',194),
+  ('termino_ayuda -> * factor termino_ayuda','termino_ayuda',3,'p_termino_ayuda_b','parser.py',198),
+  ('termino_ayuda -> <empty>','termino_ayuda',0,'p_termino_ayuda_none','parser.py',202),
+  ('factor -> ( expression )','factor',3,'p_factor_a','parser.py',206),
+  ('factor -> ID','factor',1,'p_factor_b','parser.py',210),
+  ('factor -> + ID','factor',2,'p_factor_c','parser.py',214),
+  ('factor -> - ID','factor',2,'p_factor_d','parser.py',218),
+  ('factor -> + cte','factor',2,'p_factor_f','parser.py',222),
+  ('factor -> - cte','factor',2,'p_factor_g','parser.py',226),
+  ('funcs -> VOID ID ( ID : type funcs_ayuda ) [ vars body ] ;','funcs',13,'p_funcs_a','parser.py',230),
+  ('funcs -> VOID ID ( ) [ vars body ] ;','funcs',9,'p_funcs_b','parser.py',234),
+  ('funcs -> VOID ID ( ID : type funcs_ayuda ) [ body ] ;','funcs',12,'p_funcs_c','parser.py',238),
+  ('funcs -> VOID ID ( ) [ body ] ;','funcs',8,'p_funcs_d','parser.py',242),
+  ('funcs_ayuda -> , ID : type funcs_ayuda','funcs_ayuda',5,'p_funcs_ayuda_a','parser.py',246),
+  ('funcs_ayuda -> <empty>','funcs_ayuda',0,'p_funcs_ayuda_none','parser.py',250),
+  ('f_call -> ID ( expression f_call_ayuda ) ;','f_call',6,'p_f_call_a','parser.py',254),
+  ('f_call -> ID ( ) ;','f_call',4,'p_f_call_b','parser.py',258),
+  ('f_call_ayuda -> , expression f_call_ayuda','f_call_ayuda',3,'p_f_call_ayuda_a','parser.py',262),
+  ('f_call_ayuda -> <empty>','f_call_ayuda',0,'p_f_call_ayuda_b','parser.py',266),
 ]
