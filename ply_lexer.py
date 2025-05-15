@@ -19,9 +19,9 @@ class MyLexer(object):
        'void' : 'VOID',
        'do' : 'DO',
        'var' : 'VAR',
-       'int' : 'INT',
-       'float' : 'FLOAT',
-       'string': 'STRING'
+       'string': 'STRING',
+       'int' : 'CONST_INT',
+       'float' : 'CONST_FLOAT'
     }
     
     #se definen literales que ply puede definir con la variable literals
@@ -43,7 +43,7 @@ class MyLexer(object):
     
     #token de float, se convierte el valor a un dato de tipo float
     @staticmethod
-    def t_FLOAT(t):
+    def t_CONST_FLOAT(t):
         r'[0-9]+\.[0-9]+'
         t.value = float(t.value)
         return t

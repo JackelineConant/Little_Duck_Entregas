@@ -8,24 +8,34 @@ m.build()      # Construye el lexer
 literals = MyLexer.literals
 tokens = MyLexer.tokens + literals
 
-
 # Listado de casos de prueba
 documento = ['conversion_metros_yardas.ld','celsius_to_fahrenheit.ld','serie_fibonnacci.ld','mayor_valor.ld']
 num_caso = 0 # Número de caso 
-
+start = 'program'
 # Creamos el parser
 #names = { }
 
+def p_empty(p):
+    'empty :'
+    pass
 
+# Type
+def p_type_int(p):
+    'type : CONST_INT'
+    p[0] = p[1]
+
+def p_type_float(p):
+    'type : CONST_FLOAT'
+    p[0] = p[1]
 
 # Vars
-def p_vars_multiple(p):
-    'vars : vars VAR var_ayuda'
-    p[0] = p[1] + [(p[2], p[3])]
-
-def p_vars_single(p):
-    'vars : VAR var_ayuda'
-    p[0] = [(p[1], p[2])]
+def p_vars(p):
+    '''vars : VAR var_ayuda
+            | vars VAR var_ayuda'''
+    if len(p) == 3:
+        p[0] = [(p[1], p[2])]
+    else:
+        p[0] = p[1] + [(p[2], p[3])]
 
 def p_var_ayuda(p):
     'var_ayuda : ID var_doble_ayuda ":" type ";" var_ayuda_tail'
@@ -47,19 +57,146 @@ def p_var_doble_ayuda_empty(p):
     'var_doble_ayuda :'
     p[0] = []
 
-# Type
-def p_type_int(p):
-    'type : INT'
+# exp
+def p_exp_add(p):
+    'exp : exp "+" termino'
+    p[0] = (p[1], "+", p[3])
+
+def p_exp_sub(p):
+    'exp : exp "-" termino'
+    p[0] = (p[1], "-", p[3])
+
+def p_exp_term(p):
+    'exp : termino'
     p[0] = p[1]
 
-def p_type_float(p):
-    'type : FLOAT'
+# expresión
+def p_expression_gt(p):
+    'expression : exp ">" exp'
+    p[0] = (p[1], ">", p[3])
+
+def p_expression_lt(p):
+    'expression : exp "<" exp'
+    p[0] = (p[1], "<", p[3])
+
+def p_expression_eq(p):
+    'expression : exp EQ exp'
+    p[0] = (p[1], "==", p[3])
+
+def p_expression_ge(p):
+    'expression : exp GE exp'
+    p[0] = (p[1], ">=", p[3])
+
+def p_expression_le(p):
+    'expression : exp LE exp'
+    p[0] = (p[1], "<=", p[3])
+
+def p_expression_ne(p):
+    'expression : exp NE exp'
+    p[0] = (p[1], "!=", p[3])
+
+def p_expression_exp(p):
+    'expression : exp'
+    p[0] = p[1]
+    
+# factor
+def p_factor_group(p):
+    'factor : "(" expression ")"'
+    p[0] = ("(", p[2], ")")
+
+def p_factor_id(p):
+    'factor : ID'
+    p[0] = p[1]
+    
+def p_factor_cte(p):
+    'factor : cte'
     p[0] = p[1]
 
-# body
-def p_body(p):
-    'body : "{" statements "}"'
-    p[0] = ("{", p[2], "}")
+def p_factor_pos_id(p):
+    'factor : "+" ID'
+    p[0] = ("+", p[2])
+
+def p_factor_neg_id(p):
+    'factor : "-" ID'
+    p[0] = ("-", p[2])
+
+def p_factor_pos_cte(p):
+    'factor : "+" cte'
+    p[0] = ("+", p[2])
+
+def p_factor_neg_cte(p):
+    'factor : "-" cte'
+    p[0] = ("-", p[2])
+
+# Print
+def p_print_expr(p):
+    'print : PRINT "(" expression print_ayuda ")" ";"'
+    p[0] = (p[1], "(", p[3], p[4], ")", ";")
+
+def p_print_string(p):
+    'print : PRINT "(" STRING print_ayuda ")" ";"'
+    p[0] = (p[1], "(", p[3], p[4], ")", ";")
+
+def p_print_ayuda_expr(p):
+    'print_ayuda : "," expression print_ayuda'
+    p[0] = (",", p[2], p[3])
+
+def p_print_ayuda_string(p):
+    'print_ayuda : "," STRING print_ayuda'
+    p[0] = (",", p[2], p[3])
+
+def p_print_ayuda_empty(p):
+    'print_ayuda :'
+    p[0] = []
+    
+def p_termino_mul(p):
+    'termino : termino "*" factor'
+    p[0] = (p[1], "*", p[3])
+
+def p_termino_div(p):
+    'termino : termino "/" factor'
+    p[0] = (p[1], "/", p[3])
+
+def p_termino_factor(p):
+    'termino : factor'
+    p[0] = p[1]
+
+
+# Cycle
+def p_cycle(p):
+    'cycle : DO body WHILE "(" expression ")" ";"'
+    p[0] = (p[1], p[2], p[3], "(", p[5], ")", ";")
+
+# Condition
+def p_condition_if(p):
+    'condition : IF "(" expression ")" body ";"'
+    p[0] = (p[1], "(", p[3], ")", p[5], ";")
+
+def p_condition_if_else(p):
+    'condition : IF "(" expression ")" body ELSE body ";"'
+    p[0] = (p[1], "(", p[3], ")", p[5], p[6], p[7], ";")
+
+# Assign
+def p_assign(p):
+    'assign : ID "=" expression ";"'
+    p[0] = (p[1], "=", p[3], ";")
+
+# f_call
+def p_f_call_args(p):
+    'f_call : ID "(" expression f_call_ayuda ")" ";"'
+    p[0] = (p[1], "(", p[3], p[4], ")", ";")
+
+def p_f_call_no_args(p):
+    'f_call : ID "(" ")" ";"'
+    p[0] = (p[1], "(", ")", ";")
+
+def p_f_call_ayuda(p):
+    'f_call_ayuda : "," expression f_call_ayuda'
+    p[0] = (",", p[2], p[3])
+
+def p_f_call_ayuda_empty(p):
+    'f_call_ayuda :'
+    p[0] = []
 
 # statements
 def p_statements_multiple(p):
@@ -90,132 +227,19 @@ def p_statement_print(p):
     'statement : print'
     p[0] = p[1]
 
-# Print
-def p_print_expr(p):
-    'print : PRINT "(" expression print_ayuda ")" ";"'
-    p[0] = (p[1], "(", p[3], p[4], ")", ";")
+# body
+def p_body(p):
+    'body : "{" statements "}"'
+    p[0] = ("{", p[2], "}")
 
-def p_print_string(p):
-    'print : PRINT "(" STRING print_ayuda ")" ";"'
-    p[0] = (p[1], "(", p[3], p[4], ")", ";")
-
-def p_print_ayuda_expr(p):
-    'print_ayuda : "," expression print_ayuda'
-    p[0] = (",", p[2], p[3])
-
-def p_print_ayuda_string(p):
-    'print_ayuda : "," STRING print_ayuda'
-    p[0] = (",", p[2], p[3])
-
-def p_print_ayuda_empty(p):
-    'print_ayuda :'
-    p[0] = []
-
-# Cycle
-def p_cycle(p):
-    'cycle : DO body WHILE "(" expression ")" ";"'
-    p[0] = (p[1], p[2], p[3], "(", p[5], ")", ";")
-
-# Condition
-def p_condition_if(p):
-    'condition : IF "(" expression ")" body ";"'
-    p[0] = (p[1], "(", p[3], ")", p[5], ";")
-
-def p_condition_if_else(p):
-    'condition : IF "(" expression ")" body ELSE body ";"'
-    p[0] = (p[1], "(", p[3], ")", p[5], p[6], p[7], ";")
-
-# Assign
-def p_assign(p):
-    'assign : ID "=" expression ";"'
-    p[0] = (p[1], "=", p[3], ";")
-
-# expresión
-def p_expression_gt(p):
-    'expression : exp ">" exp'
-    p[0] = (p[1], ">", p[3])
-
-def p_expression_lt(p):
-    'expression : exp "<" exp'
-    p[0] = (p[1], "<", p[3])
-
-def p_expression_eq(p):
-    'expression : exp EQ exp'
-    p[0] = (p[1], "==", p[3])
-
-def p_expression_ge(p):
-    'expression : exp GE exp'
-    p[0] = (p[1], ">=", p[3])
-
-def p_expression_le(p):
-    'expression : exp LE exp'
-    p[0] = (p[1], "<=", p[3])
-
-def p_expression_ne(p):
-    'expression : exp NE exp'
-    p[0] = (p[1], "!=", p[3])
-
-def p_expression_exp(p):
-    'expression : exp'
-    p[0] = p[1]
-
-# exp
-def p_exp_add(p):
-    'exp : exp "+" termino'
-    p[0] = (p[1], "+", p[3])
-
-def p_exp_sub(p):
-    'exp : exp "-" termino'
-    p[0] = (p[1], "-", p[3])
-
-def p_exp_term(p):
-    'exp : termino'
-    p[0] = p[1]
-
-def p_termino_mul(p):
-    'termino : termino "*" factor'
-    p[0] = (p[1], "*", p[3])
-
-def p_termino_div(p):
-    'termino : termino "/" factor'
-    p[0] = (p[1], "/", p[3])
-
-def p_termino_factor(p):
-    'termino : factor'
-    p[0] = p[1]
-
-# factor
-def p_factor_group(p):
-    'factor : "(" expression ")"'
-    p[0] = ("(", p[2], ")")
-
-def p_factor_id(p):
-    'factor : ID'
-    p[0] = p[1]
-
-def p_factor_pos_id(p):
-    'factor : "+" ID'
-    p[0] = ("+", p[2])
-
-def p_factor_neg_id(p):
-    'factor : "-" ID'
-    p[0] = ("-", p[2])
-
-def p_factor_pos_cte(p):
-    'factor : "+" cte'
-    p[0] = ("+", p[2])
-
-def p_factor_neg_cte(p):
-    'factor : "-" cte'
-    p[0] = ("-", p[2])
 
 # cte
 def p_cte_int(p):
-    'cte : INT'
+    'cte : CONST_INT'
     p[0] = p[1]
 
 def p_cte_float(p):
-    'cte : FLOAT'
+    'cte : CONST_FLOAT'
     p[0] = p[1]
 
 # Funcs
@@ -251,22 +275,6 @@ def p_funcs_ayuda_empty(p):
     'funcs_ayuda :'
     p[0] = []
 
-# f_call
-def p_f_call_args(p):
-    'f_call : ID "(" expression f_call_ayuda ")" ";"'
-    p[0] = (p[1], "(", p[3], p[4], ")", ";")
-
-def p_f_call_no_args(p):
-    'f_call : ID "(" ")" ";"'
-    p[0] = (p[1], "(", ")", ";")
-
-def p_f_call_ayuda(p):
-    'f_call_ayuda : "," expression f_call_ayuda'
-    p[0] = (",", p[2], p[3])
-
-def p_f_call_ayuda_empty(p):
-    'f_call_ayuda :'
-    p[0] = []
     
 # Program
 def p_program(p):
@@ -279,17 +287,6 @@ def p_error(p):
     
     
 parser = yacc.yacc()
-
-# Creamos la función para el parser
-def parser_table(lineas):
-    codigo_texto = ""
-    for linea in lineas:
-        for token in linea:
-            codigo_texto += token + " "
-        codigo_texto += "\n"
-    print(codigo_texto)
-    parser.parse(codigo_texto)
-    
 
 
 #Función para la lectura del listado de casos de prueba
@@ -306,16 +303,12 @@ for caso in documento:
     except SyntaxError as e:
         print(e)
 
-    
     # Creamos la lista de parsers 
-    #lineas = MyLexer.lineas_parser
-    #parser_table(lineas, lexer=lineas.lexer)
-    #parser.parse(MyLexer.lineas_parser)
+
     # Limpiar la tabla de símbolos, para el siguiente caso.
     m.clear_table()
     
     # Limpiar las lineas de tokens que se mandaron al parser.
-    #MyLexer.lineas_parser = []
     print("\n")
 
 
