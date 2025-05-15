@@ -46,16 +46,16 @@ def p_var_ayuda_tail(p):
     p[0] = p[1]
 
 def p_var_ayuda_tail_empty(p):
-    'var_ayuda_tail :'
-    p[0] = []
+    'var_ayuda_tail : empty'
+    p[0] = p[1]
 
 def p_var_doble_ayuda(p):
     'var_doble_ayuda : "," ID var_doble_ayuda'
     p[0] = (",", p[2], p[3])
 
 def p_var_doble_ayuda_empty(p):
-    'var_doble_ayuda :'
-    p[0] = []
+    'var_doble_ayuda : empty'
+    p[0] = p[1]
 
 # exp
 def p_exp_add(p):
@@ -146,8 +146,8 @@ def p_print_ayuda_string(p):
     p[0] = (",", p[2], p[3])
 
 def p_print_ayuda_empty(p):
-    'print_ayuda :'
-    p[0] = []
+    'print_ayuda : empty'
+    p[0] = p[1]
     
 def p_termino_mul(p):
     'termino : termino "*" factor'
@@ -195,8 +195,8 @@ def p_f_call_ayuda(p):
     p[0] = (",", p[2], p[3])
 
 def p_f_call_ayuda_empty(p):
-    'f_call_ayuda :'
-    p[0] = []
+    'f_call_ayuda : empty'
+    p[0] = p[1]
 
 # statements
 def p_statements_multiple(p):
@@ -264,16 +264,16 @@ def p_funcs_multiple(p):
     p[0] = p[1] + [p[2]]
 
 def p_funcs_empty(p):
-    'funcs :'
-    p[0] = []
+    'funcs : empty'
+    p[0] = p[1]
 
 def p_funcs_ayuda(p):
     'funcs_ayuda : "," ID ":" type funcs_ayuda'
     p[0] = (",", p[2], ":", p[4], p[5])
 
 def p_funcs_ayuda_empty(p):
-    'funcs_ayuda :'
-    p[0] = []
+    'funcs_ayuda : empty'
+    p[0] = p[1]
 
     
 # Program
