@@ -16,16 +16,16 @@ main{
 
     if (valor2 > mayor) {
         mayor = valor2;
-    };
+    }
     if (valor3 > mayor) {
         mayor = valor3;
-    };
+    }
     if (valor4 > mayor) {
         mayor = valor4;
-    };
+    }
     if (valor5 > mayor) {
         mayor = valor5;
-    };
+    }
 
     print(mayor);
 }

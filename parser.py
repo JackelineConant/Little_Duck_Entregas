@@ -9,7 +9,7 @@ literals = MyLexer.literals
 tokens = MyLexer.tokens + literals
 
 # Listado de casos de prueba
-documento = ['conversion_metros_yardas.ld','celsius_to_fahrenheit.ld','serie_fibonnacci.ld','mayor_valor.ld']
+documento = ['conversion_metros_yardas.ld' ,'celsius_to_fahrenheit.ld','serie_fibonnacci.ld','mayor_valor.ld']
 num_caso = 0 # Número de caso 
 start = 'program'
 # Creamos el parser
@@ -21,11 +21,11 @@ def p_empty(p):
 
 # Type
 def p_type_int(p):
-    'type : CONST_INT'
+    'type : INT'
     p[0] = p[1]
 
 def p_type_float(p):
-    'type : CONST_FLOAT'
+    'type : FLOAT'
     p[0] = p[1]
 
 # Vars
@@ -134,7 +134,7 @@ def p_print_expr(p):
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
 
 def p_print_string(p):
-    'print : PRINT "(" STRING print_ayuda ")" ";"'
+    'print : PRINT "(" CONST_STRING print_ayuda ")" ";"'
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
 
 def p_print_ayuda_expr(p):

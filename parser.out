@@ -2,7 +2,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    CONST_STRING
     FOR
     THEN
 
@@ -10,8 +9,8 @@ Grammar
 
 Rule 0     S' -> program
 Rule 1     empty -> <empty>
-Rule 2     type -> CONST_INT
-Rule 3     type -> CONST_FLOAT
+Rule 2     type -> INT
+Rule 3     type -> FLOAT
 Rule 4     vars -> VAR var_ayuda
 Rule 5     vars -> vars VAR var_ayuda
 Rule 6     var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail
@@ -37,7 +36,7 @@ Rule 25    factor -> - ID
 Rule 26    factor -> + cte
 Rule 27    factor -> - cte
 Rule 28    print -> PRINT ( expression print_ayuda ) ;
-Rule 29    print -> PRINT ( STRING print_ayuda ) ;
+Rule 29    print -> PRINT ( CONST_STRING print_ayuda ) ;
 Rule 30    print_ayuda -> , expression print_ayuda
 Rule 31    print_ayuda -> , STRING print_ayuda
 Rule 32    print_ayuda -> empty
@@ -86,23 +85,25 @@ Terminals, with rules where they appear
 <                    : 15
 =                    : 39
 >                    : 14
-CONST_FLOAT          : 3 53
-CONST_INT            : 2 52
-CONST_STRING         : 
+CONST_FLOAT          : 53
+CONST_INT            : 52
+CONST_STRING         : 29
 DO                   : 36
 ELSE                 : 38
 END                  : 62
 EQ                   : 16
+FLOAT                : 3
 FOR                  : 
 GE                   : 17
 ID                   : 6 9 22 24 25 39 40 41 54 54 55 56 56 57 60 62
 IF                   : 37 38
+INT                  : 2
 LE                   : 18
 MAIN                 : 62
 NE                   : 19
 PRINT                : 28 29
 PROGRAM              : 62
-STRING               : 29 31
+STRING               : 31
 THEN                 : 
 VAR                  : 4 5
 VOID                 : 54 55 56 57
@@ -384,7 +385,7 @@ state 21
     (40) f_call -> . ID ( expression f_call_ayuda ) ;
     (41) f_call -> . ID ( ) ;
     (28) print -> . PRINT ( expression print_ayuda ) ;
-    (29) print -> . PRINT ( STRING print_ayuda ) ;
+    (29) print -> . PRINT ( CONST_STRING print_ayuda ) ;
 
     ID              shift and go to state 33
     IF              shift and go to state 34
@@ -413,11 +414,11 @@ state 22
 state 23
 
     (6) var_ayuda -> ID var_doble_ayuda : . type ; var_ayuda_tail
-    (2) type -> . CONST_INT
-    (3) type -> . CONST_FLOAT
+    (2) type -> . INT
+    (3) type -> . FLOAT
 
-    CONST_INT       shift and go to state 40
-    CONST_FLOAT     shift and go to state 41
+    INT             shift and go to state 40
+    FLOAT           shift and go to state 41
 
     type                           shift and go to state 39
 
@@ -457,7 +458,7 @@ state 26
     (40) f_call -> . ID ( expression f_call_ayuda ) ;
     (41) f_call -> . ID ( ) ;
     (28) print -> . PRINT ( expression print_ayuda ) ;
-    (29) print -> . PRINT ( STRING print_ayuda ) ;
+    (29) print -> . PRINT ( CONST_STRING print_ayuda ) ;
 
     }               shift and go to state 43
     ID              shift and go to state 33
@@ -568,7 +569,7 @@ state 35
 state 36
 
     (28) print -> PRINT . ( expression print_ayuda ) ;
-    (29) print -> PRINT . ( STRING print_ayuda ) ;
+    (29) print -> PRINT . ( CONST_STRING print_ayuda ) ;
 
     (               shift and go to state 49
 
@@ -598,20 +599,20 @@ state 39
 
 state 40
 
-    (2) type -> CONST_INT .
+    (2) type -> INT .
 
-    ;               reduce using rule 2 (type -> CONST_INT .)
-    ,               reduce using rule 2 (type -> CONST_INT .)
-    )               reduce using rule 2 (type -> CONST_INT .)
+    ;               reduce using rule 2 (type -> INT .)
+    ,               reduce using rule 2 (type -> INT .)
+    )               reduce using rule 2 (type -> INT .)
 
 
 state 41
 
-    (3) type -> CONST_FLOAT .
+    (3) type -> FLOAT .
 
-    ;               reduce using rule 3 (type -> CONST_FLOAT .)
-    ,               reduce using rule 3 (type -> CONST_FLOAT .)
-    )               reduce using rule 3 (type -> CONST_FLOAT .)
+    ;               reduce using rule 3 (type -> FLOAT .)
+    ,               reduce using rule 3 (type -> FLOAT .)
+    )               reduce using rule 3 (type -> FLOAT .)
 
 
 state 42
@@ -773,7 +774,7 @@ state 48
 state 49
 
     (28) print -> PRINT ( . expression print_ayuda ) ;
-    (29) print -> PRINT ( . STRING print_ayuda ) ;
+    (29) print -> PRINT ( . CONST_STRING print_ayuda ) ;
     (14) expression -> . exp > exp
     (15) expression -> . exp < exp
     (16) expression -> . exp EQ exp
@@ -797,7 +798,7 @@ state 49
     (52) cte -> . CONST_INT
     (53) cte -> . CONST_FLOAT
 
-    STRING          shift and go to state 69
+    CONST_STRING    shift and go to state 69
     (               shift and go to state 60
     ID              shift and go to state 53
     +               shift and go to state 56
@@ -815,11 +816,11 @@ state 50
 
     (54) funcs -> VOID ID ( ID : . type funcs_ayuda ) [ vars body ] ;
     (56) funcs -> VOID ID ( ID : . type funcs_ayuda ) [ body ] ;
-    (2) type -> . CONST_INT
-    (3) type -> . CONST_FLOAT
+    (2) type -> . INT
+    (3) type -> . FLOAT
 
-    CONST_INT       shift and go to state 40
-    CONST_FLOAT     shift and go to state 41
+    INT             shift and go to state 40
+    FLOAT           shift and go to state 41
 
     type                           shift and go to state 70
 
@@ -1119,7 +1120,7 @@ state 68
 
 state 69
 
-    (29) print -> PRINT ( STRING . print_ayuda ) ;
+    (29) print -> PRINT ( CONST_STRING . print_ayuda ) ;
     (30) print_ayuda -> . , expression print_ayuda
     (31) print_ayuda -> . , STRING print_ayuda
     (32) print_ayuda -> . empty
@@ -1743,7 +1744,7 @@ state 100
 
 state 101
 
-    (29) print -> PRINT ( STRING print_ayuda . ) ;
+    (29) print -> PRINT ( CONST_STRING print_ayuda . ) ;
 
     )               shift and go to state 125
 
@@ -2034,7 +2035,7 @@ state 124
 
 state 125
 
-    (29) print -> PRINT ( STRING print_ayuda ) . ;
+    (29) print -> PRINT ( CONST_STRING print_ayuda ) . ;
 
     ;               shift and go to state 138
 
@@ -2141,13 +2142,13 @@ state 137
 
 state 138
 
-    (29) print -> PRINT ( STRING print_ayuda ) ; .
+    (29) print -> PRINT ( CONST_STRING print_ayuda ) ; .
 
-    }               reduce using rule 29 (print -> PRINT ( STRING print_ayuda ) ; .)
-    ID              reduce using rule 29 (print -> PRINT ( STRING print_ayuda ) ; .)
-    IF              reduce using rule 29 (print -> PRINT ( STRING print_ayuda ) ; .)
-    DO              reduce using rule 29 (print -> PRINT ( STRING print_ayuda ) ; .)
-    PRINT           reduce using rule 29 (print -> PRINT ( STRING print_ayuda ) ; .)
+    }               reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    ID              reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    IF              reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    DO              reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    PRINT           reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
 
 
 state 139
@@ -2167,11 +2168,11 @@ state 139
 state 140
 
     (60) funcs_ayuda -> , ID : . type funcs_ayuda
-    (2) type -> . CONST_INT
-    (3) type -> . CONST_FLOAT
+    (2) type -> . INT
+    (3) type -> . FLOAT
 
-    CONST_INT       shift and go to state 40
-    CONST_FLOAT     shift and go to state 41
+    INT             shift and go to state 40
+    FLOAT           shift and go to state 41
 
     type                           shift and go to state 146
 
