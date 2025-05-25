@@ -1,6 +1,94 @@
 from ply_lexer import MyLexer
 import ply.yacc as yacc
 
+class Estructura:
+    stack_operandos = []
+    cubo = {}
+    counter_temporales = 0
+    cuadruples = []
+    saltos = []
+    linea = 0
+    var_names = {}
+    def __init__(self):
+        self.stack = []
+        self.cubo = {
+            #igual
+            ('int','int','=') : 'int',
+            ('int','float','='): 'error',
+            ('float','int','=') : 'float',
+            ('float','float','=') : 'float',
+            
+            #suma
+            ('int','int','+'): 'int',
+            ('float','int','+'): 'float',
+            ('int','float','+'): 'float',
+            ('float','float','+'): 'float',
+            
+            #resta
+            ('int','int','-') : 'int',
+            ('float','int','-') : 'float',
+            ('int','float','-') : 'float',
+            ('float','float','-') : 'float',
+           
+            #divicion
+            ('int','int','/') : 'int',
+            ('float','int','/') : 'float',
+            ('int','float','/') : 'float',
+            ('float','float','/') : 'float',
+            
+            #muti
+            ('int','int','*') : 'int',
+            ('float','int','*') : 'float',
+            ('int','float','*') : 'float',
+            ('float','float','*') : 'float',
+            
+             #mayor que
+            ('int','int','>') : 'bool',
+            ('float','int','>') : 'bool',
+            ('int','float','>') : 'bool',
+            ('float','float','>') : 'bool',
+            
+             #mayor que
+            ('int','int','<') : 'bool',
+            ('float','int','<') : 'bool',
+            ('int','float','<') : 'bool',
+            ('float','float','<') : 'bool',
+            
+             #mayor igual que
+            ('int','int','>=') : 'bool',
+            ('float','int','>=') : 'bool',
+            ('int','float','>=') : 'bool',
+            ('float','float','>=') : 'bool',
+            
+             #menor igual que
+            ('int','int','<=') : 'bool',
+            ('float','int','<=') : 'bool',
+            ('int','float','<=') : 'bool',
+            ('float','float','<=') : 'bool',
+            
+             #distinto 
+            ('int','int','!=') : 'bool',
+            ('float','int','!=') : 'bool',
+            ('int','float','!=') : 'bool',
+            ('float','float','!=') : 'bool',
+            
+             #igual igual
+            ('int','int','==') : 'bool',
+            ('float','int','==') : 'bool',
+            ('int','float','==') : 'bool',
+            ('float','float','==') : 'bool',
+        }
+        self.counter_temporales = 0
+        self.cuadruples = [(self.linea,"main",None,None,None)]
+        self.linea = 0
+        self.var_names = {}
+        self.saltos = []
+
+        
+        
+        
+estructura = Estructura()
+
 m = MyLexer() #crea una instancia del lexer
 m.build()      # Construye el lexer 
 
@@ -9,10 +97,25 @@ literals = MyLexer.literals
 tokens = MyLexer.tokens + literals
 
 # Listado de casos de prueba
-documento = ['conversion_metros_yardas.ld' ,'celsius_to_fahrenheit.ld','serie_fibonnacci.ld','mayor_valor.ld']
+documento = ['ejemplo.txt']
 num_caso = 0 # Número de caso 
 start = 'program'
 # Creamos el parser
+
+def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
+            
+            result_type = estructura.cubo[(tipo1, tipo2, operador)]
+
+            if result_type == 'error' or result_type is None:
+                raise TypeError(f"Operación inválida: {tipo1} {operador} {tipo2}")
+            
+            temp = f"t{estructura.counter_temporales}"
+            estructura.counter_temporales += 1
+            estructura.linea +=1
+            estructura.cuadruples.append((estructura.linea,operador, op1, op2, temp, result_type))
+            estructura.stack_operandos.append((temp, result_type))
+            return temp
+
 
 def p_empty(p):
     'empty :'
@@ -55,10 +158,17 @@ def p_var_doble_ayuda_empty(p):
 # exp
 def p_exp_add(p):
     'exp : exp "+" termino'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "+", p[3])
+
 
 def p_exp_sub(p):
     'exp : exp "-" termino'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "-", p[3])
 
 def p_exp_term(p):
@@ -68,27 +178,53 @@ def p_exp_term(p):
 # expresión
 def p_expression_gt(p):
     'expression : exp ">" exp'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], ">", p[3])
+  
+ 
 
 def p_expression_lt(p):
     'expression : exp "<" exp'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "<", p[3])
+
+ 
 
 def p_expression_eq(p):
     'expression : exp EQ exp'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "==", p[3])
+
 
 def p_expression_ge(p):
     'expression : exp GE exp'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], ">=", p[3])
+   
 
 def p_expression_le(p):
     'expression : exp LE exp'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "<=", p[3])
+  
 
 def p_expression_ne(p):
     'expression : exp NE exp'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "!=", p[3])
+ 
 
 def p_expression_exp(p):
     'expression : exp'
@@ -101,6 +237,10 @@ def p_factor_group(p):
 
 def p_factor_id(p):
     'factor : ID'
+    if p[1] not in estructura.var_names:
+        estructura.var_names[p[1]] = "int"
+    tipo = estructura.var_names[p[1]]
+    estructura.stack_operandos.append([p[1],tipo])
     p[0] = p[1]
     
 def p_factor_cte(p):
@@ -122,6 +262,7 @@ def p_factor_pos_cte(p):
 def p_factor_neg_cte(p):
     'factor : "-" cte'
     p[0] = ("-", p[2])
+
 
 # Print
 def p_print_expr(p):
@@ -146,10 +287,16 @@ def p_print_ayuda_empty(p):
     
 def p_termino_mul(p):
     'termino : termino "*" factor'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "*", p[3])
 
 def p_termino_div(p):
     'termino : termino "/" factor'
+    op2, tipo2 = estructura.stack_operandos.pop()
+    op1, tipo1 = estructura.stack_operandos.pop()
+    generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "/", p[3])
 
 def p_termino_factor(p):
@@ -165,20 +312,59 @@ def p_cycle(p):
 # Condition
 def p_condition_if(p):
     'condition : IF "(" expression ")" body ";"'
+    condicion, tipo = estructura.stack_operandos.pop()
+    if tipo != 'bool':
+        raise TypeError("La condición del if debe ser booleana.")
+    
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea,'gotoF', condicion, None, None))
+    falsa_pos = len(estructura.cuadruples) - 1
+    estructura.saltos.append(falsa_pos)
+
+    # El cuerpo (p[5]) ya fue procesado, ahora actualizamos el cuadruplo del salto falso
+    salto_falso = estructura.saltos.pop()
+    estructura.linea += 1
+    estructura.cuadruples[salto_falso] = (estructura.linea, 'gotoF', condicion, None, len(estructura.cuadruples))
+
     p[0] = (p[1], "(", p[3], ")", p[5], ";")
+  
 
 def p_condition_if_else(p):
     'condition : IF "(" expression ")" body ELSE body ";"'
+    condicion, tipo = estructura.stack_operandos.pop()
+    if tipo != 'bool':
+        raise TypeError("Condición del IF debe ser de tipo booleano")
+
+
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea,'gotoF', condicion, None, None))
+    falsa_pos = len(estructura.cuadruples) - 1
+
+
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea,'goto', None, None, None))
+    fin_if_pos = len(estructura.cuadruples) - 1
+
+ 
+    estructura.cuadruples[falsa_pos] = (estructura.linea,'gotoF', condicion, None,estructura.cuadruples[falsa_pos][0])
+    estructura.cuadruples[fin_if_pos] = (estructura.linea,'gotoF', condicion, None,estructura.cuadruples[fin_if_pos][0])
+
     p[0] = (p[1], "(", p[3], ")", p[5], p[6], p[7], ";")
 
 # Assign
 def p_assign(p):
     'assign : ID "=" expression ";"'
+    valor, tipo = estructura.stack_operandos.pop()
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea,'=', valor, None, p[1], tipo))
+    estructura.var_names[p[1]] = tipo
     p[0] = (p[1], "=", p[3], ";")
+    
 
 # f_call
 def p_f_call_args(p):
     'f_call : ID "(" expression f_call_ayuda ")" ";"'
+    arg, tipo = estructura.stack_operandos.pop()
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
 
 def p_f_call_no_args(p):
@@ -231,10 +417,12 @@ def p_body(p):
 # cte
 def p_cte_int(p):
     'cte : CONST_INT'
+    estructura.stack_operandos.append([p[1], 'int'])
     p[0] = p[1]
 
 def p_cte_float(p):
     'cte : CONST_FLOAT'
+    estructura.stack_operandos.append([p[1], 'float'])
     p[0] = p[1]
 
 # Funcs
@@ -295,23 +483,26 @@ for caso in documento:
     with open(caso, 'r') as file:
         codigo = file.read()
     print(f'Caso {num_caso}: {caso}')
-    # Pasar el contenido completo a las funciones del lexer
     m.tabla(codigo)
-    
+
     try:
         print('\n')
         result = parser.parse(codigo, lexer=m.lexer)
         print(result)
+        print("\nOperadores generados:")
+        print(estructura.stack_operandos)
+        print("\nCuádruplos generados:")
+        for i in estructura.cuadruples:
+            print(i)
+        
+
     except SyntaxError as e:
         print(e)
 
-    # Creamos la lista de parsers 
 
-    # Limpiar la tabla de símbolos, para el siguiente caso.
     m.clear_table()
-    
-    # Limpiar las lineas de tokens que se mandaron al parser.
+    estructura.stack_operandos = []
+    estructura.cuadruples = []
+    estructura.counter_temporales = 0
+    estructura.saltos = []
     print("\n")
-
-
-#print(tokens)
