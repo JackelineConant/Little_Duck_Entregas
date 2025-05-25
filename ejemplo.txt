@@ -1,16 +1,10 @@
-program proquacks;
-
- 
-
-var 
-
-        A, B, C, D : int ;
+program test;
+var A , B : int;
 main {
-    
-    
-   
-
-    A = 7 + 3 + 34 + 45 +34;
-
-
-} end
+    A = 5;
+    B = 10;
+    if (A < B) {
+        B = 20;
+    };
+}
+end

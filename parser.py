@@ -116,6 +116,37 @@ def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
             estructura.stack_operandos.append((temp, result_type))
             return temp
 
+def generar_goto_falso():
+    cond, tipo = estructura.stack_operandos.pop()
+    if tipo != 'bool':
+        raise TypeError("Condición no booleana para IF o WHILE")
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea, 'GOTOF', cond, None, None))
+    estructura.saltos.append(len(estructura.cuadruples) - 1)
+
+def llenar_salto():
+    destino = len(estructura.cuadruples)
+    salto = estructura.saltos.pop()
+    cuad = list(estructura.cuadruples[salto])
+    cuad[4] = destino  # índice 4 es el destino del salto
+    estructura.cuadruples[salto] = tuple(cuad)
+
+def generar_goto():
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea,'GOTO', None, None, None))
+    estructura.saltos.append(len(estructura.cuadruples) - 1)
+
+
+def p_save_gotoF(p):
+    'save_gotoF :'
+    condicion, tipo = estructura.stack_operandos.pop()
+    if tipo != 'bool':
+        raise TypeError("La condición del if debe ser booleana.")
+
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea, 'gotoF', condicion, None, None))
+    falsa_pos = len(estructura.cuadruples) - 1
+    estructura.saltos.append(falsa_pos)
 
 def p_empty(p):
     'empty :'
@@ -309,47 +340,53 @@ def p_cycle(p):
     'cycle : DO body WHILE "(" expression ")" ";"'
     p[0] = (p[1], p[2], p[3], "(", p[5], ")", ";")
 
-# Condition
+#Condition
 def p_condition_if(p):
-    'condition : IF "(" expression ")" body ";"'
-    condicion, tipo = estructura.stack_operandos.pop()
-    if tipo != 'bool':
-        raise TypeError("La condición del if debe ser booleana.")
-    
-    estructura.linea += 1
-    estructura.cuadruples.append((estructura.linea,'gotoF', condicion, None, None))
-    falsa_pos = len(estructura.cuadruples) - 1
-    estructura.saltos.append(falsa_pos)
+    'condition : IF "(" expression marca ")" body ";"'
+    p[0] = (p[1], "(", p[3], ")", p[6], ";")
+    llenar_salto()
 
-    # El cuerpo (p[5]) ya fue procesado, ahora actualizamos el cuadruplo del salto falso
-    salto_falso = estructura.saltos.pop()
-    estructura.linea += 1
-    estructura.cuadruples[salto_falso] = (estructura.linea, 'gotoF', condicion, None, len(estructura.cuadruples))
+def p_marca(p):
+    'marca :'
+    generar_goto_falso()
 
-    p[0] = (p[1], "(", p[3], ")", p[5], ";")
-  
+
 
 def p_condition_if_else(p):
-    'condition : IF "(" expression ")" body ELSE body ";"'
-    condicion, tipo = estructura.stack_operandos.pop()
-    if tipo != 'bool':
-        raise TypeError("Condición del IF debe ser de tipo booleano")
+    'condition : IF "(" expression ")" save_gotof body save_goto_else ELSE body ";"'
+    p[0] = (p[1], "(", p[3], ")", p[6], p[7], p[8], ";")
+    llenar_salto_else()
 
 
-    estructura.linea +=1
-    estructura.cuadruples.append((estructura.linea,'gotoF', condicion, None, None))
-    falsa_pos = len(estructura.cuadruples) - 1
+
+def p_save_gotof(p):
+    'save_gotof :'
+    generar_goto_falso()
+
+def p_save_goto_else(p):
+    'save_goto_else :'
+    # Completar salto falso y agregar GOTO para salir del if
+    salto_false = estructura.saltos.pop()
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea,'GOTO', None, None, None))
+    estructura.saltos.append(len(estructura.cuadruples) - 1)
+
+    # Llenar el salto falso
+    destino_false = len(estructura.cuadruples)
+    cuad_false = list(estructura.cuadruples[salto_false])
+    cuad_false[4] = destino_false
+    estructura.cuadruples[salto_false] = tuple(cuad_false)
+
+def llenar_salto_else():
+    # Llenar el salto del GOTO al final del if
+    salto_end = estructura.saltos.pop()
+    print(salto_end)
+    destino_end = len(estructura.cuadruples)
+    cuad_end = list(estructura.cuadruples[salto_end])
+    cuad_end[4] = destino_end
+    estructura.cuadruples[salto_end] = tuple(cuad_end)
 
 
-    estructura.linea +=1
-    estructura.cuadruples.append((estructura.linea,'goto', None, None, None))
-    fin_if_pos = len(estructura.cuadruples) - 1
-
- 
-    estructura.cuadruples[falsa_pos] = (estructura.linea,'gotoF', condicion, None,estructura.cuadruples[falsa_pos][0])
-    estructura.cuadruples[fin_if_pos] = (estructura.linea,'gotoF', condicion, None,estructura.cuadruples[fin_if_pos][0])
-
-    p[0] = (p[1], "(", p[3], ")", p[5], p[6], p[7], ";")
 
 # Assign
 def p_assign(p):
@@ -462,6 +499,7 @@ def p_funcs_ayuda_empty(p):
 # Program
 def p_program(p):
     'program : PROGRAM ID ";" vars funcs MAIN body END'
+
     p[0] = (p[1], p[2], ";", p[4], p[5], p[6], p[7], p[8])
 
 # error
