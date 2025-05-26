@@ -152,7 +152,14 @@ def llenar_salto():
     destino = len(estructura.cuadruples)
     salto = estructura.saltos.pop()
     cuad = list(estructura.cuadruples[salto])
-    cuad[4] = destino  # índice 4 es el destino del salto
+    cuad[4] = destino + 1 # índice 4 es el destino del salto
+    estructura.cuadruples[salto] = tuple(cuad)
+
+def llenar_salto_else():
+    destino = len(estructura.cuadruples)
+    salto = estructura.saltos.pop()
+    cuad = list(estructura.cuadruples[salto])
+    cuad[4] = destino + 1  # índice 4 es el destino del salto
     estructura.cuadruples[salto] = tuple(cuad)
 
 def generar_goto():
@@ -415,32 +422,30 @@ def p_cycle(p):
 #Condition
 def p_condition_if(p):
     'condition : IF "(" expression ")" marcar_if_inicio body ";"'
-    llenar_salto()
-    p[0] = ("IF", p[3], p[6])
+    p[0] = (p[1], "(", p[3], ")", p[6], ";")
+    llenar_salto() #marcar el salto
+
+# todavia no funciona
+def p_condition_if_else(p):
+    'condition : IF "(" expression ")" marcar_if_inicio  body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ";"'
+    p[0] = (p[1], "(", p[3], ")", p[6], p[8], p[10], ";")
 
 def p_marcar_if_inicio(p):
     'marcar_if_inicio :'
     generar_goto_falso()
 
-# todavia no funciona
-def p_condition_if_else(p):
-    '''
-    condition : IF "(" expression ")" marcar_if_else_inicio body marcar_else_inicio ELSE body ";"
-    '''
-    llenar_salto()  # Llenamos el salto que quedó pendiente al final del else
-    p[0] = ("IF-ELSE", p[3], p[6], p[9])
+def p_marcar_if_final(p):
+    'marcar_if_final :'
+    llenar_salto_else()
 
-# Genera GOTOF para condición falsa y guarda el salto pendiente
-def p_marcar_if_else_inicio(p):
-    'marcar_if_else_inicio :'
-    generar_goto_falso()
-
-# Al terminar el bloque del IF, genera un GOTO para saltarse el ELSE
-# Y llena el salto del GOTOF con la línea actual (inicio del else)
 def p_marcar_else_inicio(p):
     'marcar_else_inicio :'
     generar_goto()
-    llenar_salto()  # llena el salto del GOTOF (si condición fue falsa)
+
+def p_marcar_else_final(p):
+    'marcar_else_final :'
+    llenar_salto_else()
+    
 
 
 # Assign
@@ -452,12 +457,12 @@ def p_assign(p):
     estructura.var_names[p[1]] = tipo
     p[0] = (p[1], "=", p[3], ";")
     
-
 # f_call
 def p_f_call_args(p):
     'f_call : ID "(" expression f_call_ayuda ")" ";"'
     
     arg, tipo = estructura.stack_operandos.pop()
+    estructura.linea +=1
     estructura.cuadruples.append((estructura.linea, "param", arg, None, tipo))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
     estructura.linea +=1
@@ -465,23 +470,25 @@ def p_f_call_args(p):
         des = estructura.dir_func[p[1]]["inicio"]
     else:
         print(f"La función '{p[0]}' no existe en dir_func.")
-    estructura.cuadruples.append((estructura.linea, "gotosub", p[1], None, des))
+        des = None
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea, "gosub", p[1], None, des))
     
-
 def p_f_call_no_args(p):
     'f_call : ID "(" ")" ";"'
     p[0] = (p[1], "(", ")", ";")
-    estructura.linea +=1
     if p[1] in estructura.dir_func:
         des = estructura.dir_func[p[1]]["inicio"]
     else:
         print(f"La función '{p[1]}' no existe en dir_func.")
         des = None
-    estructura.cuadruples.append((estructura.linea, "gotosub", p[1], None, des))
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea, "gosub", p[1], None, des))
 
 def p_f_call_ayuda(p):
     'f_call_ayuda : "," expression f_call_ayuda'
     arg, tipo = estructura.stack_operandos.pop()
+    estructura.linea +=1
     estructura.cuadruples.append((estructura.linea, "param", arg, None, tipo))
     p[0] = (",", p[2], p[3])
 
@@ -677,6 +684,7 @@ for caso in documento:
         print("\nTabla de funciones:")
         for key, valor in estructura.dir_func.items():
             print(f"\nkey: {key}, Tipo: {valor['tipo']}, Inicio: {valor['inicio']}, n_params: {valor['num_parametros']}")
+            print("Tabla de variables: ")
             for var in valor['variables']:
                 print(f"    key: {var[0]}, Tipo: {var[1]}, Scope: {var[2]}")
 

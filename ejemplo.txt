@@ -6,6 +6,7 @@ void suma(z : float) [
         z = 4;
         if (z != 0){
             z = z + 1;
+            A = 4;
         };
     }
 ];
@@ -37,6 +38,12 @@ main {
     print("Valor de C: ", C);
     if (C != B){
         suma(z);
+        A = 4;
+    } else {
+        A = 2;
+        print("Hola mundo");
+        A = 3;
+        A = 4;
     };
     nose();
     compara(B, A, C);
