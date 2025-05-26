@@ -120,9 +120,10 @@ def generar_goto_falso():
     cond, tipo = estructura.stack_operandos.pop()
     if tipo != 'bool':
         raise TypeError("Condición no booleana para IF o WHILE")
-    estructura.linea +=1
+    estructura.linea += 1
     estructura.cuadruples.append((estructura.linea, 'GOTOF', cond, None, None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
+
 
 def llenar_salto():
     destino = len(estructura.cuadruples)
@@ -136,17 +137,6 @@ def generar_goto():
     estructura.cuadruples.append((estructura.linea,'GOTO', None, None, None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
 
-
-def p_save_gotoF(p):
-    'save_gotoF :'
-    condicion, tipo = estructura.stack_operandos.pop()
-    if tipo != 'bool':
-        raise TypeError("La condición del if debe ser booleana.")
-
-    estructura.linea += 1
-    estructura.cuadruples.append((estructura.linea, 'gotoF', condicion, None, None))
-    falsa_pos = len(estructura.cuadruples) - 1
-    estructura.saltos.append(falsa_pos)
 
 def p_empty(p):
     'empty :'
@@ -298,11 +288,25 @@ def p_factor_neg_cte(p):
 # Print
 def p_print_expr(p):
     'print : PRINT "(" expression print_ayuda ")" ";"'
+    arg, tipo = estructura.stack_operandos.pop()
+    estructura.counter_temporales += 1
+    estructura.linea +=1
+    estructura.cuadruples.append(((estructura.linea,"Print", arg , None)))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea,"Print", "\n", None,))
+
 
 def p_print_string(p):
-    'print : PRINT "(" CONST_STRING print_ayuda ")" ";"'
+    'print : PRINT "(" CONST_STRING print_ayuda ")" ";"'   
+    estructura.counter_temporales += 1
+    estructura.linea +=1
+    estructura.cuadruples.append(((estructura.linea,"Print", p[3] , None)))
+    
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
+    estructura.linea +=1
+    estructura.cuadruples.append((estructura.linea,"Print", "\n", None,))
+
 
 def p_print_ayuda_expr(p):
     'print_ayuda : "," expression print_ayuda'
@@ -315,7 +319,8 @@ def p_print_ayuda_string(p):
 def p_print_ayuda_empty(p):
     'print_ayuda : empty'
     p[0] = p[1]
-    
+
+#Terminp0
 def p_termino_mul(p):
     'termino : termino "*" factor'
     op2, tipo2 = estructura.stack_operandos.pop()
@@ -342,49 +347,36 @@ def p_cycle(p):
 
 #Condition
 def p_condition_if(p):
-    'condition : IF "(" expression marca ")" body ";"'
-    p[0] = (p[1], "(", p[3], ")", p[6], ";")
+    '''
+    condition : IF "(" expression ")" marcar_if_inicio body ";"
+    '''
     llenar_salto()
+    p[0] = ("IF", p[3], p[6])
 
-def p_marca(p):
-    'marca :'
+def p_marcar_if_inicio(p):
+    'marcar_if_inicio :'
     generar_goto_falso()
-
 
 
 def p_condition_if_else(p):
-    'condition : IF "(" expression ")" save_gotof body save_goto_else ELSE body ";"'
-    p[0] = (p[1], "(", p[3], ")", p[6], p[7], p[8], ";")
-    llenar_salto_else()
+    '''
+    condition : IF "(" expression ")" marcar_if_else_inicio body marcar_else_inicio ELSE body ";"
+    '''
+    llenar_salto()  # Llenamos el salto que quedó pendiente al final del else
+    p[0] = ("IF-ELSE", p[3], p[6], p[9])
 
-
-
-def p_save_gotof(p):
-    'save_gotof :'
+# Genera GOTOF para condición falsa y guarda el salto pendiente
+def p_marcar_if_else_inicio(p):
+    'marcar_if_else_inicio :'
     generar_goto_falso()
 
-def p_save_goto_else(p):
-    'save_goto_else :'
-    # Completar salto falso y agregar GOTO para salir del if
-    salto_false = estructura.saltos.pop()
-    estructura.linea += 1
-    estructura.cuadruples.append((estructura.linea,'GOTO', None, None, None))
-    estructura.saltos.append(len(estructura.cuadruples) - 1)
+# Al terminar el bloque del IF, genera un GOTO para saltarse el ELSE
+# Y llena el salto del GOTOF con la línea actual (inicio del else)
+def p_marcar_else_inicio(p):
+    'marcar_else_inicio :'
+    generar_goto()
+    llenar_salto()  # llena el salto del GOTOF (si condición fue falsa)
 
-    # Llenar el salto falso
-    destino_false = len(estructura.cuadruples)
-    cuad_false = list(estructura.cuadruples[salto_false])
-    cuad_false[4] = destino_false
-    estructura.cuadruples[salto_false] = tuple(cuad_false)
-
-def llenar_salto_else():
-    # Llenar el salto del GOTO al final del if
-    salto_end = estructura.saltos.pop()
-    print(salto_end)
-    destino_end = len(estructura.cuadruples)
-    cuad_end = list(estructura.cuadruples[salto_end])
-    cuad_end[4] = destino_end
-    estructura.cuadruples[salto_end] = tuple(cuad_end)
 
 
 
@@ -401,7 +393,6 @@ def p_assign(p):
 # f_call
 def p_f_call_args(p):
     'f_call : ID "(" expression f_call_ayuda ")" ";"'
-    arg, tipo = estructura.stack_operandos.pop()
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
 
 def p_f_call_no_args(p):
@@ -513,8 +504,6 @@ def p_error(p):
     
 parser = yacc.yacc()
 
-
-
 #Función para la lectura del listado de casos de prueba
 for caso in documento:
     num_caso += 1 
@@ -527,8 +516,6 @@ for caso in documento:
         print('\n')
         result = parser.parse(codigo, lexer=m.lexer)
         print(result)
-        print("\nOperadores generados:")
-        print(estructura.stack_operandos)
         print("\nCuádruplos generados:")
         for i in estructura.cuadruples:
             print(i)
