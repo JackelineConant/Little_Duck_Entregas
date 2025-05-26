@@ -9,6 +9,9 @@ class Estructura:
     saltos = []
     linea = 0
     var_names = {}
+    
+
+
     def __init__(self):
         self.stack = []
         self.cubo = {
@@ -78,11 +81,13 @@ class Estructura:
             ('int','float','==') : 'bool',
             ('float','float','==') : 'bool',
         }
+
         self.counter_temporales = 0
         self.cuadruples = [(self.linea,"main",None,None,None)]
         self.linea = 0
         self.var_names = {}
         self.saltos = []
+       
 
         
         
@@ -288,37 +293,62 @@ def p_factor_neg_cte(p):
 # Print
 def p_print_expr(p):
     'print : PRINT "(" expression print_ayuda ")" ";"'
+    argumentos = []
     arg, tipo = estructura.stack_operandos.pop()
-    estructura.counter_temporales += 1
-    estructura.linea +=1
-    estructura.cuadruples.append(((estructura.linea,"Print", arg , None)))
+    argumentos.append(arg)
+
+    # Si hay más argumentos, vienen desde p[4] como lista
+    if isinstance(p[4], list):
+        argumentos.extend(p[4])
+
+    # Imprimir en orden correcto (del primero al último)
+    for arg in reversed(argumentos):
+        estructura.linea += 1
+        estructura.cuadruples.append((estructura.linea, "Print", arg, None))
+
+    # Salto de línea
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea, "Print", "\n", None))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
-    estructura.linea +=1
-    estructura.cuadruples.append((estructura.linea,"Print", "\n", None,))
 
 
 def p_print_string(p):
-    'print : PRINT "(" CONST_STRING print_ayuda ")" ";"'   
-    estructura.counter_temporales += 1
-    estructura.linea +=1
-    estructura.cuadruples.append(((estructura.linea,"Print", p[3] , None)))
-    
+    'print : PRINT "(" CONST_STRING print_ayuda ")" ";"'
+    argumentos = [p[3]]
+
+    if isinstance(p[4], list):
+        argumentos.extend(p[4])
+
+    for arg in argumentos:
+        estructura.linea += 1
+        estructura.cuadruples.append((estructura.linea, "Print", arg, None))
+
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea, "Print", "\n", None))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
-    estructura.linea +=1
-    estructura.cuadruples.append((estructura.linea,"Print", "\n", None,))
 
 
 def p_print_ayuda_expr(p):
     'print_ayuda : "," expression print_ayuda'
-    p[0] = (",", p[2], p[3])
+    arg, tipo = estructura.stack_operandos.pop()
+    lista = [arg]
+    if isinstance(p[3], list):
+        lista += p[3]
+    p[0] = lista
+
 
 def p_print_ayuda_string(p):
     'print_ayuda : "," STRING print_ayuda'
-    p[0] = (",", p[2], p[3])
+    lista = [p[2]]
+    if isinstance(p[3], list):
+        lista += p[3]
+    p[0] = lista
+
 
 def p_print_ayuda_empty(p):
     'print_ayuda : empty'
-    p[0] = p[1]
+    p[0] = []
+
 
 #Terminp0
 def p_termino_mul(p):
@@ -453,22 +483,39 @@ def p_cte_float(p):
     estructura.stack_operandos.append([p[1], 'float'])
     p[0] = p[1]
 
+ 
 # Funcs
 def p_funcs_params(p):
     'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" vars body "]" ";"'
     p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[10], p[11], "]", ";")
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
+    estructura.saltos.append(len(estructura.cuadruples) - 1)
+    llenar_salto()
 
 def p_funcs_empty_params(p):
     'funcs : VOID ID "(" ")" "[" vars body "]" ";"'
     p[0] = (p[1], p[2], "(", ")", "[", p[6], p[7], "]", ";")
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
+    estructura.saltos.append(len(estructura.cuadruples) - 1)
+    llenar_salto()
 
 def p_funcs_params_no_vars(p):
     'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" body "]" ";"'
     p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[10], "]", ";")
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
+    estructura.saltos.append(len(estructura.cuadruples) - 1)
+    llenar_salto()
 
 def p_funcs_empty_params_no_vars(p):
     'funcs : VOID ID "(" ")" "[" body "]" ";"'
     p[0] = (p[1], p[2], "(", ")", "[", p[6], "]", ";")
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
+    estructura.saltos.append(len(estructura.cuadruples) - 1)
+    llenar_salto()
 
 def p_funcs_multiple(p):
     'funcs : funcs funcs'

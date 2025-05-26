@@ -1,12 +1,21 @@
 program test;
 var A , B : int;
+
+void sopas() [
+    var x, y : float;
+    {
+        x = 2.5;
+        y = 10.2;
+        if (x <= y ) {
+            x = x + x;
+        };
+    }
+];
+
 main {
     A = 5;
     B = 10;
-    if (A < B) {
-        B = 20;
-    };
-    print( 5 + 3);
-    print("funciona");
+    print("x es ", 5 + 3);
+
 }
 end
