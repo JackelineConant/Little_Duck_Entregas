@@ -238,29 +238,21 @@ def p_cte_float(p):
     p[0] = p[1]
 
 # Funcs
-def p_funcs_params(p):
-    'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" vars body "]" ";"'
+def p_func_params(p):
+    'func : VOID ID "(" ID ":" type funcs_ayuda ")" "[" vars body "]" ";"'
     p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[10], p[11], "]", ";")
 
-def p_funcs_empty_params(p):
-    'funcs : VOID ID "(" ")" "[" vars body "]" ";"'
+def p_func_empty_params(p):
+    'func : VOID ID "(" ")" "[" vars body "]" ";"'
     p[0] = (p[1], p[2], "(", ")", "[", p[6], p[7], "]", ";")
 
-def p_funcs_params_no_vars(p):
-    'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" body "]" ";"'
+def p_func_params_no_vars(p):
+    'func : VOID ID "(" ID ":" type funcs_ayuda ")" "[" body "]" ";"'
     p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[10], "]", ";")
 
-def p_funcs_empty_params_no_vars(p):
-    'funcs : VOID ID "(" ")" "[" body "]" ";"'
+def p_func_empty_params_no_vars(p):
+    'func : VOID ID "(" ")" "[" body "]" ";"'
     p[0] = (p[1], p[2], "(", ")", "[", p[6], "]", ";")
-
-def p_funcs_multiple(p):
-    'funcs : funcs funcs'
-    p[0] = p[1] + [p[2]]
-
-def p_funcs_empty(p):
-    'funcs : empty'
-    p[0] = p[1]
 
 def p_funcs_ayuda(p):
     'funcs_ayuda : "," ID ":" type funcs_ayuda'
@@ -270,10 +262,22 @@ def p_funcs_ayuda_empty(p):
     'funcs_ayuda : empty'
     p[0] = p[1]
 
+def p_funcs_list(p):
+    'funcs_list : funcs_list func'
+    p[0] = p[1] + [p[2]]
+
+def p_funcs_list_single(p):
+    'funcs_list : func'
+    p[0] = [p[1]]
+
+def p_funcs_list_empty(p):
+    'funcs_list : empty'
+    p[0] = []
+
     
 # Program
 def p_program(p):
-    'program : PROGRAM ID ";" vars funcs MAIN body END'
+    'program : PROGRAM ID ";" vars funcs_list MAIN body END'
     p[0] = (p[1], p[2], ";", p[4], p[5], p[6], p[7], p[8])
 
 # error

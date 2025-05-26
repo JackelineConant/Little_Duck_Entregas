@@ -7,6 +7,7 @@ class Estructura:
     counter_temporales = 0
     cuadruples = []
     saltos = []
+    destino = []
     linea = 0
     var_names = {}
     
@@ -424,10 +425,16 @@ def p_assign(p):
 def p_f_call_args(p):
     'f_call : ID "(" expression f_call_ayuda ")" ";"'
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
+    estructura.linea +=1
+    des = estructura.destino.pop(0)
+    estructura.cuadruples.append((estructura.linea, "gotosub", p[1], None, des))
 
 def p_f_call_no_args(p):
     'f_call : ID "(" ")" ";"'
     p[0] = (p[1], "(", ")", ";")
+    estructura.linea +=1
+    des = estructura.destino.pop(0)
+    estructura.cuadruples.append((estructura.linea, "gotosub", p[1], None, des))
 
 def p_f_call_ayuda(p):
     'f_call_ayuda : "," expression f_call_ayuda'
@@ -486,44 +493,55 @@ def p_cte_float(p):
  
 # Funcs
 def p_funcs_params(p):
-    'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" vars body "]" ";"'
-    p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[10], p[11], "]", ";")
+    'func : VOID ID "(" ID ":" type funcs_ayuda ")" func_start "[" vars body "]" ";"'
+    p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[11], p[12], "]", ";")
     estructura.linea += 1
     estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
+
     llenar_salto()
 
 def p_funcs_empty_params(p):
-    'funcs : VOID ID "(" ")" "[" vars body "]" ";"'
-    p[0] = (p[1], p[2], "(", ")", "[", p[6], p[7], "]", ";")
+    'func : VOID ID "(" ")" func_start "[" vars body "]" ";"'
+    p[0] = (p[1], p[2], "(", ")", "[", p[7], p[8], "]", ";")
     estructura.linea += 1
     estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
     llenar_salto()
 
 def p_funcs_params_no_vars(p):
-    'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" body "]" ";"'
-    p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[10], "]", ";")
+    'func : VOID ID "(" ID ":" type funcs_ayuda ")" func_start "[" body "]" ";"'
+    p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[11], "]", ";")
     estructura.linea += 1
     estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
-    estructura.saltos.append(len(estructura.cuadruples) - 1)
+    estructura.saltos.append(len(estructura.cuadruples) - 1) 
     llenar_salto()
 
 def p_funcs_empty_params_no_vars(p):
-    'funcs : VOID ID "(" ")" "[" body "]" ";"'
-    p[0] = (p[1], p[2], "(", ")", "[", p[6], "]", ";")
+    'func : VOID ID "(" ")" func_start "[" body "]" ";"'
+    p[0] = (p[1], p[2], "(", ")", "[", p[7], "]", ";")
     estructura.linea += 1
     estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
     llenar_salto()
 
-def p_funcs_multiple(p):
-    'funcs : funcs funcs'
+def p_func_start(p):
+    'func_start : '
+    estructura.linea +=1
+    estructura.destino.append(estructura.linea)
+    estructura.linea -=1
+
+def p_funcs_list(p):
+    'funcs_list : funcs_list func'
     p[0] = p[1] + [p[2]]
 
-def p_funcs_empty(p):
-    'funcs : empty'
-    p[0] = p[1]
+def p_funcs_list_single(p):
+    'funcs_list : func'
+    p[0] = [p[1]]
+
+def p_funcs_list_empty(p):
+    'funcs_list : empty'
+    p[0] = []
 
 def p_funcs_ayuda(p):
     'funcs_ayuda : "," ID ":" type funcs_ayuda'
@@ -536,9 +554,12 @@ def p_funcs_ayuda_empty(p):
     
 # Program
 def p_program(p):
-    'program : PROGRAM ID ";" vars funcs MAIN body END'
+    'program : PROGRAM ID ";" vars funcs_list MAIN inicio_main body END'
+    p[0] = (p[1], p[2], ";", p[4], p[5], p[6], p[8], p[9])
 
-    p[0] = (p[1], p[2], ";", p[4], p[5], p[6], p[7], p[8])
+def p_inicio_main(p):
+    'inicio_main : '
+    estructura.cuadruples[0] = (0,"main",None,estructura.linea+1,None)
 
 # error
 def p_error(p):

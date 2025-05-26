@@ -1,21 +1,45 @@
-program test;
-var A , B : int;
+program ejemplo;
+var A, B, C : int;
 
-void sopas() [
-    var x, y : float;
+void suma() [
+    var x, y, resultado : int;
     {
-        x = 2.5;
-        y = 10.2;
-        if (x <= y ) {
-            x = x + x;
-        };
+        x = 3;
+        y = 7;
+        resultado = x + y;
+        print("Resultado de suma: ", resultado);
+    }
+];
+
+void compara() [
+    var a, b : float;
+    {
+        b = 3.5;
+        a = 2.5;
+        resultado = a * b;
+        print("bien");
+    }
+];
+
+void nose() [
+    var x, y, resultado : int;
+    {
+        x = 3;
+        y = 7;
+        resultado = x + y;
+        print("Resultado de suma: ", resultado);
     }
 ];
 
 main {
-    A = 5;
-    B = 10;
-    print("x es ", 5 + 3);
-
+    A = 10;
+    B = 20;
+    C = A + B;
+    print("Valor de C: ", C);
+    if (C != B){
+        suma();
+    };
+    compara();
+    nose();
 }
 end
