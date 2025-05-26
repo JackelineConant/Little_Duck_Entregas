@@ -10,6 +10,8 @@ class Estructura:
     destino = []
     linea = 0
     var_names = {}
+    dir_func = {}
+    tab_vars = {}
     
 
 
@@ -88,6 +90,7 @@ class Estructura:
         self.linea = 0
         self.var_names = {}
         self.saltos = []
+        self.dir_func = {}
        
 
         
@@ -122,6 +125,20 @@ def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
             estructura.stack_operandos.append((temp, result_type))
             return temp
 
+def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
+    elementos = []
+    for param in parametros:
+        elementos.append((param["key"], param["tipo"], "param"))
+    for var in variables:
+        elementos.append((var["key"], var["tipo"], "local"))
+    estructura.dir_func[key] = {
+    'tipo': tipo,
+    'inicio': inicio,
+    'num_parametros': len(parametros),
+    'num_vars': len(variables),
+    'variables': elementos
+    }
+
 def generar_goto_falso():
     cond, tipo = estructura.stack_operandos.pop()
     if tipo != 'bool':
@@ -143,6 +160,12 @@ def generar_goto():
     estructura.cuadruples.append((estructura.linea,'GOTO', None, None, None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
 
+def recolectar_ids(tupla):
+    ids = []
+    while tupla:
+        ids.append(tupla[0])
+        tupla = tupla[1]
+    return ids
 
 def p_empty(p):
     'empty :'
@@ -161,10 +184,24 @@ def p_type_float(p):
 def p_vars(p):
     'vars : VAR var_ayuda'
     p[0] = [(p[1], p[2])]
+    estructura.vars = p[2]
 
 def p_var_ayuda(p):
     'var_ayuda : ID var_doble_ayuda ":" type ";" var_ayuda_tail'
-    p[0] = (p[1], p[2], ":", p[4], ";", p[6])
+    # Procesamos el ID principal
+    ids = [p[1]]
+
+    # Procesamos los IDs en la lista (si existen)
+    if p[2]:  # p[2] puede ser una tupla de comas
+        ids += recolectar_ids(p[2])
+
+    tipo = p[4]
+    vars_actuales = [{"key": key, "tipo": tipo} for key in ids]
+
+    if p[6]:
+        p[0] = vars_actuales + p[6]
+    else:
+        p[0] = vars_actuales
 
 def p_var_ayuda_tail(p):
     'var_ayuda_tail : var_ayuda'
@@ -172,15 +209,15 @@ def p_var_ayuda_tail(p):
 
 def p_var_ayuda_tail_empty(p):
     'var_ayuda_tail : empty'
-    p[0] = p[1]
+    p[0] = []
 
 def p_var_doble_ayuda(p):
     'var_doble_ayuda : "," ID var_doble_ayuda'
-    p[0] = (",", p[2], p[3])
+    p[0] = (p[2], p[3])  # Usamos tupla para después desarmar
 
 def p_var_doble_ayuda_empty(p):
     'var_doble_ayuda : empty'
-    p[0] = p[1]
+    p[0] = None
 
 # exp
 def p_exp_add(p):
@@ -302,12 +339,11 @@ def p_print_expr(p):
     if isinstance(p[4], list):
         argumentos.extend(p[4])
 
-    # Imprimir en orden correcto (del primero al último)
+    # Imprimir en orden correcto 
     for arg in reversed(argumentos):
         estructura.linea += 1
         estructura.cuadruples.append((estructura.linea, "Print", arg, None))
 
-    # Salto de línea
     estructura.linea += 1
     estructura.cuadruples.append((estructura.linea, "Print", "\n", None))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
@@ -378,9 +414,7 @@ def p_cycle(p):
 
 #Condition
 def p_condition_if(p):
-    '''
-    condition : IF "(" expression ")" marcar_if_inicio body ";"
-    '''
+    'condition : IF "(" expression ")" marcar_if_inicio body ";"'
     llenar_salto()
     p[0] = ("IF", p[3], p[6])
 
@@ -388,7 +422,7 @@ def p_marcar_if_inicio(p):
     'marcar_if_inicio :'
     generar_goto_falso()
 
-
+# todavia no funciona
 def p_condition_if_else(p):
     '''
     condition : IF "(" expression ")" marcar_if_else_inicio body marcar_else_inicio ELSE body ";"
@@ -409,8 +443,6 @@ def p_marcar_else_inicio(p):
     llenar_salto()  # llena el salto del GOTOF (si condición fue falsa)
 
 
-
-
 # Assign
 def p_assign(p):
     'assign : ID "=" expression ";"'
@@ -424,20 +456,33 @@ def p_assign(p):
 # f_call
 def p_f_call_args(p):
     'f_call : ID "(" expression f_call_ayuda ")" ";"'
+    
+    arg, tipo = estructura.stack_operandos.pop()
+    estructura.cuadruples.append((estructura.linea, "param", arg, None, tipo))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
     estructura.linea +=1
-    des = estructura.destino.pop(0)
+    if p[1] in estructura.dir_func:
+        des = estructura.dir_func[p[1]]["inicio"]
+    else:
+        print(f"La función '{p[0]}' no existe en dir_func.")
     estructura.cuadruples.append((estructura.linea, "gotosub", p[1], None, des))
+    
 
 def p_f_call_no_args(p):
     'f_call : ID "(" ")" ";"'
     p[0] = (p[1], "(", ")", ";")
     estructura.linea +=1
-    des = estructura.destino.pop(0)
+    if p[1] in estructura.dir_func:
+        des = estructura.dir_func[p[1]]["inicio"]
+    else:
+        print(f"La función '{p[1]}' no existe en dir_func.")
+        des = None
     estructura.cuadruples.append((estructura.linea, "gotosub", p[1], None, des))
 
 def p_f_call_ayuda(p):
     'f_call_ayuda : "," expression f_call_ayuda'
+    arg, tipo = estructura.stack_operandos.pop()
+    estructura.cuadruples.append((estructura.linea, "param", arg, None, tipo))
     p[0] = (",", p[2], p[3])
 
 def p_f_call_ayuda_empty(p):
@@ -498,8 +543,20 @@ def p_funcs_params(p):
     estructura.linea += 1
     estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
-
     llenar_salto()
+
+    parametros = [{"key": p[4], "tipo": p[6]}]
+    if isinstance(p[7], list):
+        for i in range(0, len(p[7]), 4):
+            parametros.append({"key": p[7][i+1], "tipo": p[7][i+3]})
+    
+    agregar_funcion_dir_func(
+        key=p[2],
+        tipo="void",
+        inicio=estructura.destino[-1],  # línea de inicio
+        parametros=parametros,
+        variables=estructura.vars
+    )
 
 def p_funcs_empty_params(p):
     'func : VOID ID "(" ")" func_start "[" vars body "]" ";"'
@@ -509,6 +566,17 @@ def p_funcs_empty_params(p):
     estructura.saltos.append(len(estructura.cuadruples) - 1)
     llenar_salto()
 
+    parametros = []
+    
+    agregar_funcion_dir_func(
+        key=p[2],
+        tipo="void",
+        inicio=estructura.destino[-1], 
+        parametros=parametros,
+        variables=estructura.vars
+    )
+    estructura.vars = []
+
 def p_funcs_params_no_vars(p):
     'func : VOID ID "(" ID ":" type funcs_ayuda ")" func_start "[" body "]" ";"'
     p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[11], "]", ";")
@@ -516,6 +584,22 @@ def p_funcs_params_no_vars(p):
     estructura.cuadruples.append((estructura.linea,"endFun", None, None,None))
     estructura.saltos.append(len(estructura.cuadruples) - 1) 
     llenar_salto()
+    
+    parametros = [{"key": p[4], "tipo": p[6]}]
+    if isinstance(p[7], list):
+        for i in range(0, len(p[7]), 4):
+            parametros.append({"key": p[7][i+1], "tipo": p[7][i+3]})
+    estructura.vars = []
+    
+    agregar_funcion_dir_func(
+        key=p[2],
+        tipo="void",
+        inicio=estructura.destino[-1], 
+        parametros=parametros,
+        variables=estructura.vars
+    )
+
+    
 
 def p_funcs_empty_params_no_vars(p):
     'func : VOID ID "(" ")" func_start "[" body "]" ";"'
@@ -525,8 +609,11 @@ def p_funcs_empty_params_no_vars(p):
     estructura.saltos.append(len(estructura.cuadruples) - 1)
     llenar_salto()
 
+    
+
 def p_func_start(p):
     'func_start : '
+    estructura
     estructura.linea +=1
     estructura.destino.append(estructura.linea)
     estructura.linea -=1
@@ -587,7 +674,11 @@ for caso in documento:
         print("\nCuádruplos generados:")
         for i in estructura.cuadruples:
             print(i)
-        
+        print("\nTabla de funciones:")
+        for key, valor in estructura.dir_func.items():
+            print(f"\nkey: {key}, Tipo: {valor['tipo']}, Inicio: {valor['inicio']}, n_params: {valor['num_parametros']}")
+            for var in valor['variables']:
+                print(f"    key: {var[0]}, Tipo: {var[1]}, Scope: {var[2]}")
 
     except SyntaxError as e:
         print(e)
@@ -598,4 +689,8 @@ for caso in documento:
     estructura.cuadruples = []
     estructura.counter_temporales = 0
     estructura.saltos = []
+    estructura.destino = []
+    estructura.dir_func = {}
+    estructura.var_names = []
+    estructura.tab_vars = []
     print("\n")

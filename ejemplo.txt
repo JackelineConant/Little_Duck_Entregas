@@ -1,18 +1,17 @@
 program ejemplo;
 var A, B, C : int;
 
-void suma() [
-    var x, y, resultado : int;
+void suma(z : float) [
     {
-        x = 3;
-        y = 7;
-        resultado = x + y;
-        print("Resultado de suma: ", resultado);
+        z = 4;
+        if (z != 0){
+            z = z + 1;
+        };
     }
 ];
 
-void compara() [
-    var a, b : float;
+void compara(z : float, a : int, y : int ) [
+    var  b : float;
     {
         b = 3.5;
         a = 2.5;
@@ -37,9 +36,11 @@ main {
     C = A + B;
     print("Valor de C: ", C);
     if (C != B){
-        suma();
+        suma(z);
     };
-    compara();
     nose();
+    compara(B, A, C);
+    print("hola");
+    A = 0;
 }
 end
