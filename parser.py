@@ -9,6 +9,8 @@ class Estructura:
     saltos = []
     destino = []
     linea = 0
+    linea_ciclo = 0
+    detector_ciclo = False
     var_names = {}
     dir_func = {}
     tab_vars = {}
@@ -88,6 +90,8 @@ class Estructura:
         self.counter_temporales = 0
         self.cuadruples = [(self.linea,"main",None,None,None)]
         self.linea = 0
+        self.linea_ciclo = 0
+        self.detector_ciclo = False
         self.var_names = {}
         self.saltos = []
         self.dir_func = {}
@@ -166,6 +170,11 @@ def generar_goto():
     estructura.linea +=1
     estructura.cuadruples.append((estructura.linea,'GOTO', None, None, None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
+
+def hubo_ciclo():
+    if estructura.detector_ciclo == True: #& op2 != op2.startswith("t"):
+        estructura.linea_ciclo += 1
+    return
 
 def recolectar_ids(tupla):
     ids = []
@@ -416,8 +425,26 @@ def p_termino_factor(p):
 
 # Cycle
 def p_cycle(p):
-    'cycle : DO body WHILE "(" expression ")" ";"'
+    'cycle : DO marcar_cycle_inicio body marcar_cycle_final WHILE "(" expression ")" ";"'
     p[0] = (p[1], p[2], p[3], "(", p[5], ")", ";")
+    
+def p_marcar_cycle_inicio(p):
+    'marcar_cycle_inicio :'
+    estructura.detector_ciclo = True
+
+
+def p_marcar_cycle_final(p):
+    'marcar_cycle_final :'
+    estructura.linea += 1
+    saltos_dados = estructura.linea - estructura.linea_ciclo
+    val = saltos_dados
+    for cuadruple in estructura.cuadruples[val-1:estructura.linea-1]:  # tu lista de cuádruples
+        if None in cuadruple[:5]:
+            break
+        saltos_dados += 1
+    estructura.cuadruples.append((estructura.linea, 'GOTOV', None, None, saltos_dados))
+    estructura.linea_ciclo = 0 
+    estructura.detector_ciclo = False
 
 #Condition
 def p_condition_if(p):
@@ -446,7 +473,6 @@ def p_marcar_else_final(p):
     'marcar_else_final :'
     llenar_salto_else()
     
-
 
 # Assign
 def p_assign(p):
@@ -500,30 +526,37 @@ def p_f_call_ayuda_empty(p):
 def p_statements_multiple(p):
     'statements : statements statement'
     p[0] = p[1] + [p[2]]
+    hubo_ciclo()
 
 def p_statements_single(p):
     'statements : statement'
     p[0] = [p[1]]
+    hubo_ciclo()
 
 def p_statement_assign(p):
     'statement : assign'
     p[0] = p[1]
+    hubo_ciclo()
 
 def p_statement_condition(p):
     'statement : condition'
     p[0] = p[1]
+    hubo_ciclo()
 
 def p_statement_cycle(p):
     'statement : cycle'
     p[0] = p[1]
+    hubo_ciclo()
 
 def p_statement_f_call(p):
     'statement : f_call'
     p[0] = p[1]
+    hubo_ciclo()
 
 def p_statement_print(p):
     'statement : print'
     p[0] = p[1]
+    hubo_ciclo()
 
 # body
 def p_body(p):
@@ -616,7 +649,6 @@ def p_funcs_empty_params_no_vars(p):
     estructura.saltos.append(len(estructura.cuadruples) - 1)
     llenar_salto()
 
-    
 
 def p_func_start(p):
     'func_start : '

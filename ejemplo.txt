@@ -1,5 +1,5 @@
 program ejemplo;
-var A, B, C : int;
+var A, B, C,D,E,F,G : int;
 
 void suma(z : float) [
     {
@@ -49,5 +49,13 @@ main {
     compara(B, A, C);
     print("hola");
     A = 0;
+    D = 3;
+    E = 4;
+    F = 3;
+    G = 4;
+    do {
+        print(D + E + 9);
+        F = F + 1;
+    } while (F < G );
 }
 end
