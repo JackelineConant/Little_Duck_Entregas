@@ -171,7 +171,7 @@ def generar_goto():
     estructura.cuadruples.append((estructura.linea,'GOTO', None, None, None))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
 
-def hubo_ciclo():
+def hay_ciclo():
     if estructura.detector_ciclo == True: #& op2 != op2.startswith("t"):
         estructura.linea_ciclo += 1
     return
@@ -526,37 +526,37 @@ def p_f_call_ayuda_empty(p):
 def p_statements_multiple(p):
     'statements : statements statement'
     p[0] = p[1] + [p[2]]
-    hubo_ciclo()
+    hay_ciclo()
 
 def p_statements_single(p):
     'statements : statement'
     p[0] = [p[1]]
-    hubo_ciclo()
+    hay_ciclo()
 
 def p_statement_assign(p):
     'statement : assign'
     p[0] = p[1]
-    hubo_ciclo()
+    hay_ciclo()
 
 def p_statement_condition(p):
     'statement : condition'
     p[0] = p[1]
-    hubo_ciclo()
+    hay_ciclo()
 
 def p_statement_cycle(p):
     'statement : cycle'
     p[0] = p[1]
-    hubo_ciclo()
+    hay_ciclo()
 
 def p_statement_f_call(p):
     'statement : f_call'
     p[0] = p[1]
-    hubo_ciclo()
+    hay_ciclo()
 
 def p_statement_print(p):
     'statement : print'
     p[0] = p[1]
-    hubo_ciclo()
+    hay_ciclo()
 
 # body
 def p_body(p):
