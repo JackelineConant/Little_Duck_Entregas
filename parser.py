@@ -110,7 +110,7 @@ literals = MyLexer.literals
 tokens = MyLexer.tokens + literals
 
 # Listado de casos de prueba
-documento = ['ejemplo.txt']
+documento = ['ejemplo.ld']
 num_caso = 0 # Número de caso 
 start = 'program'
 # Creamos el parser
