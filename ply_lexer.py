@@ -8,11 +8,9 @@ class MyLexer(object):
     #Especificamos las palabras reservadas que utiliza nuestro lexer
     reserved = {
        'if' : 'IF',
-       'then' : 'THEN',
        'else' : 'ELSE',
        'while' : 'WHILE',
        'print' : 'PRINT',
-       'for' : 'FOR',
        'program' : 'PROGRAM',
        'main' : 'MAIN',
        'end' : 'END',

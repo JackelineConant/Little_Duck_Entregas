@@ -8,31 +8,6 @@ m.build()      # Construye el lexer
 literals = MyLexer.literals
 tokens = MyLexer.tokens + literals
 
-class Estructura:
-    stack_operandos = []
-    cubo = {}
-    counter_temporales = 0
-    cuadruples = []
-    linea = 0
-    var = {}
-    
-    def __init__(self):
-        self.stack = []
-        self.cubo = {
-            ("int", "int", "+") : "int",
-            ("int", "int", "=") : "int"
-        }
-        self.counter_temporales = 0
-        self.cuadruples = []
-        self.linea = 0
-        self.var = {
-            
-        }
-    
-estructura = Estructura()
-
-
-
 # Listado de casos de prueba
 documento = ['ejemplo.txt']
 num_caso = 0 # Número de caso 
@@ -54,12 +29,8 @@ def p_type_float(p):
 
 # Vars
 def p_vars(p):
-    '''vars : VAR var_ayuda
-            | vars VAR var_ayuda'''
-    if len(p) == 3:
-        p[0] = [(p[1], p[2])]
-    else:
-        p[0] = p[1] + [(p[2], p[3])]
+    'vars : VAR var_ayuda'
+    p[0] = [(p[1], p[2])]
 
 def p_var_ayuda(p):
     'var_ayuda : ID var_doble_ayuda ":" type ";" var_ayuda_tail'
@@ -84,22 +55,6 @@ def p_var_doble_ayuda_empty(p):
 # exp
 def p_exp_add(p):
     'exp : exp "+" termino'
-    valor_2, tipo_2 = estructura.stack_operandos.pop()
-    valor_1, tipo_1  = estructura.stack_operandos.pop()
-    resultado = estructura.cubo[(tipo_1, tipo_2, "+")]#',error'] #,'error'
-    estructura.counter_temporales += 1
-    
-    #if resultado != 'error':
-    variable_temporal = f"t{estructura.counter_temporales}"
-    print(variable_temporal)
-    estructura.stack_operandos.append([variable_temporal,resultado])
-    
-    estructura.linea += 1
-    estructura.cuadruples.append([estructura.linea, '+', valor_1, valor_2, variable_temporal,resultado])
-    #else:
-    #    print("Your mom")
-    
-    #print( valor_1, tipo_1, valor_2, tipo_2, resultado )
     p[0] = (p[1], "+", p[3])
 
 def p_exp_sub(p):
@@ -146,7 +101,6 @@ def p_factor_group(p):
 
 def p_factor_id(p):
     'factor : ID'
-    
     p[0] = p[1]
     
 def p_factor_cte(p):
@@ -220,11 +174,7 @@ def p_condition_if_else(p):
 # Assign
 def p_assign(p):
     'assign : ID "=" expression ";"'
-    valor, tipo = estructura.stack_operandos.pop()
-    resultado = estructura.cubo.get(['tipo', 'tipo', '='])
     p[0] = (p[1], "=", p[3], ";")
-# Verificar si la id existe
-
 
 # f_call
 def p_f_call_args(p):
@@ -281,38 +231,28 @@ def p_body(p):
 # cte
 def p_cte_int(p):
     'cte : CONST_INT'
-    estructura.stack_operandos.append([p[1], 'int'])
     p[0] = p[1]
 
 def p_cte_float(p):
     'cte : CONST_FLOAT'
-    estructura.stack_operandos.append([p[1], 'float'])
     p[0] = p[1]
 
 # Funcs
-def p_funcs_params(p):
-    'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" vars body "]" ";"'
+def p_func_params(p):
+    'func : VOID ID "(" ID ":" type funcs_ayuda ")" "[" vars body "]" ";"'
     p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[10], p[11], "]", ";")
 
-def p_funcs_empty_params(p):
-    'funcs : VOID ID "(" ")" "[" vars body "]" ";"'
+def p_func_empty_params(p):
+    'func : VOID ID "(" ")" "[" vars body "]" ";"'
     p[0] = (p[1], p[2], "(", ")", "[", p[6], p[7], "]", ";")
 
-def p_funcs_params_no_vars(p):
-    'funcs : VOID ID "(" ID ":" type funcs_ayuda ")" "[" body "]" ";"'
+def p_func_params_no_vars(p):
+    'func : VOID ID "(" ID ":" type funcs_ayuda ")" "[" body "]" ";"'
     p[0] = (p[1], p[2], "(", p[4], ":", p[6], p[7], ")", "[", p[10], "]", ";")
 
-def p_funcs_empty_params_no_vars(p):
-    'funcs : VOID ID "(" ")" "[" body "]" ";"'
+def p_func_empty_params_no_vars(p):
+    'func : VOID ID "(" ")" "[" body "]" ";"'
     p[0] = (p[1], p[2], "(", ")", "[", p[6], "]", ";")
-
-def p_funcs_multiple(p):
-    'funcs : funcs funcs'
-    p[0] = p[1] + [p[2]]
-
-def p_funcs_empty(p):
-    'funcs : empty'
-    p[0] = p[1]
 
 def p_funcs_ayuda(p):
     'funcs_ayuda : "," ID ":" type funcs_ayuda'
@@ -322,10 +262,22 @@ def p_funcs_ayuda_empty(p):
     'funcs_ayuda : empty'
     p[0] = p[1]
 
+def p_funcs_list(p):
+    'funcs_list : funcs_list func'
+    p[0] = p[1] + [p[2]]
+
+def p_funcs_list_single(p):
+    'funcs_list : func'
+    p[0] = [p[1]]
+
+def p_funcs_list_empty(p):
+    'funcs_list : empty'
+    p[0] = []
+
     
 # Program
 def p_program(p):
-    'program : PROGRAM ID ";" vars funcs MAIN body END'
+    'program : PROGRAM ID ";" vars funcs_list MAIN body END'
     p[0] = (p[1], p[2], ";", p[4], p[5], p[6], p[7], p[8])
 
 # error
@@ -365,8 +317,5 @@ for caso in documento:
     # Limpiar las lineas de tokens que se mandaron al parser.
     print("\n")
 
-print(estructura.stack_operandos)
 
-for i in estructura.cuadruples:
-    print(i)
 #print(tokens)
