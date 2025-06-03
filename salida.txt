@@ -1,52 +1,27 @@
-resultado: 	19000
 10	17000
 20	17001
 10	17002
-4	17003
-Hola mundo	19001
-9	17004
-1	17005
+Res: 	19000
 
 global_int 3
 global_float 0
-global_void 2
-local_int	 2
-local_float 1
-temp_int	5
+global_void 1
+local_int 0
+local_float 0
+temp_int 1
 temp_float 0
-temp_bool	2
-cte_int	6
-cte_float	0
-cte_str	2
+temp_bool 1
+cte_int 3
+cte_float 0
+cte_str 1
 
-	0	gotomain	-1	-1	7	
-	1	+	8000	7000	12000	int
-	2	=	12000	-1	7001	int
-	3	Print	19000	-1	-1	string
-	4	Print	7002	-1	-1	string
-	5	Println	\ n	-1	-1	
-	6	endFun	-1	-1	8	
-	7	=	17000	-1	7003	int
-	8	=	17001	-1	7004	int
-	9	=	17000	-1	7005	int
-	10	!=	7006	7007	14000	bool
-	11	GOTOF	14000	-1	17	
-	12	param	7008	-1	int	
-	13	param	7009	-1	int	
-	15	gosub	suma	-1	1	
-	16	=	17003	-1	7010	int
-	17	GOTO	-1	-1	22	
-	18	Print	19001	-1	-1	string
-	19	Println	\ n	-1	-1	
-	20	/	7011	7012	12001	int
-	21	=	12001	-1	7013	int
-	22	+	D	E	12002	int
-	23	+	12002	17004	12003	int
-	24	Print	12003	-1	-1	string
-	25	Println	\ n	-1	-1	
-	26	+	F	17005	12004	int
-	27	=	12004	-1	F	int
-	28	Print	F	-1	-1	string
-	29	Println	\ n	-1	-1	
-	30	GOTOV	-1	-1	30	
-	31	<	F	G	14001	bool
+1	gotomain	-1	-1	2
+2	=	17000	-1	1000
+3	=	17001	-1	1001
+4	=	17000	-1	1002
+5	!=	1002	1001	14000
+6	GOTOF	14000	-1	17000
+7	*	1000	1001	12000
+8	Print	19000	-1	-1
+9	Print	12000	-1	-1
+10	Println	-1	-1	-1

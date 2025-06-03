@@ -29,6 +29,8 @@ class Estructura:
     isFunc = False
     var_dir = []
     var_tem = []
+    var_glo =[]
+    var_loc = []
     variables = []
     len_cte_int = 0
     len_cte_float = 0
@@ -118,8 +120,8 @@ class Estructura:
         }
 
         self.counter_temporales = 0
-        self.cuadruples = [(self.linea,"gotomain",-1,-1,-1)]
-        self.linea = 0
+        self.cuadruples = [(1, "gotomain",-1,-1,-1)]
+        self.linea = 1
         self.linea_ciclo = 0
         self.detector_ciclo = False
         self.var_names = {}
@@ -175,22 +177,41 @@ def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
 def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
     elementos = []
     estructura.global_void += 1
+    #parametros
     for param in parametros:
         elementos.append((param["key"], param["tipo"], "param"))
         if param["tipo"] == "int":
             estructura.local_int += 1
+            estructura.var_loc.append([var["key"], 7000 + estructura.len_loc_int])
+            estructura.len_loc_int += 1
         elif param["tipo"] == "float":
             estructura.local_float += 1
+            estructura.var_loc.append([var["key"], 8000 + estructura.len_loc_float])
+            estructura.len_loc_float += 1
+    #variables
     for var in variables:
+        #locales
         if var["tipo"] == "int" and estructura.isFunc == True:
             estructura.local_int += 1
+            elementos.append((var["key"], var["tipo"], "local"))
+            estructura.var_loc.append([var["key"], 7000 + estructura.len_loc_int])
+            estructura.len_loc_int += 1
         elif var["tipo"] == "float" and estructura.isFunc == True:
             estructura.local_float += 1
+            elementos.append((var["key"], var["tipo"], "local"))
+            estructura.var_loc.append([var["key"], 8000 + estructura.len_loc_float])
+            estructura.len_loc_float += 1
+        #globales            
         elif var["tipo"] == "int" and estructura.isFunc == False:
             estructura.global_int += 1
+            elementos.append((var["key"], var["tipo"], "global"))
+            estructura.var_glo.append([var["key"], 1000 + estructura.len_glo_int])
+            estructura.len_glo_int += 1
         elif var["tipo"] == "float" and estructura.isFunc == False:
             estructura.global_float += 1
-        elementos.append((var["key"], var["tipo"], "local"))
+            elementos.append((var["key"], var["tipo"], "global"))
+            estructura.var_glo.append([var["key"], 2000 + estructura.len_glo_float])
+            estructura.len_glo_float += 1
     estructura.dir_func[key] = {
     'tipo': tipo,
     'inicio': inicio,
@@ -212,7 +233,7 @@ def llenar_salto():
     destino = len(estructura.cuadruples)
     salto = estructura.saltos.pop()
     cuad = list(estructura.cuadruples[salto])
-    cuad[4] = destino + 1 # índice 4 es el destino del salto
+    cuad[4] = destino  # índice 4 es el destino del salto
     estructura.cuadruples[salto] = tuple(cuad)
 
 def llenar_salto_else():
@@ -237,7 +258,6 @@ def recolectar_ids(tupla):
     while tupla:
         ids.append(tupla[0])
         tupla = tupla[1]
-        print(ids)
     return ids
 
 def unico_constante(constantes):
@@ -275,9 +295,13 @@ def convert_cuadruplos():
         der = reemplazar_si_tem(der)
         res = reemplazar_si_tem(res)
 
-        izq = reemplazar_si_local_global(izq)
-        der = reemplazar_si_local_global(der)
-        res = reemplazar_si_local_global(res)
+        izq = reemplazar_si_loc(izq)
+        der = reemplazar_si_loc(der)
+        res = reemplazar_si_loc(res)
+
+        izq = reemplazar_si_glo(izq)
+        der = reemplazar_si_glo(der)
+        res = reemplazar_si_glo(res)
 
         nuevo_cuad = (linea, op, izq, der, res) if tipo is None else (linea, op, izq, der, res, tipo)
         nuevos_cuadruplos.append(nuevo_cuad)
@@ -289,9 +313,18 @@ def reemplazar_si_cte(valor):
         if cte[0] == valor:
             return cte[1]
     return valor  # Si no se encuentra, devuelve el mismo valor
-
 def reemplazar_si_tem(valor):
     for cte in estructura.var_tem:
+        if cte[0] == valor:
+            return cte[1]
+    return valor  # Si no se encuentra, devuelve el mismo valor
+def reemplazar_si_loc(valor):
+    for cte in estructura.var_loc:
+        if cte[0] == valor:
+            return cte[1]
+    return valor  # Si no se encuentra, devuelve el mismo valor
+def reemplazar_si_glo(valor):
+    for cte in estructura.var_glo:
         if cte[0] == valor:
             return cte[1]
     return valor  # Si no se encuentra, devuelve el mismo valor
@@ -338,25 +371,22 @@ def exportar_salida(nombre_archivo="salida.txt"):
         f.write(f"global_int {estructura.global_int}\n")
         f.write(f"global_float {estructura.global_float}\n")
         f.write(f"global_void {estructura.global_void}\n")
-        f.write(f"local_int\t {estructura.local_int}\n")
+        f.write(f"local_int {estructura.local_int}\n")
         f.write(f"local_float {estructura.local_float}\n")
-        f.write(f"temp_int\t{estructura.temp_int}\n")
+        f.write(f"temp_int {estructura.temp_int}\n")
         f.write(f"temp_float {estructura.temp_float}\n")
-        f.write(f"temp_bool\t{estructura.temp_bool}\n")
-        f.write(f"cte_int\t{estructura.cte_int}\n")
-        f.write(f"cte_float\t{estructura.cte_float}\n")
-        f.write(f"cte_str\t{estructura.cte_str}\n\n")
+        f.write(f"temp_bool {estructura.temp_bool}\n")
+        f.write(f"cte_int {estructura.cte_int}\n")
+        f.write(f"cte_float {estructura.cte_float}\n")
+        f.write(f"cte_str {estructura.cte_str}\n\n")
 
         # 3. Cuádruplos
         for i, cuad in enumerate(estructura.cuadruples, start=1):
-            linea = cuad[0]
             op = cuad[1]
             izq = cuad[2]
             der = cuad[3]
             res = cuad[4]
-            tipo = cuad[5] if len(cuad) > 5 else ""
-
-            f.write(f"\t{linea}\t{op}\t{izq}\t{der}\t{res}\t{tipo}\n")
+            f.write(f"{i}\t{op}\t{izq}\t{der}\t{res}\n")
 
 
 def p_empty(p):
@@ -538,7 +568,7 @@ def p_print_expr(p):
         estructura.cuadruples.append((estructura.linea, "Print", arg, -1, -1, "string"))
 
     estructura.linea += 1
-    estructura.cuadruples.append((estructura.linea, "Println", "\ n", -1, -1))
+    estructura.cuadruples.append((estructura.linea, "Println", "n", -1, -1))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
 
 
@@ -558,7 +588,7 @@ def p_print_string(p):
         estructura.cuadruples.append((estructura.linea, "Print", arg, -1, -1, "string"))
 
     estructura.linea += 1
-    estructura.cuadruples.append((estructura.linea, "Println", "\ n", -1, -1))
+    estructura.cuadruples.append((estructura.linea, "Println", -1, -1, -1))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
 
 
@@ -894,7 +924,7 @@ def p_program(p):
 
 def p_inicio_main(p):
     'inicio_main : '
-    estructura.cuadruples[0] = (0,"gotomain",-1,-1,estructura.linea+1)
+    estructura.cuadruples[0] = (1 ,"gotomain",-1,-1,estructura.linea+1)
 
 # error
 def p_error(p):
@@ -938,7 +968,13 @@ for caso in documento:
 
     constantes = unico_constante(estructura.var_dir)
     print(constantes)
+    print()
+    constantes = unico_constante(estructura.var_tem)
+    print(constantes)
 
+    constantes = unico_constante(estructura.var_glo)
+    print(constantes)
+   
 
     print(f"""
 global_int {estructura.global_int}
