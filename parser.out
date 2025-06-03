@@ -1,5 +1,9 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
+Unused terminals:
+
+    STRING
+
 Grammar
 
 Rule 0     S' -> program
@@ -32,7 +36,7 @@ Rule 26    factor -> - cte
 Rule 27    print -> PRINT ( expression print_ayuda ) ;
 Rule 28    print -> PRINT ( CONST_STRING print_ayuda ) ;
 Rule 29    print_ayuda -> , expression print_ayuda
-Rule 30    print_ayuda -> , STRING print_ayuda
+Rule 30    print_ayuda -> , CONST_STRING print_ayuda
 Rule 31    print_ayuda -> empty
 Rule 32    termino -> termino * factor
 Rule 33    termino -> termino / factor
@@ -90,7 +94,7 @@ Terminals, with rules where they appear
 >                    : 13
 CONST_FLOAT          : 58
 CONST_INT            : 57
-CONST_STRING         : 28
+CONST_STRING         : 28 30
 DO                   : 35
 ELSE                 : 39
 END                  : 69
@@ -105,7 +109,7 @@ MAIN                 : 69
 NE                   : 18
 PRINT                : 27 28
 PROGRAM              : 69
-STRING               : 30
+STRING               : 
 VAR                  : 4
 VOID                 : 59 60 61 62
 WHILE                : 35
@@ -1141,7 +1145,7 @@ state 73
 
     (27) print -> PRINT ( expression . print_ayuda ) ;
     (29) print_ayuda -> . , expression print_ayuda
-    (30) print_ayuda -> . , STRING print_ayuda
+    (30) print_ayuda -> . , CONST_STRING print_ayuda
     (31) print_ayuda -> . empty
     (1) empty -> .
 
@@ -1155,7 +1159,7 @@ state 74
 
     (28) print -> PRINT ( CONST_STRING . print_ayuda ) ;
     (29) print_ayuda -> . , expression print_ayuda
-    (30) print_ayuda -> . , STRING print_ayuda
+    (30) print_ayuda -> . , CONST_STRING print_ayuda
     (31) print_ayuda -> . empty
     (1) empty -> .
 
@@ -1674,7 +1678,7 @@ state 102
 state 103
 
     (29) print_ayuda -> , . expression print_ayuda
-    (30) print_ayuda -> , . STRING print_ayuda
+    (30) print_ayuda -> , . CONST_STRING print_ayuda
     (13) expression -> . exp > exp
     (14) expression -> . exp < exp
     (15) expression -> . exp EQ exp
@@ -1698,7 +1702,7 @@ state 103
     (57) cte -> . CONST_INT
     (58) cte -> . CONST_FLOAT
 
-    STRING          shift and go to state 127
+    CONST_STRING    shift and go to state 127
     (               shift and go to state 65
     ID              shift and go to state 58
     +               shift and go to state 61
@@ -1982,7 +1986,7 @@ state 126
 
     (29) print_ayuda -> , expression . print_ayuda
     (29) print_ayuda -> . , expression print_ayuda
-    (30) print_ayuda -> . , STRING print_ayuda
+    (30) print_ayuda -> . , CONST_STRING print_ayuda
     (31) print_ayuda -> . empty
     (1) empty -> .
 
@@ -1994,9 +1998,9 @@ state 126
 
 state 127
 
-    (30) print_ayuda -> , STRING . print_ayuda
+    (30) print_ayuda -> , CONST_STRING . print_ayuda
     (29) print_ayuda -> . , expression print_ayuda
-    (30) print_ayuda -> . , STRING print_ayuda
+    (30) print_ayuda -> . , CONST_STRING print_ayuda
     (31) print_ayuda -> . empty
     (1) empty -> .
 
@@ -2135,9 +2139,9 @@ state 138
 
 state 139
 
-    (30) print_ayuda -> , STRING print_ayuda .
+    (30) print_ayuda -> , CONST_STRING print_ayuda .
 
-    )               reduce using rule 30 (print_ayuda -> , STRING print_ayuda .)
+    )               reduce using rule 30 (print_ayuda -> , CONST_STRING print_ayuda .)
 
 
 state 140

@@ -1,61 +1,29 @@
 program ejemplo;
-var A, B, C,D,E,F,G : int;
+var A, B, C : int;
 
-void suma(z : float) [
+void suma(z : float, y : int) [
+    var resultado : int;
     {
-        z = 4;
-        if (z != 0){
-            z = z + 1;
-            A = 4;
-        };
-    }
-];
-
-void compara(z : float, a : int, y : int ) [
-    var  b : float;
-    {
-        b = 3.5;
-        a = 2.5;
-        resultado = a * b;
-        print("bien");
-    }
-];
-
-void nose() [
-    var x, y, resultado : int;
-    {
-        x = 3;
-        y = 7;
-        resultado = x + y;
-        print("Resultado de suma: ", resultado);
+        resultado = z + y;
+        print("resultado: ", resultado);
     }
 ];
 
 main {
     A = 10;
     B = 20;
-    C = A + B;
-    print("Valor de C: ", C);
+    C = 10;
     if (C != B){
-        suma(z);
+        suma(A, B);
         A = 4;
     } else {
-        A = 2;
         print("Hola mundo");
-        A = 3;
-        A = 4;
+        B = A / C;
     };
-    nose();
-    compara(B, A, C);
-    print("hola");
-    A = 0;
-    D = 3;
-    E = 4;
-    F = 3;
-    G = 4;
     do {
         print(D + E + 9);
         F = F + 1;
+        print(F);
     } while (F < G );
 }
 end
