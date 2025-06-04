@@ -233,14 +233,14 @@ def llenar_salto():
     destino = len(estructura.cuadruples)
     salto = estructura.saltos.pop()
     cuad = list(estructura.cuadruples[salto])
-    cuad[4] = destino  # índice 4 es el destino del salto
+    cuad[4] = destino + 1  # índice 4 es el destino del salto
     estructura.cuadruples[salto] = tuple(cuad)
 
 def llenar_salto_else():
     destino = len(estructura.cuadruples)
     salto = estructura.saltos.pop()
     cuad = list(estructura.cuadruples[salto])
-    cuad[4] = destino + 1  # índice 4 es el destino del salto
+    cuad[4] = destino + 2  # índice 4 es el destino del salto
     estructura.cuadruples[salto] = tuple(cuad)
 
 def generar_goto():
@@ -328,37 +328,6 @@ def reemplazar_si_glo(valor):
         if cte[0] == valor:
             return cte[1]
     return valor  # Si no se encuentra, devuelve el mismo valor
-
-def reemplazar_si_local_global(nombre_var):
-    for funcion in estructura.dir_func.values():
-        for cte in funcion['variables']:
-            nombre, tipo, scope = cte[:3]
-
-            if nombre == nombre_var:
-                # Parámetros o locales → direcciones locales
-                if scope == "param" or scope == "local":
-                    if tipo == "int":
-                        direccion = 7000 + estructura.len_loc_int
-                        estructura.len_loc_int += 1
-                        return direccion
-                    elif tipo == "float":
-                        direccion = 8000 + estructura.len_loc_float
-                        estructura.len_loc_float += 1
-                        return direccion
-
-                # Globales
-                elif scope == "global":
-                    if tipo == "int":
-                        direccion = 1000 + estructura.len_glo_int
-                        estructura.len_glo_int += 1
-                        return direccion
-                    elif tipo == "float":
-                        direccion = 2000 + estructura.len_glo_float
-                        estructura.len_glo_float += 1
-                        return direccion
-
-    # Si no se encuentra la variable, se regresa el mismo valor
-    return nombre_var
 
 def exportar_salida(nombre_archivo="salida.txt"):
     with open(nombre_archivo, 'w') as f:

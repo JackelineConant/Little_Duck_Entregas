@@ -36,6 +36,7 @@ class Cuadruplo:
 test_split = test.split('\n')
 
 memo = {}
+call_stack = []
 cuads = [Cuadruplo([-1, 'NOP', '-1', '-1', '-1'])]
 section = 0
 
@@ -104,3 +105,11 @@ while indx < len(cuads):
             indx = q.destino
         else:
             indx += 1
+    elif q.operador == 'GOTO':
+        indx = q.destino
+    elif q.operador == 'gosub':
+        call_stack.append(indx + 1)  # guarda el punto de retorno
+        indx = q.destino
+
+    elif q.operador == 'endFun':
+        indx = call_stack.pop()  # regresa de la función

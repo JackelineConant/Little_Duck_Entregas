@@ -1,27 +1,38 @@
-10	17000
-20	17001
-10	17002
+0	17000
 Res: 	19000
+Res: 	19001
+10	17001
+20	17002
+10	17003
 
 global_int 3
 global_float 0
-global_void 1
+global_void 2
 local_int 0
 local_float 0
-temp_int 1
+temp_int 2
 temp_float 0
-temp_bool 1
-cte_int 3
+temp_bool 2
+cte_int 4
 cte_float 0
-cte_str 1
+cte_str 2
 
-1	gotomain	-1	-1	2
-2	=	17000	-1	1000
-3	=	17001	-1	1001
-4	=	17000	-1	1002
-5	!=	1002	1001	14000
-6	GOTOF	14000	-1	17000
-7	*	1000	1001	12000
-8	Print	19000	-1	-1
-9	Print	12000	-1	-1
-10	Println	-1	-1	-1
+1	gotomain	-1	-1	14
+2	==	1002	17000	14000
+3	GOTOF	14000	-1	9
+4	*	1000	1001	12000
+5	Print	19000	-1	-1
+6	Print	12000	-1	-1
+7	Println	-1	-1	-1
+8	GOTO	-1	-1	14
+9	-	1000	1001	12001
+10	Print	19000	-1	-1
+11	Print	12001	-1	-1
+12	Println	-1	-1	-1
+13	endFun	-1	-1	14
+14	=	17001	-1	1000
+15	=	17002	-1	1001
+16	=	17001	-1	1002
+17	!=	1002	1001	14001
+18	GOTOF	14001	-1	17002
+19	gosub	suma	-1	2
