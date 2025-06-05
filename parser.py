@@ -221,7 +221,9 @@ def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
             result_type = estructura.cubo[(tipo1, tipo2, operador)]
 
             if result_type == 'error' or result_type is None:
+                estructura.error += 1
                 raise TypeError(f"Operación inválida: {tipo1} {operador} {tipo2}")
+                
             
             temp = f"t{estructura.counter_temporales}"
             estructura.counter_temporales += 1
@@ -301,13 +303,15 @@ def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
                 estructura.var_glo.append([var["key"], 3000 + estructura.len_glo_string])
                 estructura.len_glo_string += 1
 
-        estructura.dir_func[key] = {
+        else:
+            estructura.error += 1
+    estructura.dir_func[key] = {
         'tipo': tipo,
         'inicio': inicio,
         'num_parametros': len(parametros),
         'num_vars': len(variables),
         'variables': elementos
-        }
+    }
 
 def generar_goto_falso():
     cond, tipo = estructura.stack_operandos.pop()

@@ -6,9 +6,9 @@ var A, B, C : int;
 void suma() [
     {
         if (C == 0){
-             print("Res: ", A * B);
+            print("Res: ", A * B);
         } else {
-             print("Res: ", A - B);
+            print("Res: ", A - B);
         };
     }
 ];

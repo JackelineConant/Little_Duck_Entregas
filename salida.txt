@@ -1,9 +1,8 @@
 0	17000
 Res: 	19000
-Res: 	19001
 10	17001
 20	17002
-hola mundo	19002
+hola mundo	19001
 
 global_int 3
 global_float 1
@@ -17,7 +16,7 @@ temp_str 0
 temp_bool 2
 cte_int 3
 cte_float 0
-cte_str 3
+cte_str 2
 
 1	gotomain	-1	-1	14
 2	==	1002	17000	14000
@@ -35,7 +34,7 @@ cte_str 3
 14	=	17001	-1	1000
 15	=	17002	-1	1001
 16	=	17001	-1	1002
-17	=	19002	-1	3000
+17	=	19001	-1	3000
 18	!=	1002	1001	14001
 19	GOTOF	14001	-1	21
 20	gosub	suma	-1	2
