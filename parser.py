@@ -264,46 +264,48 @@ def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
             estructura.len_loc_string += 1
     #variables
     for var in variables:
-        #locales
-        if var["tipo"] == "int" and estructura.isFunc == True:
-            estructura.local_int += 1
-            elementos.append((var["key"], var["tipo"], "local"))
-            estructura.var_loc.append([var["key"], 7000 + estructura.len_loc_int])
-            estructura.len_loc_int += 1
-        elif var["tipo"] == "float" and estructura.isFunc == True:
-            estructura.local_float += 1
-            elementos.append((var["key"], var["tipo"], "local"))
-            estructura.var_loc.append([var["key"], 8000 + estructura.len_loc_float])
-            estructura.len_loc_float += 1
-        elif var["tipo"] == "string" and estructura.isFunc == True:
-            estructura.local_str += 1
-            elementos.append((var["key"], var["tipo"], "local"))
-            estructura.var_loc.append([var["key"], 9000 + estructura.len_loc_string])
-            estructura.len_loc_string += 1
-        #globales            
-        elif var["tipo"] == "int" and estructura.isFunc == False:
-            estructura.global_int += 1
-            elementos.append((var["key"], var["tipo"], "global"))
-            estructura.var_glo.append([var["key"], 1000 + estructura.len_glo_int])
-            estructura.len_glo_int += 1
-        elif var["tipo"] == "float" and estructura.isFunc == False:
-            estructura.global_float += 1
-            elementos.append((var["key"], var["tipo"], "global"))
-            estructura.var_glo.append([var["key"], 2000 + estructura.len_glo_float])
-            estructura.len_glo_float += 1
-        elif var["tipo"] == "string" and estructura.isFunc == False:
-            estructura.global_str += 1
-            elementos.append((var["key"], var["tipo"], "global"))
-            estructura.var_glo.append([var["key"], 3000 + estructura.len_glo_string])
-            estructura.len_glo_string += 1
+        existe = any(valor == var["key"] for valor, _ in estructura.var_dir + estructura.var_glo)
+        if not existe:
+            #locales
+            if var["tipo"] == "int" and estructura.isFunc == True:
+                estructura.local_int += 1
+                elementos.append((var["key"], var["tipo"], "local"))
+                estructura.var_loc.append([var["key"], 7000 + estructura.len_loc_int])
+                estructura.len_loc_int += 1
+            elif var["tipo"] == "float" and estructura.isFunc == True:
+                estructura.local_float += 1
+                elementos.append((var["key"], var["tipo"], "local"))
+                estructura.var_loc.append([var["key"], 8000 + estructura.len_loc_float])
+                estructura.len_loc_float += 1
+            elif var["tipo"] == "string" and estructura.isFunc == True:
+                estructura.local_str += 1
+                elementos.append((var["key"], var["tipo"], "local"))
+                estructura.var_loc.append([var["key"], 9000 + estructura.len_loc_string])
+                estructura.len_loc_string += 1
+            #globales            
+            elif var["tipo"] == "int" and estructura.isFunc == False:
+                estructura.global_int += 1
+                elementos.append((var["key"], var["tipo"], "global"))
+                estructura.var_glo.append([var["key"], 1000 + estructura.len_glo_int])
+                estructura.len_glo_int += 1
+            elif var["tipo"] == "float" and estructura.isFunc == False:
+                estructura.global_float += 1
+                elementos.append((var["key"], var["tipo"], "global"))
+                estructura.var_glo.append([var["key"], 2000 + estructura.len_glo_float])
+                estructura.len_glo_float += 1
+            elif var["tipo"] == "string" and estructura.isFunc == False:
+                estructura.global_str += 1
+                elementos.append((var["key"], var["tipo"], "global"))
+                estructura.var_glo.append([var["key"], 3000 + estructura.len_glo_string])
+                estructura.len_glo_string += 1
 
-    estructura.dir_func[key] = {
-    'tipo': tipo,
-    'inicio': inicio,
-    'num_parametros': len(parametros),
-    'num_vars': len(variables),
-    'variables': elementos
-    }
+        estructura.dir_func[key] = {
+        'tipo': tipo,
+        'inicio': inicio,
+        'num_parametros': len(parametros),
+        'num_vars': len(variables),
+        'variables': elementos
+        }
 
 def generar_goto_falso():
     cond, tipo = estructura.stack_operandos.pop()
@@ -628,10 +630,12 @@ def p_print_expr(p):
 def p_print_string(p):
     'print : PRINT "(" CONST_STRING print_ayuda ")" ";"'
     argumentos = [p[3]]
-    estructura.cte_str += 1
-    m = estructura.len_cte_str
-    estructura.var_dir.append([p[3], (19000 + m)])
-    estructura.len_cte_str += 1
+    existe = any(valor == p[3] for valor, _ in estructura.var_dir)
+    if not existe:
+        estructura.cte_str += 1
+        m = estructura.len_cte_str
+        estructura.var_dir.append([p[3], (19000 + m)])
+        estructura.len_cte_str += 1
 
     if isinstance(p[4], list):
         argumentos.extend(p[4])
@@ -656,6 +660,13 @@ def p_print_ayuda_string(p):
     'print_ayuda : "," CONST_STRING print_ayuda'
     lista = [p[2]]
     estructura.cte_str += 1
+    existe = any(valor == p[2] for valor, _ in estructura.var_dir)
+    if not existe:
+        estructura.cte_str += 1
+        m = estructura.len_cte_str
+        estructura.var_dir.append([p[2], (19000 + m)])
+        estructura.len_cte_str += 1
+    
     if isinstance(p[3], list):
         lista += p[3]
     p[0] = lista
@@ -1029,16 +1040,10 @@ for caso in documento:
 
 
     print("\n")
+    print(estructura.var_dir)
+    print(estructura.var_glo)
+    print(estructura.var_loc)
 
-    constantes = unico_constante(estructura.var_dir)
-    print(constantes)
-    print()
-    constantes = unico_constante(estructura.var_tem)
-    print(constantes)
-
-    constantes = unico_constante(estructura.var_glo)
-    print(constantes)
-   
 
     print(f"""
 global_int {estructura.global_int}
@@ -1056,8 +1061,10 @@ cte_float {estructura.cte_float}
 cte_str {estructura.cte_str}
 """)
     
+   
     exportar_salida("salida.txt")
     print("Archivo 'salida.txt' generado exitosamente.")
     m.clear_table()
     estructura = Estructura()
+
     

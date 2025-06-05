@@ -56,8 +56,6 @@ for l in test_split:
       #Seccion de los cuadruplos
       cuads.append(Cuadruplo(linea))
 
-    
-
 
 # simulación
 indx = 1
