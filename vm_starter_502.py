@@ -41,7 +41,7 @@ cuads = [Cuadruplo([-1, 'NOP', '-1', '-1', '-1'])]
 section = 0
 
 for l in test_split:
-    linea = l.split()
+    linea = l.split('\t')
     if l.strip() == '':
       section += 1
     elif section == 0 and len(linea) == 2:
@@ -66,8 +66,6 @@ while indx < len(cuads):
     if q.operador == 'gotomain':
         indx = q.destino
     elif q.operador == '=':
-        # 2 = 17000 -1 1000
-        # memo[1000] = memo[1700]
         memo[q.destino] = memo[q.argIzq]
         indx += 1
     elif q.operador == '/':
@@ -110,6 +108,5 @@ while indx < len(cuads):
     elif q.operador == 'gosub':
         call_stack.append(indx + 1)  # guarda el punto de retorno
         indx = q.destino
-
     elif q.operador == 'endFun':
         indx = call_stack.pop()  # regresa de la función

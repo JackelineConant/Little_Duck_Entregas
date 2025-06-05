@@ -1,5 +1,7 @@
 program ejemplo;
 var A, B, C : int;
+    Z : float;
+    X : string;
 
 void suma() [
     {
@@ -15,8 +17,10 @@ main {
     A = 10;
     B = 20;
     C = 10;
+    X = "hola mundo";
     if(C != B){
         suma();
     };
+    print(X);
 }
 end

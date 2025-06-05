@@ -16,12 +16,14 @@ class Estructura:
     tab_vars = {}
     global_int = 0
     global_float = 0
+    global_str = 0
     global_void = 0
     local_int = 0
     local_float = 0
     local_str = 0
     temp_int = 0
     temp_float = 0
+    temp_str = 0
     temp_bool = 0
     cte_int	= 0
     cte_float = 0
@@ -38,12 +40,16 @@ class Estructura:
 
     len_tem_int = 0
     len_tem_float = 0
+    len_tem_str = 0
     len_tem_bool = 0
 
     len_loc_int = 0
     len_loc_float = 0
+    len_loc_string = 0
+
     len_glo_int = 0
     len_glo_float = 0
+    len_glo_string = 0
 
     
     
@@ -55,68 +61,128 @@ class Estructura:
             #igual
             ('int','int','=') : 'int',
             ('int','float','='): 'error',
+            ('int','string','='): 'error',
             ('float','int','=') : 'float',
             ('float','float','=') : 'float',
+            ('float','string','=') : 'error',
+            ('string', 'string', '=') : 'string',
+            ('string', 'int', '=') : 'error',
+            ('string', 'float', '=') : 'error',
+
+            
             
             #suma
-            ('int','int','+'): 'int',
-            ('float','int','+'): 'float',
+            ('int','int','+') : 'int',
             ('int','float','+'): 'float',
-            ('float','float','+'): 'float',
+            ('int','string','+'): 'error',
+            ('float','int','+') : 'float',
+            ('float','float','+') : 'float',
+            ('float','string','+') : 'error',
+            ('string', 'string', '+') : 'string',
+            ('string', 'int', '+') : 'error',
+            ('string', 'float', '+') : 'error',
+
             
             #resta
             ('int','int','-') : 'int',
+            ('int','float','-'): 'float',
+            ('int','string','-'): 'error',
             ('float','int','-') : 'float',
-            ('int','float','-') : 'float',
             ('float','float','-') : 'float',
-           
-            #divicion
-            ('int','int','/') : 'int',
-            ('float','int','/') : 'float',
-            ('int','float','/') : 'float',
-            ('float','float','/') : 'float',
+            ('float','string','-') : 'error',
+            ('string', 'string', '-') : 'error',
+            ('string', 'int', '-') : 'error',
+            ('string', 'float', '-') : 'error',
+
             
+            #divicion
+            ('int','int','/') : 'float',
+            ('int','float','/'): 'float',
+            ('int','string','/'): 'error',
+            ('float','int','/') : 'float',
+            ('float','float','/') : 'float',
+            ('float','string','/') : 'error',
+            ('string', 'string', '/') : 'error',
+            ('string', 'int', '/') : 'error',
+            ('string', 'float', '/') : 'error',
+ 
             #muti
             ('int','int','*') : 'int',
+            ('int','float','*'): 'float',
+            ('int','string','*'): 'error',
             ('float','int','*') : 'float',
-            ('int','float','*') : 'float',
             ('float','float','*') : 'float',
-            
+            ('float','string','*') : 'error',
+            ('string', 'string', '*') : 'error',
+            ('string', 'int', '*') : 'string',
+            ('string', 'float', '*') : 'error',
+
              #mayor que
             ('int','int','>') : 'bool',
+            ('int','float','>'): 'bool',
+            ('int','string','>'): 'error',
             ('float','int','>') : 'bool',
-            ('int','float','>') : 'bool',
             ('float','float','>') : 'bool',
+            ('float','string','>') : 'error',
+            ('string', 'string', '>') : 'bool',
+            ('string', 'int', '>') : 'error',
+            ('string', 'float', '>') : 'error',
             
              #mayor que
-            ('int','int','<') : 'bool',
+             ('int','int','<') : 'bool',
+            ('int','float','<'): 'bool',
+            ('int','string','<'): 'error',
             ('float','int','<') : 'bool',
-            ('int','float','<') : 'bool',
             ('float','float','<') : 'bool',
+            ('float','string','<') : 'error',
+            ('string', 'string', '<') : 'bool',
+            ('string', 'int', '<') : 'error',
+            ('string', 'float', '<') : 'error',
             
              #mayor igual que
             ('int','int','>=') : 'bool',
+            ('int','float','>='): 'bool',
+            ('int','string','>='): 'error',
             ('float','int','>=') : 'bool',
-            ('int','float','>=') : 'bool',
             ('float','float','>=') : 'bool',
-            
+            ('float','string','>=') : 'error',
+            ('string', 'string', '>=') : 'bool',
+            ('string', 'int', '>=') : 'error',
+            ('string', 'float', '>=') : 'error',
+
              #menor igual que
             ('int','int','<=') : 'bool',
+            ('int','float','<='): 'bool',
+            ('int','string','<='): 'error',
             ('float','int','<=') : 'bool',
-            ('int','float','<=') : 'bool',
             ('float','float','<=') : 'bool',
+            ('float','string','<=') : 'error',
+            ('string', 'string', '<=') : 'bool',
+            ('string', 'int', '<=') : 'error',
+            ('string', 'float', '<=') : 'error',
             
              #distinto 
             ('int','int','!=') : 'bool',
+            ('int','float','!='): 'bool',
+            ('int','string','!='): 'bool',
             ('float','int','!=') : 'bool',
-            ('int','float','!=') : 'bool',
             ('float','float','!=') : 'bool',
+            ('float','string','!=') : 'bool',
+            ('string', 'string', '!=') : 'bool',
+            ('string', 'int', '!=') : 'bool',
+            ('string', 'float', '!=') : 'bool',
             
              #igual igual
             ('int','int','==') : 'bool',
+            ('int','float','=='): 'bool',
+            ('int','string','=='): 'error',
             ('float','int','==') : 'bool',
-            ('int','float','==') : 'bool',
             ('float','float','==') : 'bool',
+            ('float','string','==') : 'error',
+            ('string', 'string', '==') : 'bool',
+            ('string', 'int', '==') : 'error',
+            ('string', 'float', '==') : 'error',
+
         }
 
         self.counter_temporales = 0
@@ -165,6 +231,10 @@ def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
                 estructura.temp_float += 1
                 estructura.var_tem.append([temp,13000 + estructura.len_tem_float])
                 estructura.len_tem_float +=1
+            elif result_type == "string":
+                estructura.temp_str += 1
+                estructura.var_tem.append([temp,13000 + estructura.len_tem_str])
+                estructura.len_tem_str +=1
             else :
                 estructura.temp_bool +=1
                 estructura.var_tem.append([temp,14000 + estructura.len_tem_bool])
@@ -188,6 +258,10 @@ def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
             estructura.local_float += 1
             estructura.var_loc.append([var["key"], 8000 + estructura.len_loc_float])
             estructura.len_loc_float += 1
+        elif param["tipo"] == "string":
+            estructura.local_str += 1
+            estructura.var_loc.append([var["key"], 9000 + estructura.len_loc_string])
+            estructura.len_loc_string += 1
     #variables
     for var in variables:
         #locales
@@ -201,6 +275,11 @@ def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
             elementos.append((var["key"], var["tipo"], "local"))
             estructura.var_loc.append([var["key"], 8000 + estructura.len_loc_float])
             estructura.len_loc_float += 1
+        elif var["tipo"] == "string" and estructura.isFunc == True:
+            estructura.local_str += 1
+            elementos.append((var["key"], var["tipo"], "local"))
+            estructura.var_loc.append([var["key"], 9000 + estructura.len_loc_string])
+            estructura.len_loc_string += 1
         #globales            
         elif var["tipo"] == "int" and estructura.isFunc == False:
             estructura.global_int += 1
@@ -212,6 +291,12 @@ def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
             elementos.append((var["key"], var["tipo"], "global"))
             estructura.var_glo.append([var["key"], 2000 + estructura.len_glo_float])
             estructura.len_glo_float += 1
+        elif var["tipo"] == "string" and estructura.isFunc == False:
+            estructura.global_str += 1
+            elementos.append((var["key"], var["tipo"], "global"))
+            estructura.var_glo.append([var["key"], 3000 + estructura.len_glo_string])
+            estructura.len_glo_string += 1
+
     estructura.dir_func[key] = {
     'tipo': tipo,
     'inicio': inicio,
@@ -227,7 +312,6 @@ def generar_goto_falso():
     estructura.linea += 1
     estructura.cuadruples.append((estructura.linea, 'GOTOF', cond, -1, -1))
     estructura.saltos.append(len(estructura.cuadruples) - 1)
-
 
 def llenar_salto():
     destino = len(estructura.cuadruples)
@@ -269,6 +353,7 @@ def unico_constante(constantes):
             valores_vistos.add(valor)
             resultado.append(const)
     return resultado
+
 
 def convert_cuadruplos():
     nuevos_cuadruplos = []
@@ -337,13 +422,17 @@ def exportar_salida(nombre_archivo="salida.txt"):
         f.write("\n")
 
         # 2. Contadores
+   
         f.write(f"global_int {estructura.global_int}\n")
         f.write(f"global_float {estructura.global_float}\n")
+        f.write(f"global_str {estructura.global_str}\n")
         f.write(f"global_void {estructura.global_void}\n")
         f.write(f"local_int {estructura.local_int}\n")
         f.write(f"local_float {estructura.local_float}\n")
+        f.write(f"local_str {estructura.local_str}")
         f.write(f"temp_int {estructura.temp_int}\n")
         f.write(f"temp_float {estructura.temp_float}\n")
+        f.write(f"temp_str {estructura.temp_str}\n")
         f.write(f"temp_bool {estructura.temp_bool}\n")
         f.write(f"cte_int {estructura.cte_int}\n")
         f.write(f"cte_float {estructura.cte_float}\n")
@@ -369,6 +458,10 @@ def p_type_int(p):
 
 def p_type_float(p):
     'type : FLOAT'
+    p[0] = p[1]
+
+def p_type_Str(p):
+    'type : STRING'
     p[0] = p[1]
 
 # Vars
@@ -438,8 +531,6 @@ def p_expression_gt(p):
     op1, tipo1 = estructura.stack_operandos.pop()
     generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], ">", p[3])
-  
- 
 
 def p_expression_lt(p):
     'expression : exp "<" exp'
@@ -448,8 +539,6 @@ def p_expression_lt(p):
     generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "<", p[3])
 
- 
-
 def p_expression_eq(p):
     'expression : exp EQ exp'
     op2, tipo2 = estructura.stack_operandos.pop()
@@ -457,14 +546,12 @@ def p_expression_eq(p):
     generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "==", p[3])
 
-
 def p_expression_ge(p):
     'expression : exp GE exp'
     op2, tipo2 = estructura.stack_operandos.pop()
     op1, tipo1 = estructura.stack_operandos.pop()
     generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], ">=", p[3])
-   
 
 def p_expression_le(p):
     'expression : exp LE exp'
@@ -473,7 +560,6 @@ def p_expression_le(p):
     generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "<=", p[3])
   
-
 def p_expression_ne(p):
     'expression : exp NE exp'
     op2, tipo2 = estructura.stack_operandos.pop()
@@ -481,7 +567,6 @@ def p_expression_ne(p):
     generar_cuadruplo_binario(tipo1, op1, tipo2, op2, p[2])
     p[0] = (p[1], "!=", p[3])
  
-
 def p_expression_exp(p):
     'expression : exp'
     p[0] = p[1]
@@ -540,7 +625,6 @@ def p_print_expr(p):
     estructura.cuadruples.append((estructura.linea, "Println", "n", -1, -1))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
 
-
 def p_print_string(p):
     'print : PRINT "(" CONST_STRING print_ayuda ")" ";"'
     argumentos = [p[3]]
@@ -560,7 +644,6 @@ def p_print_string(p):
     estructura.cuadruples.append((estructura.linea, "Println", -1, -1, -1))
     p[0] = (p[1], "(", p[3], p[4], ")", ";")
 
-
 def p_print_ayuda_expr(p):
     'print_ayuda : "," expression print_ayuda'
     arg, tipo = estructura.stack_operandos.pop()
@@ -569,7 +652,6 @@ def p_print_ayuda_expr(p):
         lista += p[3]
     p[0] = lista
 
-
 def p_print_ayuda_string(p):
     'print_ayuda : "," CONST_STRING print_ayuda'
     lista = [p[2]]
@@ -577,7 +659,6 @@ def p_print_ayuda_string(p):
     if isinstance(p[3], list):
         lista += p[3]
     p[0] = lista
-
 
 def p_print_ayuda_empty(p):
     'print_ayuda : empty'
@@ -612,7 +693,6 @@ def p_cycle(p):
 def p_marcar_cycle_inicio(p):
     'marcar_cycle_inicio :'
     estructura.detector_ciclo = True
-
 
 def p_marcar_cycle_final(p):
     'marcar_cycle_final :'
@@ -754,7 +834,7 @@ def p_cte_int(p):
     m = estructura.len_cte_int
     estructura.var_dir.append([p[1], (17000 + m)])
     estructura.len_cte_int +=1
-
+            
 
 def p_cte_float(p):
     'cte : CONST_FLOAT'
@@ -764,6 +844,15 @@ def p_cte_float(p):
     m = estructura.len_cte_float
     estructura.var_dir.append([p[1], (18000 + m)])
     estructura.len_cte_float += 1
+
+def p_cte_str(p):
+    'cte : CONST_STRING'
+    estructura.stack_operandos.append([p[1], 'float'])
+    estructura.cte_str += 1
+    p[0] = p[1]
+    m = estructura.len_cte_str
+    estructura.var_dir.append([p[1], (19000 + m)])
+    estructura.len_cte_str += 1
 
  
 # Funcs
@@ -948,9 +1037,11 @@ for caso in documento:
     print(f"""
 global_int {estructura.global_int}
 global_float {estructura.global_float}
+global_str {estructura.global_str}
 global_void {estructura.global_void}
 \nlocal_int {estructura.local_int}
 local_float {estructura.local_float}
+local_str {estructura.local_str}
 \ntemp_int {estructura.temp_int}
 temp_float {estructura.temp_float}
 temp_bool {estructura.temp_bool}

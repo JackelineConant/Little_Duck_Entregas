@@ -1,166 +1,164 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    STRING
-
 Grammar
 
 Rule 0     S' -> program
 Rule 1     empty -> <empty>
 Rule 2     type -> INT
 Rule 3     type -> FLOAT
-Rule 4     vars -> VAR var_ayuda
-Rule 5     var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail
-Rule 6     var_ayuda_tail -> var_ayuda
-Rule 7     var_ayuda_tail -> empty
-Rule 8     var_doble_ayuda -> , ID var_doble_ayuda
-Rule 9     var_doble_ayuda -> empty
-Rule 10    exp -> exp + termino
-Rule 11    exp -> exp - termino
-Rule 12    exp -> termino
-Rule 13    expression -> exp > exp
-Rule 14    expression -> exp < exp
-Rule 15    expression -> exp EQ exp
-Rule 16    expression -> exp GE exp
-Rule 17    expression -> exp LE exp
-Rule 18    expression -> exp NE exp
-Rule 19    expression -> exp
-Rule 20    factor -> ( expression )
-Rule 21    factor -> ID
-Rule 22    factor -> cte
-Rule 23    factor -> + ID
-Rule 24    factor -> - ID
-Rule 25    factor -> + cte
-Rule 26    factor -> - cte
-Rule 27    print -> PRINT ( expression print_ayuda ) ;
-Rule 28    print -> PRINT ( CONST_STRING print_ayuda ) ;
-Rule 29    print_ayuda -> , expression print_ayuda
-Rule 30    print_ayuda -> , CONST_STRING print_ayuda
-Rule 31    print_ayuda -> empty
-Rule 32    termino -> termino * factor
-Rule 33    termino -> termino / factor
-Rule 34    termino -> factor
-Rule 35    cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ;
-Rule 36    marcar_cycle_inicio -> <empty>
-Rule 37    marcar_cycle_final -> <empty>
-Rule 38    condition -> IF ( expression ) marcar_if_inicio body ;
-Rule 39    condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
-Rule 40    marcar_if_inicio -> <empty>
-Rule 41    marcar_if_final -> <empty>
-Rule 42    marcar_else_inicio -> <empty>
-Rule 43    marcar_else_final -> <empty>
-Rule 44    assign -> ID = expression ;
-Rule 45    f_call -> ID ( expression f_call_ayuda ) ;
-Rule 46    f_call -> ID ( ) ;
-Rule 47    f_call_ayuda -> , expression f_call_ayuda
-Rule 48    f_call_ayuda -> empty
-Rule 49    statements -> statements statement
-Rule 50    statements -> statement
-Rule 51    statement -> assign
-Rule 52    statement -> condition
-Rule 53    statement -> cycle
-Rule 54    statement -> f_call
-Rule 55    statement -> print
-Rule 56    body -> { statements }
-Rule 57    cte -> CONST_INT
-Rule 58    cte -> CONST_FLOAT
-Rule 59    func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ;
-Rule 60    func -> VOID ID ( ) func_start [ vars body ] ;
-Rule 61    func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ;
-Rule 62    func -> VOID ID ( ) func_start [ body ] ;
-Rule 63    func_start -> <empty>
-Rule 64    funcs_list -> funcs_list func
-Rule 65    funcs_list -> func
-Rule 66    funcs_list -> empty
-Rule 67    funcs_ayuda -> , ID : type funcs_ayuda
-Rule 68    funcs_ayuda -> empty
-Rule 69    program -> PROGRAM ID ; vars funcs_list MAIN inicio_main body END
-Rule 70    inicio_main -> <empty>
+Rule 4     type -> STRING
+Rule 5     vars -> VAR var_ayuda
+Rule 6     var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail
+Rule 7     var_ayuda_tail -> var_ayuda
+Rule 8     var_ayuda_tail -> empty
+Rule 9     var_doble_ayuda -> , ID var_doble_ayuda
+Rule 10    var_doble_ayuda -> empty
+Rule 11    exp -> exp + termino
+Rule 12    exp -> exp - termino
+Rule 13    exp -> termino
+Rule 14    expression -> exp > exp
+Rule 15    expression -> exp < exp
+Rule 16    expression -> exp EQ exp
+Rule 17    expression -> exp GE exp
+Rule 18    expression -> exp LE exp
+Rule 19    expression -> exp NE exp
+Rule 20    expression -> exp
+Rule 21    factor -> ( expression )
+Rule 22    factor -> ID
+Rule 23    factor -> cte
+Rule 24    factor -> + ID
+Rule 25    factor -> - ID
+Rule 26    factor -> + cte
+Rule 27    factor -> - cte
+Rule 28    print -> PRINT ( expression print_ayuda ) ;
+Rule 29    print -> PRINT ( CONST_STRING print_ayuda ) ;
+Rule 30    print_ayuda -> , expression print_ayuda
+Rule 31    print_ayuda -> , CONST_STRING print_ayuda
+Rule 32    print_ayuda -> empty
+Rule 33    termino -> termino * factor
+Rule 34    termino -> termino / factor
+Rule 35    termino -> factor
+Rule 36    cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ;
+Rule 37    marcar_cycle_inicio -> <empty>
+Rule 38    marcar_cycle_final -> <empty>
+Rule 39    condition -> IF ( expression ) marcar_if_inicio body ;
+Rule 40    condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+Rule 41    marcar_if_inicio -> <empty>
+Rule 42    marcar_if_final -> <empty>
+Rule 43    marcar_else_inicio -> <empty>
+Rule 44    marcar_else_final -> <empty>
+Rule 45    assign -> ID = expression ;
+Rule 46    f_call -> ID ( expression f_call_ayuda ) ;
+Rule 47    f_call -> ID ( ) ;
+Rule 48    f_call_ayuda -> , expression f_call_ayuda
+Rule 49    f_call_ayuda -> empty
+Rule 50    statements -> statements statement
+Rule 51    statements -> statement
+Rule 52    statement -> assign
+Rule 53    statement -> condition
+Rule 54    statement -> cycle
+Rule 55    statement -> f_call
+Rule 56    statement -> print
+Rule 57    body -> { statements }
+Rule 58    cte -> CONST_INT
+Rule 59    cte -> CONST_FLOAT
+Rule 60    cte -> CONST_STRING
+Rule 61    func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ;
+Rule 62    func -> VOID ID ( ) func_start [ vars body ] ;
+Rule 63    func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ;
+Rule 64    func -> VOID ID ( ) func_start [ body ] ;
+Rule 65    func_start -> <empty>
+Rule 66    funcs_list -> funcs_list func
+Rule 67    funcs_list -> func
+Rule 68    funcs_list -> empty
+Rule 69    funcs_ayuda -> , ID : type funcs_ayuda
+Rule 70    funcs_ayuda -> empty
+Rule 71    program -> PROGRAM ID ; vars funcs_list MAIN inicio_main body END
+Rule 72    inicio_main -> <empty>
 
 Terminals, with rules where they appear
 
-(                    : 20 27 28 35 38 39 45 46 59 60 61 62
-)                    : 20 27 28 35 38 39 45 46 59 60 61 62
-*                    : 32
-+                    : 10 23 25
-,                    : 8 29 30 47 67
--                    : 11 24 26
-/                    : 33
-:                    : 5 59 61 67
-;                    : 5 27 28 35 38 39 44 45 46 59 60 61 62 69
-<                    : 14
-=                    : 44
->                    : 13
-CONST_FLOAT          : 58
-CONST_INT            : 57
-CONST_STRING         : 28 30
-DO                   : 35
-ELSE                 : 39
-END                  : 69
-EQ                   : 15
+(                    : 21 28 29 36 39 40 46 47 61 62 63 64
+)                    : 21 28 29 36 39 40 46 47 61 62 63 64
+*                    : 33
++                    : 11 24 26
+,                    : 9 30 31 48 69
+-                    : 12 25 27
+/                    : 34
+:                    : 6 61 63 69
+;                    : 6 28 29 36 39 40 45 46 47 61 62 63 64 71
+<                    : 15
+=                    : 45
+>                    : 14
+CONST_FLOAT          : 59
+CONST_INT            : 58
+CONST_STRING         : 29 31 60
+DO                   : 36
+ELSE                 : 40
+END                  : 71
+EQ                   : 16
 FLOAT                : 3
-GE                   : 16
-ID                   : 5 8 21 23 24 44 45 46 59 59 60 61 61 62 67 69
-IF                   : 38 39
+GE                   : 17
+ID                   : 6 9 22 24 25 45 46 47 61 61 62 63 63 64 69 71
+IF                   : 39 40
 INT                  : 2
-LE                   : 17
-MAIN                 : 69
-NE                   : 18
-PRINT                : 27 28
-PROGRAM              : 69
-STRING               : 
-VAR                  : 4
-VOID                 : 59 60 61 62
-WHILE                : 35
-[                    : 59 60 61 62
-]                    : 59 60 61 62
+LE                   : 18
+MAIN                 : 71
+NE                   : 19
+PRINT                : 28 29
+PROGRAM              : 71
+STRING               : 4
+VAR                  : 5
+VOID                 : 61 62 63 64
+WHILE                : 36
+[                    : 61 62 63 64
+]                    : 61 62 63 64
 error                : 
-{                    : 56
-}                    : 56
+{                    : 57
+}                    : 57
 
 Nonterminals, with rules where they appear
 
-assign               : 51
-body                 : 35 38 39 39 59 60 61 62 69
-condition            : 52
-cte                  : 22 25 26
-cycle                : 53
-empty                : 7 9 31 48 66 68
-exp                  : 10 11 13 13 14 14 15 15 16 16 17 17 18 18 19
-expression           : 20 27 29 35 38 39 44 45 47
-f_call               : 54
-f_call_ayuda         : 45 47
-factor               : 32 33 34
-func                 : 64 65
-func_start           : 59 60 61 62
-funcs_ayuda          : 59 61 67
-funcs_list           : 64 69
-inicio_main          : 69
-marcar_cycle_final   : 35
-marcar_cycle_inicio  : 35
-marcar_else_final    : 39
-marcar_else_inicio   : 39
-marcar_if_final      : 39
-marcar_if_inicio     : 38 39
-print                : 55
-print_ayuda          : 27 28 29 30
+assign               : 52
+body                 : 36 39 40 40 61 62 63 64 71
+condition            : 53
+cte                  : 23 26 27
+cycle                : 54
+empty                : 8 10 32 49 68 70
+exp                  : 11 12 14 14 15 15 16 16 17 17 18 18 19 19 20
+expression           : 21 28 30 36 39 40 45 46 48
+f_call               : 55
+f_call_ayuda         : 46 48
+factor               : 33 34 35
+func                 : 66 67
+func_start           : 61 62 63 64
+funcs_ayuda          : 61 63 69
+funcs_list           : 66 71
+inicio_main          : 71
+marcar_cycle_final   : 36
+marcar_cycle_inicio  : 36
+marcar_else_final    : 40
+marcar_else_inicio   : 40
+marcar_if_final      : 40
+marcar_if_inicio     : 39 40
+print                : 56
+print_ayuda          : 28 29 30 31
 program              : 0
-statement            : 49 50
-statements           : 49 56
-termino              : 10 11 12 32 33
-type                 : 5 59 61 67
-var_ayuda            : 4 6
-var_ayuda_tail       : 5
-var_doble_ayuda      : 5 8
-vars                 : 59 60 69
+statement            : 50 51
+statements           : 50 57
+termino              : 11 12 13 33 34
+type                 : 6 61 63 69
+var_ayuda            : 5 7
+var_ayuda_tail       : 6
+var_doble_ayuda      : 6 9
+vars                 : 61 62 71
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . program
-    (69) program -> . PROGRAM ID ; vars funcs_list MAIN inicio_main body END
+    (71) program -> . PROGRAM ID ; vars funcs_list MAIN inicio_main body END
 
     PROGRAM         shift and go to state 2
 
@@ -174,22 +172,22 @@ state 1
 
 state 2
 
-    (69) program -> PROGRAM . ID ; vars funcs_list MAIN inicio_main body END
+    (71) program -> PROGRAM . ID ; vars funcs_list MAIN inicio_main body END
 
     ID              shift and go to state 3
 
 
 state 3
 
-    (69) program -> PROGRAM ID . ; vars funcs_list MAIN inicio_main body END
+    (71) program -> PROGRAM ID . ; vars funcs_list MAIN inicio_main body END
 
     ;               shift and go to state 4
 
 
 state 4
 
-    (69) program -> PROGRAM ID ; . vars funcs_list MAIN inicio_main body END
-    (4) vars -> . VAR var_ayuda
+    (71) program -> PROGRAM ID ; . vars funcs_list MAIN inicio_main body END
+    (5) vars -> . VAR var_ayuda
 
     VAR             shift and go to state 6
 
@@ -197,14 +195,14 @@ state 4
 
 state 5
 
-    (69) program -> PROGRAM ID ; vars . funcs_list MAIN inicio_main body END
-    (64) funcs_list -> . funcs_list func
-    (65) funcs_list -> . func
-    (66) funcs_list -> . empty
-    (59) func -> . VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ;
-    (60) func -> . VOID ID ( ) func_start [ vars body ] ;
-    (61) func -> . VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ;
-    (62) func -> . VOID ID ( ) func_start [ body ] ;
+    (71) program -> PROGRAM ID ; vars . funcs_list MAIN inicio_main body END
+    (66) funcs_list -> . funcs_list func
+    (67) funcs_list -> . func
+    (68) funcs_list -> . empty
+    (61) func -> . VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ;
+    (62) func -> . VOID ID ( ) func_start [ vars body ] ;
+    (63) func -> . VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ;
+    (64) func -> . VOID ID ( ) func_start [ body ] ;
     (1) empty -> .
 
   ! shift/reduce conflict for VOID resolved as shift
@@ -219,8 +217,8 @@ state 5
 
 state 6
 
-    (4) vars -> VAR . var_ayuda
-    (5) var_ayuda -> . ID var_doble_ayuda : type ; var_ayuda_tail
+    (5) vars -> VAR . var_ayuda
+    (6) var_ayuda -> . ID var_doble_ayuda : type ; var_ayuda_tail
 
     ID              shift and go to state 12
 
@@ -228,12 +226,12 @@ state 6
 
 state 7
 
-    (69) program -> PROGRAM ID ; vars funcs_list . MAIN inicio_main body END
-    (64) funcs_list -> funcs_list . func
-    (59) func -> . VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ;
-    (60) func -> . VOID ID ( ) func_start [ vars body ] ;
-    (61) func -> . VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ;
-    (62) func -> . VOID ID ( ) func_start [ body ] ;
+    (71) program -> PROGRAM ID ; vars funcs_list . MAIN inicio_main body END
+    (66) funcs_list -> funcs_list . func
+    (61) func -> . VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ;
+    (62) func -> . VOID ID ( ) func_start [ vars body ] ;
+    (63) func -> . VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ;
+    (64) func -> . VOID ID ( ) func_start [ body ] ;
 
     MAIN            shift and go to state 13
     VOID            shift and go to state 10
@@ -242,44 +240,44 @@ state 7
 
 state 8
 
-    (65) funcs_list -> func .
+    (67) funcs_list -> func .
 
-    MAIN            reduce using rule 65 (funcs_list -> func .)
-    VOID            reduce using rule 65 (funcs_list -> func .)
+    MAIN            reduce using rule 67 (funcs_list -> func .)
+    VOID            reduce using rule 67 (funcs_list -> func .)
 
 
 state 9
 
-    (66) funcs_list -> empty .
+    (68) funcs_list -> empty .
 
-    MAIN            reduce using rule 66 (funcs_list -> empty .)
-    VOID            reduce using rule 66 (funcs_list -> empty .)
+    MAIN            reduce using rule 68 (funcs_list -> empty .)
+    VOID            reduce using rule 68 (funcs_list -> empty .)
 
 
 state 10
 
-    (59) func -> VOID . ID ( ID : type funcs_ayuda ) func_start [ vars body ] ;
-    (60) func -> VOID . ID ( ) func_start [ vars body ] ;
-    (61) func -> VOID . ID ( ID : type funcs_ayuda ) func_start [ body ] ;
-    (62) func -> VOID . ID ( ) func_start [ body ] ;
+    (61) func -> VOID . ID ( ID : type funcs_ayuda ) func_start [ vars body ] ;
+    (62) func -> VOID . ID ( ) func_start [ vars body ] ;
+    (63) func -> VOID . ID ( ID : type funcs_ayuda ) func_start [ body ] ;
+    (64) func -> VOID . ID ( ) func_start [ body ] ;
 
     ID              shift and go to state 15
 
 
 state 11
 
-    (4) vars -> VAR var_ayuda .
+    (5) vars -> VAR var_ayuda .
 
-    VOID            reduce using rule 4 (vars -> VAR var_ayuda .)
-    MAIN            reduce using rule 4 (vars -> VAR var_ayuda .)
-    {               reduce using rule 4 (vars -> VAR var_ayuda .)
+    VOID            reduce using rule 5 (vars -> VAR var_ayuda .)
+    MAIN            reduce using rule 5 (vars -> VAR var_ayuda .)
+    {               reduce using rule 5 (vars -> VAR var_ayuda .)
 
 
 state 12
 
-    (5) var_ayuda -> ID . var_doble_ayuda : type ; var_ayuda_tail
-    (8) var_doble_ayuda -> . , ID var_doble_ayuda
-    (9) var_doble_ayuda -> . empty
+    (6) var_ayuda -> ID . var_doble_ayuda : type ; var_ayuda_tail
+    (9) var_doble_ayuda -> . , ID var_doble_ayuda
+    (10) var_doble_ayuda -> . empty
     (1) empty -> .
 
     ,               shift and go to state 17
@@ -290,56 +288,56 @@ state 12
 
 state 13
 
-    (69) program -> PROGRAM ID ; vars funcs_list MAIN . inicio_main body END
-    (70) inicio_main -> .
+    (71) program -> PROGRAM ID ; vars funcs_list MAIN . inicio_main body END
+    (72) inicio_main -> .
 
-    {               reduce using rule 70 (inicio_main -> .)
+    {               reduce using rule 72 (inicio_main -> .)
 
     inicio_main                    shift and go to state 19
 
 state 14
 
-    (64) funcs_list -> funcs_list func .
+    (66) funcs_list -> funcs_list func .
 
-    MAIN            reduce using rule 64 (funcs_list -> funcs_list func .)
-    VOID            reduce using rule 64 (funcs_list -> funcs_list func .)
+    MAIN            reduce using rule 66 (funcs_list -> funcs_list func .)
+    VOID            reduce using rule 66 (funcs_list -> funcs_list func .)
 
 
 state 15
 
-    (59) func -> VOID ID . ( ID : type funcs_ayuda ) func_start [ vars body ] ;
-    (60) func -> VOID ID . ( ) func_start [ vars body ] ;
-    (61) func -> VOID ID . ( ID : type funcs_ayuda ) func_start [ body ] ;
-    (62) func -> VOID ID . ( ) func_start [ body ] ;
+    (61) func -> VOID ID . ( ID : type funcs_ayuda ) func_start [ vars body ] ;
+    (62) func -> VOID ID . ( ) func_start [ vars body ] ;
+    (63) func -> VOID ID . ( ID : type funcs_ayuda ) func_start [ body ] ;
+    (64) func -> VOID ID . ( ) func_start [ body ] ;
 
     (               shift and go to state 20
 
 
 state 16
 
-    (5) var_ayuda -> ID var_doble_ayuda . : type ; var_ayuda_tail
+    (6) var_ayuda -> ID var_doble_ayuda . : type ; var_ayuda_tail
 
     :               shift and go to state 21
 
 
 state 17
 
-    (8) var_doble_ayuda -> , . ID var_doble_ayuda
+    (9) var_doble_ayuda -> , . ID var_doble_ayuda
 
     ID              shift and go to state 22
 
 
 state 18
 
-    (9) var_doble_ayuda -> empty .
+    (10) var_doble_ayuda -> empty .
 
-    :               reduce using rule 9 (var_doble_ayuda -> empty .)
+    :               reduce using rule 10 (var_doble_ayuda -> empty .)
 
 
 state 19
 
-    (69) program -> PROGRAM ID ; vars funcs_list MAIN inicio_main . body END
-    (56) body -> . { statements }
+    (71) program -> PROGRAM ID ; vars funcs_list MAIN inicio_main . body END
+    (57) body -> . { statements }
 
     {               shift and go to state 24
 
@@ -347,10 +345,10 @@ state 19
 
 state 20
 
-    (59) func -> VOID ID ( . ID : type funcs_ayuda ) func_start [ vars body ] ;
-    (60) func -> VOID ID ( . ) func_start [ vars body ] ;
-    (61) func -> VOID ID ( . ID : type funcs_ayuda ) func_start [ body ] ;
-    (62) func -> VOID ID ( . ) func_start [ body ] ;
+    (61) func -> VOID ID ( . ID : type funcs_ayuda ) func_start [ vars body ] ;
+    (62) func -> VOID ID ( . ) func_start [ vars body ] ;
+    (63) func -> VOID ID ( . ID : type funcs_ayuda ) func_start [ body ] ;
+    (64) func -> VOID ID ( . ) func_start [ body ] ;
 
     ID              shift and go to state 25
     )               shift and go to state 26
@@ -358,90 +356,92 @@ state 20
 
 state 21
 
-    (5) var_ayuda -> ID var_doble_ayuda : . type ; var_ayuda_tail
+    (6) var_ayuda -> ID var_doble_ayuda : . type ; var_ayuda_tail
     (2) type -> . INT
     (3) type -> . FLOAT
+    (4) type -> . STRING
 
     INT             shift and go to state 28
     FLOAT           shift and go to state 29
+    STRING          shift and go to state 30
 
     type                           shift and go to state 27
 
 state 22
 
-    (8) var_doble_ayuda -> , ID . var_doble_ayuda
-    (8) var_doble_ayuda -> . , ID var_doble_ayuda
-    (9) var_doble_ayuda -> . empty
+    (9) var_doble_ayuda -> , ID . var_doble_ayuda
+    (9) var_doble_ayuda -> . , ID var_doble_ayuda
+    (10) var_doble_ayuda -> . empty
     (1) empty -> .
 
     ,               shift and go to state 17
     :               reduce using rule 1 (empty -> .)
 
-    var_doble_ayuda                shift and go to state 30
+    var_doble_ayuda                shift and go to state 31
     empty                          shift and go to state 18
 
 state 23
 
-    (69) program -> PROGRAM ID ; vars funcs_list MAIN inicio_main body . END
+    (71) program -> PROGRAM ID ; vars funcs_list MAIN inicio_main body . END
 
-    END             shift and go to state 31
+    END             shift and go to state 32
 
 
 state 24
 
-    (56) body -> { . statements }
-    (49) statements -> . statements statement
-    (50) statements -> . statement
-    (51) statement -> . assign
-    (52) statement -> . condition
-    (53) statement -> . cycle
-    (54) statement -> . f_call
-    (55) statement -> . print
-    (44) assign -> . ID = expression ;
-    (38) condition -> . IF ( expression ) marcar_if_inicio body ;
-    (39) condition -> . IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
-    (35) cycle -> . DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ;
-    (45) f_call -> . ID ( expression f_call_ayuda ) ;
-    (46) f_call -> . ID ( ) ;
-    (27) print -> . PRINT ( expression print_ayuda ) ;
-    (28) print -> . PRINT ( CONST_STRING print_ayuda ) ;
+    (57) body -> { . statements }
+    (50) statements -> . statements statement
+    (51) statements -> . statement
+    (52) statement -> . assign
+    (53) statement -> . condition
+    (54) statement -> . cycle
+    (55) statement -> . f_call
+    (56) statement -> . print
+    (45) assign -> . ID = expression ;
+    (39) condition -> . IF ( expression ) marcar_if_inicio body ;
+    (40) condition -> . IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+    (36) cycle -> . DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ;
+    (46) f_call -> . ID ( expression f_call_ayuda ) ;
+    (47) f_call -> . ID ( ) ;
+    (28) print -> . PRINT ( expression print_ayuda ) ;
+    (29) print -> . PRINT ( CONST_STRING print_ayuda ) ;
 
-    ID              shift and go to state 39
-    IF              shift and go to state 40
-    DO              shift and go to state 41
-    PRINT           shift and go to state 42
+    ID              shift and go to state 40
+    IF              shift and go to state 41
+    DO              shift and go to state 42
+    PRINT           shift and go to state 43
 
-    statements                     shift and go to state 32
-    statement                      shift and go to state 33
-    assign                         shift and go to state 34
-    condition                      shift and go to state 35
-    cycle                          shift and go to state 36
-    f_call                         shift and go to state 37
-    print                          shift and go to state 38
+    statements                     shift and go to state 33
+    statement                      shift and go to state 34
+    assign                         shift and go to state 35
+    condition                      shift and go to state 36
+    cycle                          shift and go to state 37
+    f_call                         shift and go to state 38
+    print                          shift and go to state 39
 
 state 25
 
-    (59) func -> VOID ID ( ID . : type funcs_ayuda ) func_start [ vars body ] ;
-    (61) func -> VOID ID ( ID . : type funcs_ayuda ) func_start [ body ] ;
+    (61) func -> VOID ID ( ID . : type funcs_ayuda ) func_start [ vars body ] ;
+    (63) func -> VOID ID ( ID . : type funcs_ayuda ) func_start [ body ] ;
 
-    :               shift and go to state 43
+    :               shift and go to state 44
 
 
 state 26
 
-    (60) func -> VOID ID ( ) . func_start [ vars body ] ;
-    (62) func -> VOID ID ( ) . func_start [ body ] ;
-    (63) func_start -> .
+    (62) func -> VOID ID ( ) . func_start [ vars body ] ;
+    (64) func -> VOID ID ( ) . func_start [ body ] ;
+    (65) func_start -> .
 
-    [               reduce using rule 63 (func_start -> .)
+    [               reduce using rule 65 (func_start -> .)
 
-    func_start                     shift and go to state 44
+    func_start                     shift and go to state 45
 
 state 27
 
-    (5) var_ayuda -> ID var_doble_ayuda : type . ; var_ayuda_tail
+    (6) var_ayuda -> ID var_doble_ayuda : type . ; var_ayuda_tail
 
-    ;               shift and go to state 45
+    ;               shift and go to state 46
 
 
 state 28
@@ -464,176 +464,187 @@ state 29
 
 state 30
 
-    (8) var_doble_ayuda -> , ID var_doble_ayuda .
+    (4) type -> STRING .
 
-    :               reduce using rule 8 (var_doble_ayuda -> , ID var_doble_ayuda .)
+    ;               reduce using rule 4 (type -> STRING .)
+    ,               reduce using rule 4 (type -> STRING .)
+    )               reduce using rule 4 (type -> STRING .)
 
 
 state 31
 
-    (69) program -> PROGRAM ID ; vars funcs_list MAIN inicio_main body END .
+    (9) var_doble_ayuda -> , ID var_doble_ayuda .
 
-    $end            reduce using rule 69 (program -> PROGRAM ID ; vars funcs_list MAIN inicio_main body END .)
+    :               reduce using rule 9 (var_doble_ayuda -> , ID var_doble_ayuda .)
 
 
 state 32
 
-    (56) body -> { statements . }
-    (49) statements -> statements . statement
-    (51) statement -> . assign
-    (52) statement -> . condition
-    (53) statement -> . cycle
-    (54) statement -> . f_call
-    (55) statement -> . print
-    (44) assign -> . ID = expression ;
-    (38) condition -> . IF ( expression ) marcar_if_inicio body ;
-    (39) condition -> . IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
-    (35) cycle -> . DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ;
-    (45) f_call -> . ID ( expression f_call_ayuda ) ;
-    (46) f_call -> . ID ( ) ;
-    (27) print -> . PRINT ( expression print_ayuda ) ;
-    (28) print -> . PRINT ( CONST_STRING print_ayuda ) ;
+    (71) program -> PROGRAM ID ; vars funcs_list MAIN inicio_main body END .
 
-    }               shift and go to state 46
-    ID              shift and go to state 39
-    IF              shift and go to state 40
-    DO              shift and go to state 41
-    PRINT           shift and go to state 42
+    $end            reduce using rule 71 (program -> PROGRAM ID ; vars funcs_list MAIN inicio_main body END .)
 
-    statement                      shift and go to state 47
-    assign                         shift and go to state 34
-    condition                      shift and go to state 35
-    cycle                          shift and go to state 36
-    f_call                         shift and go to state 37
-    print                          shift and go to state 38
 
 state 33
 
-    (50) statements -> statement .
+    (57) body -> { statements . }
+    (50) statements -> statements . statement
+    (52) statement -> . assign
+    (53) statement -> . condition
+    (54) statement -> . cycle
+    (55) statement -> . f_call
+    (56) statement -> . print
+    (45) assign -> . ID = expression ;
+    (39) condition -> . IF ( expression ) marcar_if_inicio body ;
+    (40) condition -> . IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+    (36) cycle -> . DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ;
+    (46) f_call -> . ID ( expression f_call_ayuda ) ;
+    (47) f_call -> . ID ( ) ;
+    (28) print -> . PRINT ( expression print_ayuda ) ;
+    (29) print -> . PRINT ( CONST_STRING print_ayuda ) ;
 
-    }               reduce using rule 50 (statements -> statement .)
-    ID              reduce using rule 50 (statements -> statement .)
-    IF              reduce using rule 50 (statements -> statement .)
-    DO              reduce using rule 50 (statements -> statement .)
-    PRINT           reduce using rule 50 (statements -> statement .)
+    }               shift and go to state 47
+    ID              shift and go to state 40
+    IF              shift and go to state 41
+    DO              shift and go to state 42
+    PRINT           shift and go to state 43
 
+    statement                      shift and go to state 48
+    assign                         shift and go to state 35
+    condition                      shift and go to state 36
+    cycle                          shift and go to state 37
+    f_call                         shift and go to state 38
+    print                          shift and go to state 39
 
 state 34
 
-    (51) statement -> assign .
+    (51) statements -> statement .
 
-    }               reduce using rule 51 (statement -> assign .)
-    ID              reduce using rule 51 (statement -> assign .)
-    IF              reduce using rule 51 (statement -> assign .)
-    DO              reduce using rule 51 (statement -> assign .)
-    PRINT           reduce using rule 51 (statement -> assign .)
+    }               reduce using rule 51 (statements -> statement .)
+    ID              reduce using rule 51 (statements -> statement .)
+    IF              reduce using rule 51 (statements -> statement .)
+    DO              reduce using rule 51 (statements -> statement .)
+    PRINT           reduce using rule 51 (statements -> statement .)
 
 
 state 35
 
-    (52) statement -> condition .
+    (52) statement -> assign .
 
-    }               reduce using rule 52 (statement -> condition .)
-    ID              reduce using rule 52 (statement -> condition .)
-    IF              reduce using rule 52 (statement -> condition .)
-    DO              reduce using rule 52 (statement -> condition .)
-    PRINT           reduce using rule 52 (statement -> condition .)
+    }               reduce using rule 52 (statement -> assign .)
+    ID              reduce using rule 52 (statement -> assign .)
+    IF              reduce using rule 52 (statement -> assign .)
+    DO              reduce using rule 52 (statement -> assign .)
+    PRINT           reduce using rule 52 (statement -> assign .)
 
 
 state 36
 
-    (53) statement -> cycle .
+    (53) statement -> condition .
 
-    }               reduce using rule 53 (statement -> cycle .)
-    ID              reduce using rule 53 (statement -> cycle .)
-    IF              reduce using rule 53 (statement -> cycle .)
-    DO              reduce using rule 53 (statement -> cycle .)
-    PRINT           reduce using rule 53 (statement -> cycle .)
+    }               reduce using rule 53 (statement -> condition .)
+    ID              reduce using rule 53 (statement -> condition .)
+    IF              reduce using rule 53 (statement -> condition .)
+    DO              reduce using rule 53 (statement -> condition .)
+    PRINT           reduce using rule 53 (statement -> condition .)
 
 
 state 37
 
-    (54) statement -> f_call .
+    (54) statement -> cycle .
 
-    }               reduce using rule 54 (statement -> f_call .)
-    ID              reduce using rule 54 (statement -> f_call .)
-    IF              reduce using rule 54 (statement -> f_call .)
-    DO              reduce using rule 54 (statement -> f_call .)
-    PRINT           reduce using rule 54 (statement -> f_call .)
+    }               reduce using rule 54 (statement -> cycle .)
+    ID              reduce using rule 54 (statement -> cycle .)
+    IF              reduce using rule 54 (statement -> cycle .)
+    DO              reduce using rule 54 (statement -> cycle .)
+    PRINT           reduce using rule 54 (statement -> cycle .)
 
 
 state 38
 
-    (55) statement -> print .
+    (55) statement -> f_call .
 
-    }               reduce using rule 55 (statement -> print .)
-    ID              reduce using rule 55 (statement -> print .)
-    IF              reduce using rule 55 (statement -> print .)
-    DO              reduce using rule 55 (statement -> print .)
-    PRINT           reduce using rule 55 (statement -> print .)
+    }               reduce using rule 55 (statement -> f_call .)
+    ID              reduce using rule 55 (statement -> f_call .)
+    IF              reduce using rule 55 (statement -> f_call .)
+    DO              reduce using rule 55 (statement -> f_call .)
+    PRINT           reduce using rule 55 (statement -> f_call .)
 
 
 state 39
 
-    (44) assign -> ID . = expression ;
-    (45) f_call -> ID . ( expression f_call_ayuda ) ;
-    (46) f_call -> ID . ( ) ;
+    (56) statement -> print .
 
-    =               shift and go to state 48
-    (               shift and go to state 49
+    }               reduce using rule 56 (statement -> print .)
+    ID              reduce using rule 56 (statement -> print .)
+    IF              reduce using rule 56 (statement -> print .)
+    DO              reduce using rule 56 (statement -> print .)
+    PRINT           reduce using rule 56 (statement -> print .)
 
 
 state 40
 
-    (38) condition -> IF . ( expression ) marcar_if_inicio body ;
-    (39) condition -> IF . ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+    (45) assign -> ID . = expression ;
+    (46) f_call -> ID . ( expression f_call_ayuda ) ;
+    (47) f_call -> ID . ( ) ;
 
+    =               shift and go to state 49
     (               shift and go to state 50
 
 
 state 41
 
-    (35) cycle -> DO . marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ;
-    (36) marcar_cycle_inicio -> .
+    (39) condition -> IF . ( expression ) marcar_if_inicio body ;
+    (40) condition -> IF . ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
 
-    {               reduce using rule 36 (marcar_cycle_inicio -> .)
+    (               shift and go to state 51
 
-    marcar_cycle_inicio            shift and go to state 51
 
 state 42
 
-    (27) print -> PRINT . ( expression print_ayuda ) ;
-    (28) print -> PRINT . ( CONST_STRING print_ayuda ) ;
+    (36) cycle -> DO . marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ;
+    (37) marcar_cycle_inicio -> .
 
-    (               shift and go to state 52
+    {               reduce using rule 37 (marcar_cycle_inicio -> .)
 
+    marcar_cycle_inicio            shift and go to state 52
 
 state 43
 
-    (59) func -> VOID ID ( ID : . type funcs_ayuda ) func_start [ vars body ] ;
-    (61) func -> VOID ID ( ID : . type funcs_ayuda ) func_start [ body ] ;
-    (2) type -> . INT
-    (3) type -> . FLOAT
+    (28) print -> PRINT . ( expression print_ayuda ) ;
+    (29) print -> PRINT . ( CONST_STRING print_ayuda ) ;
 
-    INT             shift and go to state 28
-    FLOAT           shift and go to state 29
+    (               shift and go to state 53
 
-    type                           shift and go to state 53
 
 state 44
 
-    (60) func -> VOID ID ( ) func_start . [ vars body ] ;
-    (62) func -> VOID ID ( ) func_start . [ body ] ;
+    (61) func -> VOID ID ( ID : . type funcs_ayuda ) func_start [ vars body ] ;
+    (63) func -> VOID ID ( ID : . type funcs_ayuda ) func_start [ body ] ;
+    (2) type -> . INT
+    (3) type -> . FLOAT
+    (4) type -> . STRING
 
-    [               shift and go to state 54
+    INT             shift and go to state 28
+    FLOAT           shift and go to state 29
+    STRING          shift and go to state 30
 
+    type                           shift and go to state 54
 
 state 45
 
-    (5) var_ayuda -> ID var_doble_ayuda : type ; . var_ayuda_tail
-    (6) var_ayuda_tail -> . var_ayuda
-    (7) var_ayuda_tail -> . empty
-    (5) var_ayuda -> . ID var_doble_ayuda : type ; var_ayuda_tail
+    (62) func -> VOID ID ( ) func_start . [ vars body ] ;
+    (64) func -> VOID ID ( ) func_start . [ body ] ;
+
+    [               shift and go to state 55
+
+
+state 46
+
+    (6) var_ayuda -> ID var_doble_ayuda : type ; . var_ayuda_tail
+    (7) var_ayuda_tail -> . var_ayuda
+    (8) var_ayuda_tail -> . empty
+    (6) var_ayuda -> . ID var_doble_ayuda : type ; var_ayuda_tail
     (1) empty -> .
 
     ID              shift and go to state 12
@@ -641,1702 +652,1799 @@ state 45
     MAIN            reduce using rule 1 (empty -> .)
     {               reduce using rule 1 (empty -> .)
 
-    var_ayuda_tail                 shift and go to state 55
-    var_ayuda                      shift and go to state 56
-    empty                          shift and go to state 57
-
-state 46
-
-    (56) body -> { statements } .
-
-    END             reduce using rule 56 (body -> { statements } .)
-    WHILE           reduce using rule 56 (body -> { statements } .)
-    ]               reduce using rule 56 (body -> { statements } .)
-    ;               reduce using rule 56 (body -> { statements } .)
-    ELSE            reduce using rule 56 (body -> { statements } .)
-
+    var_ayuda_tail                 shift and go to state 56
+    var_ayuda                      shift and go to state 57
+    empty                          shift and go to state 58
 
 state 47
 
-    (49) statements -> statements statement .
+    (57) body -> { statements } .
 
-    }               reduce using rule 49 (statements -> statements statement .)
-    ID              reduce using rule 49 (statements -> statements statement .)
-    IF              reduce using rule 49 (statements -> statements statement .)
-    DO              reduce using rule 49 (statements -> statements statement .)
-    PRINT           reduce using rule 49 (statements -> statements statement .)
+    END             reduce using rule 57 (body -> { statements } .)
+    WHILE           reduce using rule 57 (body -> { statements } .)
+    ]               reduce using rule 57 (body -> { statements } .)
+    ;               reduce using rule 57 (body -> { statements } .)
+    ELSE            reduce using rule 57 (body -> { statements } .)
 
 
 state 48
 
-    (44) assign -> ID = . expression ;
-    (13) expression -> . exp > exp
-    (14) expression -> . exp < exp
-    (15) expression -> . exp EQ exp
-    (16) expression -> . exp GE exp
-    (17) expression -> . exp LE exp
-    (18) expression -> . exp NE exp
-    (19) expression -> . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (50) statements -> statements statement .
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    }               reduce using rule 50 (statements -> statements statement .)
+    ID              reduce using rule 50 (statements -> statements statement .)
+    IF              reduce using rule 50 (statements -> statements statement .)
+    DO              reduce using rule 50 (statements -> statements statement .)
+    PRINT           reduce using rule 50 (statements -> statements statement .)
 
-    expression                     shift and go to state 59
-    exp                            shift and go to state 60
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
 
 state 49
 
-    (45) f_call -> ID ( . expression f_call_ayuda ) ;
-    (46) f_call -> ID ( . ) ;
-    (13) expression -> . exp > exp
-    (14) expression -> . exp < exp
-    (15) expression -> . exp EQ exp
-    (16) expression -> . exp GE exp
-    (17) expression -> . exp LE exp
-    (18) expression -> . exp NE exp
-    (19) expression -> . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (45) assign -> ID = . expression ;
+    (14) expression -> . exp > exp
+    (15) expression -> . exp < exp
+    (16) expression -> . exp EQ exp
+    (17) expression -> . exp GE exp
+    (18) expression -> . exp LE exp
+    (19) expression -> . exp NE exp
+    (20) expression -> . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    )               shift and go to state 70
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
-    expression                     shift and go to state 69
-    exp                            shift and go to state 60
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    expression                     shift and go to state 60
+    exp                            shift and go to state 61
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 50
 
-    (38) condition -> IF ( . expression ) marcar_if_inicio body ;
-    (39) condition -> IF ( . expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
-    (13) expression -> . exp > exp
-    (14) expression -> . exp < exp
-    (15) expression -> . exp EQ exp
-    (16) expression -> . exp GE exp
-    (17) expression -> . exp LE exp
-    (18) expression -> . exp NE exp
-    (19) expression -> . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (46) f_call -> ID ( . expression f_call_ayuda ) ;
+    (47) f_call -> ID ( . ) ;
+    (14) expression -> . exp > exp
+    (15) expression -> . exp < exp
+    (16) expression -> . exp EQ exp
+    (17) expression -> . exp GE exp
+    (18) expression -> . exp LE exp
+    (19) expression -> . exp NE exp
+    (20) expression -> . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    )               shift and go to state 72
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
     expression                     shift and go to state 71
-    exp                            shift and go to state 60
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    exp                            shift and go to state 61
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 51
 
-    (35) cycle -> DO marcar_cycle_inicio . body marcar_cycle_final WHILE ( expression ) ;
-    (56) body -> . { statements }
+    (39) condition -> IF ( . expression ) marcar_if_inicio body ;
+    (40) condition -> IF ( . expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+    (14) expression -> . exp > exp
+    (15) expression -> . exp < exp
+    (16) expression -> . exp EQ exp
+    (17) expression -> . exp GE exp
+    (18) expression -> . exp LE exp
+    (19) expression -> . exp NE exp
+    (20) expression -> . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    {               shift and go to state 24
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
-    body                           shift and go to state 72
+    expression                     shift and go to state 73
+    exp                            shift and go to state 61
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 52
 
-    (27) print -> PRINT ( . expression print_ayuda ) ;
-    (28) print -> PRINT ( . CONST_STRING print_ayuda ) ;
-    (13) expression -> . exp > exp
-    (14) expression -> . exp < exp
-    (15) expression -> . exp EQ exp
-    (16) expression -> . exp GE exp
-    (17) expression -> . exp LE exp
-    (18) expression -> . exp NE exp
-    (19) expression -> . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (36) cycle -> DO marcar_cycle_inicio . body marcar_cycle_final WHILE ( expression ) ;
+    (57) body -> . { statements }
 
-    CONST_STRING    shift and go to state 74
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    {               shift and go to state 24
 
-    expression                     shift and go to state 73
-    exp                            shift and go to state 60
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    body                           shift and go to state 74
 
 state 53
 
-    (59) func -> VOID ID ( ID : type . funcs_ayuda ) func_start [ vars body ] ;
-    (61) func -> VOID ID ( ID : type . funcs_ayuda ) func_start [ body ] ;
-    (67) funcs_ayuda -> . , ID : type funcs_ayuda
-    (68) funcs_ayuda -> . empty
-    (1) empty -> .
+    (28) print -> PRINT ( . expression print_ayuda ) ;
+    (29) print -> PRINT ( . CONST_STRING print_ayuda ) ;
+    (14) expression -> . exp > exp
+    (15) expression -> . exp < exp
+    (16) expression -> . exp EQ exp
+    (17) expression -> . exp GE exp
+    (18) expression -> . exp LE exp
+    (19) expression -> . exp NE exp
+    (20) expression -> . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    ,               shift and go to state 76
-    )               reduce using rule 1 (empty -> .)
+    CONST_STRING    shift and go to state 76
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
 
-    funcs_ayuda                    shift and go to state 75
-    empty                          shift and go to state 77
+    expression                     shift and go to state 75
+    exp                            shift and go to state 61
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 54
 
-    (60) func -> VOID ID ( ) func_start [ . vars body ] ;
-    (62) func -> VOID ID ( ) func_start [ . body ] ;
-    (4) vars -> . VAR var_ayuda
-    (56) body -> . { statements }
+    (61) func -> VOID ID ( ID : type . funcs_ayuda ) func_start [ vars body ] ;
+    (63) func -> VOID ID ( ID : type . funcs_ayuda ) func_start [ body ] ;
+    (69) funcs_ayuda -> . , ID : type funcs_ayuda
+    (70) funcs_ayuda -> . empty
+    (1) empty -> .
+
+    ,               shift and go to state 78
+    )               reduce using rule 1 (empty -> .)
+
+    funcs_ayuda                    shift and go to state 77
+    empty                          shift and go to state 79
+
+state 55
+
+    (62) func -> VOID ID ( ) func_start [ . vars body ] ;
+    (64) func -> VOID ID ( ) func_start [ . body ] ;
+    (5) vars -> . VAR var_ayuda
+    (57) body -> . { statements }
 
     VAR             shift and go to state 6
     {               shift and go to state 24
 
-    vars                           shift and go to state 78
-    body                           shift and go to state 79
-
-state 55
-
-    (5) var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail .
-
-    VOID            reduce using rule 5 (var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail .)
-    MAIN            reduce using rule 5 (var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail .)
-    {               reduce using rule 5 (var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail .)
-
+    vars                           shift and go to state 80
+    body                           shift and go to state 81
 
 state 56
 
-    (6) var_ayuda_tail -> var_ayuda .
+    (6) var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail .
 
-    VOID            reduce using rule 6 (var_ayuda_tail -> var_ayuda .)
-    MAIN            reduce using rule 6 (var_ayuda_tail -> var_ayuda .)
-    {               reduce using rule 6 (var_ayuda_tail -> var_ayuda .)
+    VOID            reduce using rule 6 (var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail .)
+    MAIN            reduce using rule 6 (var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail .)
+    {               reduce using rule 6 (var_ayuda -> ID var_doble_ayuda : type ; var_ayuda_tail .)
 
 
 state 57
 
-    (7) var_ayuda_tail -> empty .
+    (7) var_ayuda_tail -> var_ayuda .
 
-    VOID            reduce using rule 7 (var_ayuda_tail -> empty .)
-    MAIN            reduce using rule 7 (var_ayuda_tail -> empty .)
-    {               reduce using rule 7 (var_ayuda_tail -> empty .)
+    VOID            reduce using rule 7 (var_ayuda_tail -> var_ayuda .)
+    MAIN            reduce using rule 7 (var_ayuda_tail -> var_ayuda .)
+    {               reduce using rule 7 (var_ayuda_tail -> var_ayuda .)
 
 
 state 58
 
-    (21) factor -> ID .
+    (8) var_ayuda_tail -> empty .
 
-    *               reduce using rule 21 (factor -> ID .)
-    /               reduce using rule 21 (factor -> ID .)
-    >               reduce using rule 21 (factor -> ID .)
-    <               reduce using rule 21 (factor -> ID .)
-    EQ              reduce using rule 21 (factor -> ID .)
-    GE              reduce using rule 21 (factor -> ID .)
-    LE              reduce using rule 21 (factor -> ID .)
-    NE              reduce using rule 21 (factor -> ID .)
-    +               reduce using rule 21 (factor -> ID .)
-    -               reduce using rule 21 (factor -> ID .)
-    ;               reduce using rule 21 (factor -> ID .)
-    ,               reduce using rule 21 (factor -> ID .)
-    )               reduce using rule 21 (factor -> ID .)
+    VOID            reduce using rule 8 (var_ayuda_tail -> empty .)
+    MAIN            reduce using rule 8 (var_ayuda_tail -> empty .)
+    {               reduce using rule 8 (var_ayuda_tail -> empty .)
 
 
 state 59
 
-    (44) assign -> ID = expression . ;
+    (22) factor -> ID .
 
-    ;               shift and go to state 80
+    *               reduce using rule 22 (factor -> ID .)
+    /               reduce using rule 22 (factor -> ID .)
+    >               reduce using rule 22 (factor -> ID .)
+    <               reduce using rule 22 (factor -> ID .)
+    EQ              reduce using rule 22 (factor -> ID .)
+    GE              reduce using rule 22 (factor -> ID .)
+    LE              reduce using rule 22 (factor -> ID .)
+    NE              reduce using rule 22 (factor -> ID .)
+    +               reduce using rule 22 (factor -> ID .)
+    -               reduce using rule 22 (factor -> ID .)
+    ;               reduce using rule 22 (factor -> ID .)
+    ,               reduce using rule 22 (factor -> ID .)
+    )               reduce using rule 22 (factor -> ID .)
 
 
 state 60
 
-    (13) expression -> exp . > exp
-    (14) expression -> exp . < exp
-    (15) expression -> exp . EQ exp
-    (16) expression -> exp . GE exp
-    (17) expression -> exp . LE exp
-    (18) expression -> exp . NE exp
-    (19) expression -> exp .
-    (10) exp -> exp . + termino
-    (11) exp -> exp . - termino
+    (45) assign -> ID = expression . ;
 
-    >               shift and go to state 81
-    <               shift and go to state 82
-    EQ              shift and go to state 83
-    GE              shift and go to state 84
-    LE              shift and go to state 85
-    NE              shift and go to state 86
-    ;               reduce using rule 19 (expression -> exp .)
-    ,               reduce using rule 19 (expression -> exp .)
-    )               reduce using rule 19 (expression -> exp .)
-    +               shift and go to state 87
-    -               shift and go to state 88
+    ;               shift and go to state 82
 
 
 state 61
 
-    (23) factor -> + . ID
-    (25) factor -> + . cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (14) expression -> exp . > exp
+    (15) expression -> exp . < exp
+    (16) expression -> exp . EQ exp
+    (17) expression -> exp . GE exp
+    (18) expression -> exp . LE exp
+    (19) expression -> exp . NE exp
+    (20) expression -> exp .
+    (11) exp -> exp . + termino
+    (12) exp -> exp . - termino
 
-    ID              shift and go to state 89
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    >               shift and go to state 83
+    <               shift and go to state 84
+    EQ              shift and go to state 85
+    GE              shift and go to state 86
+    LE              shift and go to state 87
+    NE              shift and go to state 88
+    ;               reduce using rule 20 (expression -> exp .)
+    ,               reduce using rule 20 (expression -> exp .)
+    )               reduce using rule 20 (expression -> exp .)
+    +               shift and go to state 89
+    -               shift and go to state 90
 
-    cte                            shift and go to state 90
 
 state 62
 
-    (12) exp -> termino .
-    (32) termino -> termino . * factor
-    (33) termino -> termino . / factor
+    (24) factor -> + . ID
+    (26) factor -> + . cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    >               reduce using rule 12 (exp -> termino .)
-    <               reduce using rule 12 (exp -> termino .)
-    EQ              reduce using rule 12 (exp -> termino .)
-    GE              reduce using rule 12 (exp -> termino .)
-    LE              reduce using rule 12 (exp -> termino .)
-    NE              reduce using rule 12 (exp -> termino .)
-    +               reduce using rule 12 (exp -> termino .)
-    -               reduce using rule 12 (exp -> termino .)
-    ;               reduce using rule 12 (exp -> termino .)
-    ,               reduce using rule 12 (exp -> termino .)
-    )               reduce using rule 12 (exp -> termino .)
-    *               shift and go to state 91
-    /               shift and go to state 92
+    ID              shift and go to state 91
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    cte                            shift and go to state 92
 
 state 63
 
-    (24) factor -> - . ID
-    (26) factor -> - . cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (13) exp -> termino .
+    (33) termino -> termino . * factor
+    (34) termino -> termino . / factor
 
-    ID              shift and go to state 93
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    >               reduce using rule 13 (exp -> termino .)
+    <               reduce using rule 13 (exp -> termino .)
+    EQ              reduce using rule 13 (exp -> termino .)
+    GE              reduce using rule 13 (exp -> termino .)
+    LE              reduce using rule 13 (exp -> termino .)
+    NE              reduce using rule 13 (exp -> termino .)
+    +               reduce using rule 13 (exp -> termino .)
+    -               reduce using rule 13 (exp -> termino .)
+    ;               reduce using rule 13 (exp -> termino .)
+    ,               reduce using rule 13 (exp -> termino .)
+    )               reduce using rule 13 (exp -> termino .)
+    *               shift and go to state 93
+    /               shift and go to state 94
 
-    cte                            shift and go to state 94
 
 state 64
 
-    (34) termino -> factor .
+    (25) factor -> - . ID
+    (27) factor -> - . cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    *               reduce using rule 34 (termino -> factor .)
-    /               reduce using rule 34 (termino -> factor .)
-    >               reduce using rule 34 (termino -> factor .)
-    <               reduce using rule 34 (termino -> factor .)
-    EQ              reduce using rule 34 (termino -> factor .)
-    GE              reduce using rule 34 (termino -> factor .)
-    LE              reduce using rule 34 (termino -> factor .)
-    NE              reduce using rule 34 (termino -> factor .)
-    +               reduce using rule 34 (termino -> factor .)
-    -               reduce using rule 34 (termino -> factor .)
-    ;               reduce using rule 34 (termino -> factor .)
-    ,               reduce using rule 34 (termino -> factor .)
-    )               reduce using rule 34 (termino -> factor .)
+    ID              shift and go to state 95
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    cte                            shift and go to state 96
 
 state 65
 
-    (20) factor -> ( . expression )
-    (13) expression -> . exp > exp
-    (14) expression -> . exp < exp
-    (15) expression -> . exp EQ exp
-    (16) expression -> . exp GE exp
-    (17) expression -> . exp LE exp
-    (18) expression -> . exp NE exp
-    (19) expression -> . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (35) termino -> factor .
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    *               reduce using rule 35 (termino -> factor .)
+    /               reduce using rule 35 (termino -> factor .)
+    >               reduce using rule 35 (termino -> factor .)
+    <               reduce using rule 35 (termino -> factor .)
+    EQ              reduce using rule 35 (termino -> factor .)
+    GE              reduce using rule 35 (termino -> factor .)
+    LE              reduce using rule 35 (termino -> factor .)
+    NE              reduce using rule 35 (termino -> factor .)
+    +               reduce using rule 35 (termino -> factor .)
+    -               reduce using rule 35 (termino -> factor .)
+    ;               reduce using rule 35 (termino -> factor .)
+    ,               reduce using rule 35 (termino -> factor .)
+    )               reduce using rule 35 (termino -> factor .)
 
-    expression                     shift and go to state 95
-    exp                            shift and go to state 60
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
 
 state 66
 
-    (22) factor -> cte .
+    (21) factor -> ( . expression )
+    (14) expression -> . exp > exp
+    (15) expression -> . exp < exp
+    (16) expression -> . exp EQ exp
+    (17) expression -> . exp GE exp
+    (18) expression -> . exp LE exp
+    (19) expression -> . exp NE exp
+    (20) expression -> . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    *               reduce using rule 22 (factor -> cte .)
-    /               reduce using rule 22 (factor -> cte .)
-    >               reduce using rule 22 (factor -> cte .)
-    <               reduce using rule 22 (factor -> cte .)
-    EQ              reduce using rule 22 (factor -> cte .)
-    GE              reduce using rule 22 (factor -> cte .)
-    LE              reduce using rule 22 (factor -> cte .)
-    NE              reduce using rule 22 (factor -> cte .)
-    +               reduce using rule 22 (factor -> cte .)
-    -               reduce using rule 22 (factor -> cte .)
-    ;               reduce using rule 22 (factor -> cte .)
-    ,               reduce using rule 22 (factor -> cte .)
-    )               reduce using rule 22 (factor -> cte .)
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    expression                     shift and go to state 97
+    exp                            shift and go to state 61
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 67
 
-    (57) cte -> CONST_INT .
+    (23) factor -> cte .
 
-    *               reduce using rule 57 (cte -> CONST_INT .)
-    /               reduce using rule 57 (cte -> CONST_INT .)
-    >               reduce using rule 57 (cte -> CONST_INT .)
-    <               reduce using rule 57 (cte -> CONST_INT .)
-    EQ              reduce using rule 57 (cte -> CONST_INT .)
-    GE              reduce using rule 57 (cte -> CONST_INT .)
-    LE              reduce using rule 57 (cte -> CONST_INT .)
-    NE              reduce using rule 57 (cte -> CONST_INT .)
-    +               reduce using rule 57 (cte -> CONST_INT .)
-    -               reduce using rule 57 (cte -> CONST_INT .)
-    ;               reduce using rule 57 (cte -> CONST_INT .)
-    ,               reduce using rule 57 (cte -> CONST_INT .)
-    )               reduce using rule 57 (cte -> CONST_INT .)
+    *               reduce using rule 23 (factor -> cte .)
+    /               reduce using rule 23 (factor -> cte .)
+    >               reduce using rule 23 (factor -> cte .)
+    <               reduce using rule 23 (factor -> cte .)
+    EQ              reduce using rule 23 (factor -> cte .)
+    GE              reduce using rule 23 (factor -> cte .)
+    LE              reduce using rule 23 (factor -> cte .)
+    NE              reduce using rule 23 (factor -> cte .)
+    +               reduce using rule 23 (factor -> cte .)
+    -               reduce using rule 23 (factor -> cte .)
+    ;               reduce using rule 23 (factor -> cte .)
+    ,               reduce using rule 23 (factor -> cte .)
+    )               reduce using rule 23 (factor -> cte .)
 
 
 state 68
 
-    (58) cte -> CONST_FLOAT .
+    (58) cte -> CONST_INT .
 
-    *               reduce using rule 58 (cte -> CONST_FLOAT .)
-    /               reduce using rule 58 (cte -> CONST_FLOAT .)
-    >               reduce using rule 58 (cte -> CONST_FLOAT .)
-    <               reduce using rule 58 (cte -> CONST_FLOAT .)
-    EQ              reduce using rule 58 (cte -> CONST_FLOAT .)
-    GE              reduce using rule 58 (cte -> CONST_FLOAT .)
-    LE              reduce using rule 58 (cte -> CONST_FLOAT .)
-    NE              reduce using rule 58 (cte -> CONST_FLOAT .)
-    +               reduce using rule 58 (cte -> CONST_FLOAT .)
-    -               reduce using rule 58 (cte -> CONST_FLOAT .)
-    ;               reduce using rule 58 (cte -> CONST_FLOAT .)
-    ,               reduce using rule 58 (cte -> CONST_FLOAT .)
-    )               reduce using rule 58 (cte -> CONST_FLOAT .)
+    *               reduce using rule 58 (cte -> CONST_INT .)
+    /               reduce using rule 58 (cte -> CONST_INT .)
+    >               reduce using rule 58 (cte -> CONST_INT .)
+    <               reduce using rule 58 (cte -> CONST_INT .)
+    EQ              reduce using rule 58 (cte -> CONST_INT .)
+    GE              reduce using rule 58 (cte -> CONST_INT .)
+    LE              reduce using rule 58 (cte -> CONST_INT .)
+    NE              reduce using rule 58 (cte -> CONST_INT .)
+    +               reduce using rule 58 (cte -> CONST_INT .)
+    -               reduce using rule 58 (cte -> CONST_INT .)
+    ;               reduce using rule 58 (cte -> CONST_INT .)
+    ,               reduce using rule 58 (cte -> CONST_INT .)
+    )               reduce using rule 58 (cte -> CONST_INT .)
 
 
 state 69
 
-    (45) f_call -> ID ( expression . f_call_ayuda ) ;
-    (47) f_call_ayuda -> . , expression f_call_ayuda
-    (48) f_call_ayuda -> . empty
-    (1) empty -> .
+    (59) cte -> CONST_FLOAT .
 
-    ,               shift and go to state 97
-    )               reduce using rule 1 (empty -> .)
+    *               reduce using rule 59 (cte -> CONST_FLOAT .)
+    /               reduce using rule 59 (cte -> CONST_FLOAT .)
+    >               reduce using rule 59 (cte -> CONST_FLOAT .)
+    <               reduce using rule 59 (cte -> CONST_FLOAT .)
+    EQ              reduce using rule 59 (cte -> CONST_FLOAT .)
+    GE              reduce using rule 59 (cte -> CONST_FLOAT .)
+    LE              reduce using rule 59 (cte -> CONST_FLOAT .)
+    NE              reduce using rule 59 (cte -> CONST_FLOAT .)
+    +               reduce using rule 59 (cte -> CONST_FLOAT .)
+    -               reduce using rule 59 (cte -> CONST_FLOAT .)
+    ;               reduce using rule 59 (cte -> CONST_FLOAT .)
+    ,               reduce using rule 59 (cte -> CONST_FLOAT .)
+    )               reduce using rule 59 (cte -> CONST_FLOAT .)
 
-    f_call_ayuda                   shift and go to state 96
-    empty                          shift and go to state 98
 
 state 70
 
-    (46) f_call -> ID ( ) . ;
+    (60) cte -> CONST_STRING .
 
-    ;               shift and go to state 99
+    *               reduce using rule 60 (cte -> CONST_STRING .)
+    /               reduce using rule 60 (cte -> CONST_STRING .)
+    >               reduce using rule 60 (cte -> CONST_STRING .)
+    <               reduce using rule 60 (cte -> CONST_STRING .)
+    EQ              reduce using rule 60 (cte -> CONST_STRING .)
+    GE              reduce using rule 60 (cte -> CONST_STRING .)
+    LE              reduce using rule 60 (cte -> CONST_STRING .)
+    NE              reduce using rule 60 (cte -> CONST_STRING .)
+    +               reduce using rule 60 (cte -> CONST_STRING .)
+    -               reduce using rule 60 (cte -> CONST_STRING .)
+    ;               reduce using rule 60 (cte -> CONST_STRING .)
+    ,               reduce using rule 60 (cte -> CONST_STRING .)
+    )               reduce using rule 60 (cte -> CONST_STRING .)
 
 
 state 71
 
-    (38) condition -> IF ( expression . ) marcar_if_inicio body ;
-    (39) condition -> IF ( expression . ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+    (46) f_call -> ID ( expression . f_call_ayuda ) ;
+    (48) f_call_ayuda -> . , expression f_call_ayuda
+    (49) f_call_ayuda -> . empty
+    (1) empty -> .
 
-    )               shift and go to state 100
+    ,               shift and go to state 99
+    )               reduce using rule 1 (empty -> .)
 
+    f_call_ayuda                   shift and go to state 98
+    empty                          shift and go to state 100
 
 state 72
 
-    (35) cycle -> DO marcar_cycle_inicio body . marcar_cycle_final WHILE ( expression ) ;
-    (37) marcar_cycle_final -> .
+    (47) f_call -> ID ( ) . ;
 
-    WHILE           reduce using rule 37 (marcar_cycle_final -> .)
+    ;               shift and go to state 101
 
-    marcar_cycle_final             shift and go to state 101
 
 state 73
 
-    (27) print -> PRINT ( expression . print_ayuda ) ;
-    (29) print_ayuda -> . , expression print_ayuda
-    (30) print_ayuda -> . , CONST_STRING print_ayuda
-    (31) print_ayuda -> . empty
-    (1) empty -> .
+    (39) condition -> IF ( expression . ) marcar_if_inicio body ;
+    (40) condition -> IF ( expression . ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
 
-    ,               shift and go to state 103
-    )               reduce using rule 1 (empty -> .)
+    )               shift and go to state 102
 
-    print_ayuda                    shift and go to state 102
-    empty                          shift and go to state 104
 
 state 74
 
-    (28) print -> PRINT ( CONST_STRING . print_ayuda ) ;
-    (29) print_ayuda -> . , expression print_ayuda
-    (30) print_ayuda -> . , CONST_STRING print_ayuda
-    (31) print_ayuda -> . empty
-    (1) empty -> .
+    (36) cycle -> DO marcar_cycle_inicio body . marcar_cycle_final WHILE ( expression ) ;
+    (38) marcar_cycle_final -> .
 
-    ,               shift and go to state 103
-    )               reduce using rule 1 (empty -> .)
+    WHILE           reduce using rule 38 (marcar_cycle_final -> .)
 
-    print_ayuda                    shift and go to state 105
-    empty                          shift and go to state 104
+    marcar_cycle_final             shift and go to state 103
 
 state 75
 
-    (59) func -> VOID ID ( ID : type funcs_ayuda . ) func_start [ vars body ] ;
-    (61) func -> VOID ID ( ID : type funcs_ayuda . ) func_start [ body ] ;
+    (28) print -> PRINT ( expression . print_ayuda ) ;
+    (30) print_ayuda -> . , expression print_ayuda
+    (31) print_ayuda -> . , CONST_STRING print_ayuda
+    (32) print_ayuda -> . empty
+    (1) empty -> .
 
-    )               shift and go to state 106
+    ,               shift and go to state 105
+    )               reduce using rule 1 (empty -> .)
 
+    print_ayuda                    shift and go to state 104
+    empty                          shift and go to state 106
 
 state 76
 
-    (67) funcs_ayuda -> , . ID : type funcs_ayuda
+    (29) print -> PRINT ( CONST_STRING . print_ayuda ) ;
+    (60) cte -> CONST_STRING .
+    (30) print_ayuda -> . , expression print_ayuda
+    (31) print_ayuda -> . , CONST_STRING print_ayuda
+    (32) print_ayuda -> . empty
+    (1) empty -> .
 
-    ID              shift and go to state 107
+  ! shift/reduce conflict for , resolved as shift
+  ! reduce/reduce conflict for ) resolved using rule 1 (empty -> .)
+    *               reduce using rule 60 (cte -> CONST_STRING .)
+    /               reduce using rule 60 (cte -> CONST_STRING .)
+    >               reduce using rule 60 (cte -> CONST_STRING .)
+    <               reduce using rule 60 (cte -> CONST_STRING .)
+    EQ              reduce using rule 60 (cte -> CONST_STRING .)
+    GE              reduce using rule 60 (cte -> CONST_STRING .)
+    LE              reduce using rule 60 (cte -> CONST_STRING .)
+    NE              reduce using rule 60 (cte -> CONST_STRING .)
+    +               reduce using rule 60 (cte -> CONST_STRING .)
+    -               reduce using rule 60 (cte -> CONST_STRING .)
+    ,               shift and go to state 105
+    )               reduce using rule 1 (empty -> .)
 
+  ! ,               [ reduce using rule 60 (cte -> CONST_STRING .) ]
+  ! )               [ reduce using rule 60 (cte -> CONST_STRING .) ]
+
+    print_ayuda                    shift and go to state 107
+    empty                          shift and go to state 106
 
 state 77
 
-    (68) funcs_ayuda -> empty .
+    (61) func -> VOID ID ( ID : type funcs_ayuda . ) func_start [ vars body ] ;
+    (63) func -> VOID ID ( ID : type funcs_ayuda . ) func_start [ body ] ;
 
-    )               reduce using rule 68 (funcs_ayuda -> empty .)
+    )               shift and go to state 108
 
 
 state 78
 
-    (60) func -> VOID ID ( ) func_start [ vars . body ] ;
-    (56) body -> . { statements }
+    (69) funcs_ayuda -> , . ID : type funcs_ayuda
 
-    {               shift and go to state 24
+    ID              shift and go to state 109
 
-    body                           shift and go to state 108
 
 state 79
 
-    (62) func -> VOID ID ( ) func_start [ body . ] ;
+    (70) funcs_ayuda -> empty .
 
-    ]               shift and go to state 109
+    )               reduce using rule 70 (funcs_ayuda -> empty .)
 
 
 state 80
 
-    (44) assign -> ID = expression ; .
+    (62) func -> VOID ID ( ) func_start [ vars . body ] ;
+    (57) body -> . { statements }
 
-    }               reduce using rule 44 (assign -> ID = expression ; .)
-    ID              reduce using rule 44 (assign -> ID = expression ; .)
-    IF              reduce using rule 44 (assign -> ID = expression ; .)
-    DO              reduce using rule 44 (assign -> ID = expression ; .)
-    PRINT           reduce using rule 44 (assign -> ID = expression ; .)
+    {               shift and go to state 24
 
+    body                           shift and go to state 110
 
 state 81
 
-    (13) expression -> exp > . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (64) func -> VOID ID ( ) func_start [ body . ] ;
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    ]               shift and go to state 111
 
-    exp                            shift and go to state 110
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
 
 state 82
 
-    (14) expression -> exp < . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (45) assign -> ID = expression ; .
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    }               reduce using rule 45 (assign -> ID = expression ; .)
+    ID              reduce using rule 45 (assign -> ID = expression ; .)
+    IF              reduce using rule 45 (assign -> ID = expression ; .)
+    DO              reduce using rule 45 (assign -> ID = expression ; .)
+    PRINT           reduce using rule 45 (assign -> ID = expression ; .)
 
-    exp                            shift and go to state 111
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
 
 state 83
 
-    (15) expression -> exp EQ . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (14) expression -> exp > . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
     exp                            shift and go to state 112
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 84
 
-    (16) expression -> exp GE . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (15) expression -> exp < . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
     exp                            shift and go to state 113
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 85
 
-    (17) expression -> exp LE . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (16) expression -> exp EQ . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
     exp                            shift and go to state 114
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 86
 
-    (18) expression -> exp NE . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (17) expression -> exp GE . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
     exp                            shift and go to state 115
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 87
 
-    (10) exp -> exp + . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (18) expression -> exp LE . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
-    termino                        shift and go to state 116
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    exp                            shift and go to state 116
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 88
 
-    (11) exp -> exp - . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (19) expression -> exp NE . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
-    termino                        shift and go to state 117
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
+    exp                            shift and go to state 117
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 89
 
-    (23) factor -> + ID .
+    (11) exp -> exp + . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    *               reduce using rule 23 (factor -> + ID .)
-    /               reduce using rule 23 (factor -> + ID .)
-    >               reduce using rule 23 (factor -> + ID .)
-    <               reduce using rule 23 (factor -> + ID .)
-    EQ              reduce using rule 23 (factor -> + ID .)
-    GE              reduce using rule 23 (factor -> + ID .)
-    LE              reduce using rule 23 (factor -> + ID .)
-    NE              reduce using rule 23 (factor -> + ID .)
-    +               reduce using rule 23 (factor -> + ID .)
-    -               reduce using rule 23 (factor -> + ID .)
-    ;               reduce using rule 23 (factor -> + ID .)
-    ,               reduce using rule 23 (factor -> + ID .)
-    )               reduce using rule 23 (factor -> + ID .)
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    termino                        shift and go to state 118
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 90
 
-    (25) factor -> + cte .
+    (12) exp -> exp - . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    *               reduce using rule 25 (factor -> + cte .)
-    /               reduce using rule 25 (factor -> + cte .)
-    >               reduce using rule 25 (factor -> + cte .)
-    <               reduce using rule 25 (factor -> + cte .)
-    EQ              reduce using rule 25 (factor -> + cte .)
-    GE              reduce using rule 25 (factor -> + cte .)
-    LE              reduce using rule 25 (factor -> + cte .)
-    NE              reduce using rule 25 (factor -> + cte .)
-    +               reduce using rule 25 (factor -> + cte .)
-    -               reduce using rule 25 (factor -> + cte .)
-    ;               reduce using rule 25 (factor -> + cte .)
-    ,               reduce using rule 25 (factor -> + cte .)
-    )               reduce using rule 25 (factor -> + cte .)
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    termino                        shift and go to state 119
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 91
 
-    (32) termino -> termino * . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (24) factor -> + ID .
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    *               reduce using rule 24 (factor -> + ID .)
+    /               reduce using rule 24 (factor -> + ID .)
+    >               reduce using rule 24 (factor -> + ID .)
+    <               reduce using rule 24 (factor -> + ID .)
+    EQ              reduce using rule 24 (factor -> + ID .)
+    GE              reduce using rule 24 (factor -> + ID .)
+    LE              reduce using rule 24 (factor -> + ID .)
+    NE              reduce using rule 24 (factor -> + ID .)
+    +               reduce using rule 24 (factor -> + ID .)
+    -               reduce using rule 24 (factor -> + ID .)
+    ;               reduce using rule 24 (factor -> + ID .)
+    ,               reduce using rule 24 (factor -> + ID .)
+    )               reduce using rule 24 (factor -> + ID .)
 
-    factor                         shift and go to state 118
-    cte                            shift and go to state 66
 
 state 92
 
-    (33) termino -> termino / . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (26) factor -> + cte .
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    *               reduce using rule 26 (factor -> + cte .)
+    /               reduce using rule 26 (factor -> + cte .)
+    >               reduce using rule 26 (factor -> + cte .)
+    <               reduce using rule 26 (factor -> + cte .)
+    EQ              reduce using rule 26 (factor -> + cte .)
+    GE              reduce using rule 26 (factor -> + cte .)
+    LE              reduce using rule 26 (factor -> + cte .)
+    NE              reduce using rule 26 (factor -> + cte .)
+    +               reduce using rule 26 (factor -> + cte .)
+    -               reduce using rule 26 (factor -> + cte .)
+    ;               reduce using rule 26 (factor -> + cte .)
+    ,               reduce using rule 26 (factor -> + cte .)
+    )               reduce using rule 26 (factor -> + cte .)
 
-    factor                         shift and go to state 119
-    cte                            shift and go to state 66
 
 state 93
 
-    (24) factor -> - ID .
+    (33) termino -> termino * . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    *               reduce using rule 24 (factor -> - ID .)
-    /               reduce using rule 24 (factor -> - ID .)
-    >               reduce using rule 24 (factor -> - ID .)
-    <               reduce using rule 24 (factor -> - ID .)
-    EQ              reduce using rule 24 (factor -> - ID .)
-    GE              reduce using rule 24 (factor -> - ID .)
-    LE              reduce using rule 24 (factor -> - ID .)
-    NE              reduce using rule 24 (factor -> - ID .)
-    +               reduce using rule 24 (factor -> - ID .)
-    -               reduce using rule 24 (factor -> - ID .)
-    ;               reduce using rule 24 (factor -> - ID .)
-    ,               reduce using rule 24 (factor -> - ID .)
-    )               reduce using rule 24 (factor -> - ID .)
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    factor                         shift and go to state 120
+    cte                            shift and go to state 67
 
 state 94
 
-    (26) factor -> - cte .
+    (34) termino -> termino / . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    *               reduce using rule 26 (factor -> - cte .)
-    /               reduce using rule 26 (factor -> - cte .)
-    >               reduce using rule 26 (factor -> - cte .)
-    <               reduce using rule 26 (factor -> - cte .)
-    EQ              reduce using rule 26 (factor -> - cte .)
-    GE              reduce using rule 26 (factor -> - cte .)
-    LE              reduce using rule 26 (factor -> - cte .)
-    NE              reduce using rule 26 (factor -> - cte .)
-    +               reduce using rule 26 (factor -> - cte .)
-    -               reduce using rule 26 (factor -> - cte .)
-    ;               reduce using rule 26 (factor -> - cte .)
-    ,               reduce using rule 26 (factor -> - cte .)
-    )               reduce using rule 26 (factor -> - cte .)
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    factor                         shift and go to state 121
+    cte                            shift and go to state 67
 
 state 95
 
-    (20) factor -> ( expression . )
+    (25) factor -> - ID .
 
-    )               shift and go to state 120
+    *               reduce using rule 25 (factor -> - ID .)
+    /               reduce using rule 25 (factor -> - ID .)
+    >               reduce using rule 25 (factor -> - ID .)
+    <               reduce using rule 25 (factor -> - ID .)
+    EQ              reduce using rule 25 (factor -> - ID .)
+    GE              reduce using rule 25 (factor -> - ID .)
+    LE              reduce using rule 25 (factor -> - ID .)
+    NE              reduce using rule 25 (factor -> - ID .)
+    +               reduce using rule 25 (factor -> - ID .)
+    -               reduce using rule 25 (factor -> - ID .)
+    ;               reduce using rule 25 (factor -> - ID .)
+    ,               reduce using rule 25 (factor -> - ID .)
+    )               reduce using rule 25 (factor -> - ID .)
 
 
 state 96
 
-    (45) f_call -> ID ( expression f_call_ayuda . ) ;
+    (27) factor -> - cte .
 
-    )               shift and go to state 121
+    *               reduce using rule 27 (factor -> - cte .)
+    /               reduce using rule 27 (factor -> - cte .)
+    >               reduce using rule 27 (factor -> - cte .)
+    <               reduce using rule 27 (factor -> - cte .)
+    EQ              reduce using rule 27 (factor -> - cte .)
+    GE              reduce using rule 27 (factor -> - cte .)
+    LE              reduce using rule 27 (factor -> - cte .)
+    NE              reduce using rule 27 (factor -> - cte .)
+    +               reduce using rule 27 (factor -> - cte .)
+    -               reduce using rule 27 (factor -> - cte .)
+    ;               reduce using rule 27 (factor -> - cte .)
+    ,               reduce using rule 27 (factor -> - cte .)
+    )               reduce using rule 27 (factor -> - cte .)
 
 
 state 97
 
-    (47) f_call_ayuda -> , . expression f_call_ayuda
-    (13) expression -> . exp > exp
-    (14) expression -> . exp < exp
-    (15) expression -> . exp EQ exp
-    (16) expression -> . exp GE exp
-    (17) expression -> . exp LE exp
-    (18) expression -> . exp NE exp
-    (19) expression -> . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (21) factor -> ( expression . )
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    )               shift and go to state 122
 
-    expression                     shift and go to state 122
-    exp                            shift and go to state 60
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
 
 state 98
 
-    (48) f_call_ayuda -> empty .
+    (46) f_call -> ID ( expression f_call_ayuda . ) ;
 
-    )               reduce using rule 48 (f_call_ayuda -> empty .)
+    )               shift and go to state 123
 
 
 state 99
 
-    (46) f_call -> ID ( ) ; .
+    (48) f_call_ayuda -> , . expression f_call_ayuda
+    (14) expression -> . exp > exp
+    (15) expression -> . exp < exp
+    (16) expression -> . exp EQ exp
+    (17) expression -> . exp GE exp
+    (18) expression -> . exp LE exp
+    (19) expression -> . exp NE exp
+    (20) expression -> . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    }               reduce using rule 46 (f_call -> ID ( ) ; .)
-    ID              reduce using rule 46 (f_call -> ID ( ) ; .)
-    IF              reduce using rule 46 (f_call -> ID ( ) ; .)
-    DO              reduce using rule 46 (f_call -> ID ( ) ; .)
-    PRINT           reduce using rule 46 (f_call -> ID ( ) ; .)
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    expression                     shift and go to state 124
+    exp                            shift and go to state 61
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 100
 
-    (38) condition -> IF ( expression ) . marcar_if_inicio body ;
-    (39) condition -> IF ( expression ) . marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
-    (40) marcar_if_inicio -> .
+    (49) f_call_ayuda -> empty .
 
-    {               reduce using rule 40 (marcar_if_inicio -> .)
+    )               reduce using rule 49 (f_call_ayuda -> empty .)
 
-    marcar_if_inicio               shift and go to state 123
 
 state 101
 
-    (35) cycle -> DO marcar_cycle_inicio body marcar_cycle_final . WHILE ( expression ) ;
+    (47) f_call -> ID ( ) ; .
 
-    WHILE           shift and go to state 124
+    }               reduce using rule 47 (f_call -> ID ( ) ; .)
+    ID              reduce using rule 47 (f_call -> ID ( ) ; .)
+    IF              reduce using rule 47 (f_call -> ID ( ) ; .)
+    DO              reduce using rule 47 (f_call -> ID ( ) ; .)
+    PRINT           reduce using rule 47 (f_call -> ID ( ) ; .)
 
 
 state 102
 
-    (27) print -> PRINT ( expression print_ayuda . ) ;
+    (39) condition -> IF ( expression ) . marcar_if_inicio body ;
+    (40) condition -> IF ( expression ) . marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+    (41) marcar_if_inicio -> .
 
-    )               shift and go to state 125
+    {               reduce using rule 41 (marcar_if_inicio -> .)
 
+    marcar_if_inicio               shift and go to state 125
 
 state 103
 
-    (29) print_ayuda -> , . expression print_ayuda
-    (30) print_ayuda -> , . CONST_STRING print_ayuda
-    (13) expression -> . exp > exp
-    (14) expression -> . exp < exp
-    (15) expression -> . exp EQ exp
-    (16) expression -> . exp GE exp
-    (17) expression -> . exp LE exp
-    (18) expression -> . exp NE exp
-    (19) expression -> . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (36) cycle -> DO marcar_cycle_inicio body marcar_cycle_final . WHILE ( expression ) ;
 
-    CONST_STRING    shift and go to state 127
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    WHILE           shift and go to state 126
 
-    expression                     shift and go to state 126
-    exp                            shift and go to state 60
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
 
 state 104
 
-    (31) print_ayuda -> empty .
+    (28) print -> PRINT ( expression print_ayuda . ) ;
 
-    )               reduce using rule 31 (print_ayuda -> empty .)
+    )               shift and go to state 127
 
 
 state 105
 
-    (28) print -> PRINT ( CONST_STRING print_ayuda . ) ;
+    (30) print_ayuda -> , . expression print_ayuda
+    (31) print_ayuda -> , . CONST_STRING print_ayuda
+    (14) expression -> . exp > exp
+    (15) expression -> . exp < exp
+    (16) expression -> . exp EQ exp
+    (17) expression -> . exp GE exp
+    (18) expression -> . exp LE exp
+    (19) expression -> . exp NE exp
+    (20) expression -> . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    )               shift and go to state 128
+    CONST_STRING    shift and go to state 129
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
 
+    expression                     shift and go to state 128
+    exp                            shift and go to state 61
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 106
 
-    (59) func -> VOID ID ( ID : type funcs_ayuda ) . func_start [ vars body ] ;
-    (61) func -> VOID ID ( ID : type funcs_ayuda ) . func_start [ body ] ;
-    (63) func_start -> .
+    (32) print_ayuda -> empty .
 
-    [               reduce using rule 63 (func_start -> .)
+    )               reduce using rule 32 (print_ayuda -> empty .)
 
-    func_start                     shift and go to state 129
 
 state 107
 
-    (67) funcs_ayuda -> , ID . : type funcs_ayuda
+    (29) print -> PRINT ( CONST_STRING print_ayuda . ) ;
 
-    :               shift and go to state 130
+    )               shift and go to state 130
 
 
 state 108
 
-    (60) func -> VOID ID ( ) func_start [ vars body . ] ;
+    (61) func -> VOID ID ( ID : type funcs_ayuda ) . func_start [ vars body ] ;
+    (63) func -> VOID ID ( ID : type funcs_ayuda ) . func_start [ body ] ;
+    (65) func_start -> .
 
-    ]               shift and go to state 131
+    [               reduce using rule 65 (func_start -> .)
 
+    func_start                     shift and go to state 131
 
 state 109
 
-    (62) func -> VOID ID ( ) func_start [ body ] . ;
+    (69) funcs_ayuda -> , ID . : type funcs_ayuda
 
-    ;               shift and go to state 132
+    :               shift and go to state 132
 
 
 state 110
 
-    (13) expression -> exp > exp .
-    (10) exp -> exp . + termino
-    (11) exp -> exp . - termino
+    (62) func -> VOID ID ( ) func_start [ vars body . ] ;
 
-    ;               reduce using rule 13 (expression -> exp > exp .)
-    ,               reduce using rule 13 (expression -> exp > exp .)
-    )               reduce using rule 13 (expression -> exp > exp .)
-    +               shift and go to state 87
-    -               shift and go to state 88
+    ]               shift and go to state 133
 
 
 state 111
 
-    (14) expression -> exp < exp .
-    (10) exp -> exp . + termino
-    (11) exp -> exp . - termino
+    (64) func -> VOID ID ( ) func_start [ body ] . ;
 
-    ;               reduce using rule 14 (expression -> exp < exp .)
-    ,               reduce using rule 14 (expression -> exp < exp .)
-    )               reduce using rule 14 (expression -> exp < exp .)
-    +               shift and go to state 87
-    -               shift and go to state 88
+    ;               shift and go to state 134
 
 
 state 112
 
-    (15) expression -> exp EQ exp .
-    (10) exp -> exp . + termino
-    (11) exp -> exp . - termino
+    (14) expression -> exp > exp .
+    (11) exp -> exp . + termino
+    (12) exp -> exp . - termino
 
-    ;               reduce using rule 15 (expression -> exp EQ exp .)
-    ,               reduce using rule 15 (expression -> exp EQ exp .)
-    )               reduce using rule 15 (expression -> exp EQ exp .)
-    +               shift and go to state 87
-    -               shift and go to state 88
+    ;               reduce using rule 14 (expression -> exp > exp .)
+    ,               reduce using rule 14 (expression -> exp > exp .)
+    )               reduce using rule 14 (expression -> exp > exp .)
+    +               shift and go to state 89
+    -               shift and go to state 90
 
 
 state 113
 
-    (16) expression -> exp GE exp .
-    (10) exp -> exp . + termino
-    (11) exp -> exp . - termino
+    (15) expression -> exp < exp .
+    (11) exp -> exp . + termino
+    (12) exp -> exp . - termino
 
-    ;               reduce using rule 16 (expression -> exp GE exp .)
-    ,               reduce using rule 16 (expression -> exp GE exp .)
-    )               reduce using rule 16 (expression -> exp GE exp .)
-    +               shift and go to state 87
-    -               shift and go to state 88
+    ;               reduce using rule 15 (expression -> exp < exp .)
+    ,               reduce using rule 15 (expression -> exp < exp .)
+    )               reduce using rule 15 (expression -> exp < exp .)
+    +               shift and go to state 89
+    -               shift and go to state 90
 
 
 state 114
 
-    (17) expression -> exp LE exp .
-    (10) exp -> exp . + termino
-    (11) exp -> exp . - termino
+    (16) expression -> exp EQ exp .
+    (11) exp -> exp . + termino
+    (12) exp -> exp . - termino
 
-    ;               reduce using rule 17 (expression -> exp LE exp .)
-    ,               reduce using rule 17 (expression -> exp LE exp .)
-    )               reduce using rule 17 (expression -> exp LE exp .)
-    +               shift and go to state 87
-    -               shift and go to state 88
+    ;               reduce using rule 16 (expression -> exp EQ exp .)
+    ,               reduce using rule 16 (expression -> exp EQ exp .)
+    )               reduce using rule 16 (expression -> exp EQ exp .)
+    +               shift and go to state 89
+    -               shift and go to state 90
 
 
 state 115
 
-    (18) expression -> exp NE exp .
-    (10) exp -> exp . + termino
-    (11) exp -> exp . - termino
+    (17) expression -> exp GE exp .
+    (11) exp -> exp . + termino
+    (12) exp -> exp . - termino
 
-    ;               reduce using rule 18 (expression -> exp NE exp .)
-    ,               reduce using rule 18 (expression -> exp NE exp .)
-    )               reduce using rule 18 (expression -> exp NE exp .)
-    +               shift and go to state 87
-    -               shift and go to state 88
+    ;               reduce using rule 17 (expression -> exp GE exp .)
+    ,               reduce using rule 17 (expression -> exp GE exp .)
+    )               reduce using rule 17 (expression -> exp GE exp .)
+    +               shift and go to state 89
+    -               shift and go to state 90
 
 
 state 116
 
-    (10) exp -> exp + termino .
-    (32) termino -> termino . * factor
-    (33) termino -> termino . / factor
+    (18) expression -> exp LE exp .
+    (11) exp -> exp . + termino
+    (12) exp -> exp . - termino
 
-    >               reduce using rule 10 (exp -> exp + termino .)
-    <               reduce using rule 10 (exp -> exp + termino .)
-    EQ              reduce using rule 10 (exp -> exp + termino .)
-    GE              reduce using rule 10 (exp -> exp + termino .)
-    LE              reduce using rule 10 (exp -> exp + termino .)
-    NE              reduce using rule 10 (exp -> exp + termino .)
-    +               reduce using rule 10 (exp -> exp + termino .)
-    -               reduce using rule 10 (exp -> exp + termino .)
-    ;               reduce using rule 10 (exp -> exp + termino .)
-    ,               reduce using rule 10 (exp -> exp + termino .)
-    )               reduce using rule 10 (exp -> exp + termino .)
-    *               shift and go to state 91
-    /               shift and go to state 92
+    ;               reduce using rule 18 (expression -> exp LE exp .)
+    ,               reduce using rule 18 (expression -> exp LE exp .)
+    )               reduce using rule 18 (expression -> exp LE exp .)
+    +               shift and go to state 89
+    -               shift and go to state 90
 
 
 state 117
 
-    (11) exp -> exp - termino .
-    (32) termino -> termino . * factor
-    (33) termino -> termino . / factor
+    (19) expression -> exp NE exp .
+    (11) exp -> exp . + termino
+    (12) exp -> exp . - termino
 
-    >               reduce using rule 11 (exp -> exp - termino .)
-    <               reduce using rule 11 (exp -> exp - termino .)
-    EQ              reduce using rule 11 (exp -> exp - termino .)
-    GE              reduce using rule 11 (exp -> exp - termino .)
-    LE              reduce using rule 11 (exp -> exp - termino .)
-    NE              reduce using rule 11 (exp -> exp - termino .)
-    +               reduce using rule 11 (exp -> exp - termino .)
-    -               reduce using rule 11 (exp -> exp - termino .)
-    ;               reduce using rule 11 (exp -> exp - termino .)
-    ,               reduce using rule 11 (exp -> exp - termino .)
-    )               reduce using rule 11 (exp -> exp - termino .)
-    *               shift and go to state 91
-    /               shift and go to state 92
+    ;               reduce using rule 19 (expression -> exp NE exp .)
+    ,               reduce using rule 19 (expression -> exp NE exp .)
+    )               reduce using rule 19 (expression -> exp NE exp .)
+    +               shift and go to state 89
+    -               shift and go to state 90
 
 
 state 118
 
-    (32) termino -> termino * factor .
+    (11) exp -> exp + termino .
+    (33) termino -> termino . * factor
+    (34) termino -> termino . / factor
 
-    *               reduce using rule 32 (termino -> termino * factor .)
-    /               reduce using rule 32 (termino -> termino * factor .)
-    >               reduce using rule 32 (termino -> termino * factor .)
-    <               reduce using rule 32 (termino -> termino * factor .)
-    EQ              reduce using rule 32 (termino -> termino * factor .)
-    GE              reduce using rule 32 (termino -> termino * factor .)
-    LE              reduce using rule 32 (termino -> termino * factor .)
-    NE              reduce using rule 32 (termino -> termino * factor .)
-    +               reduce using rule 32 (termino -> termino * factor .)
-    -               reduce using rule 32 (termino -> termino * factor .)
-    ;               reduce using rule 32 (termino -> termino * factor .)
-    ,               reduce using rule 32 (termino -> termino * factor .)
-    )               reduce using rule 32 (termino -> termino * factor .)
+    >               reduce using rule 11 (exp -> exp + termino .)
+    <               reduce using rule 11 (exp -> exp + termino .)
+    EQ              reduce using rule 11 (exp -> exp + termino .)
+    GE              reduce using rule 11 (exp -> exp + termino .)
+    LE              reduce using rule 11 (exp -> exp + termino .)
+    NE              reduce using rule 11 (exp -> exp + termino .)
+    +               reduce using rule 11 (exp -> exp + termino .)
+    -               reduce using rule 11 (exp -> exp + termino .)
+    ;               reduce using rule 11 (exp -> exp + termino .)
+    ,               reduce using rule 11 (exp -> exp + termino .)
+    )               reduce using rule 11 (exp -> exp + termino .)
+    *               shift and go to state 93
+    /               shift and go to state 94
 
 
 state 119
 
-    (33) termino -> termino / factor .
+    (12) exp -> exp - termino .
+    (33) termino -> termino . * factor
+    (34) termino -> termino . / factor
 
-    *               reduce using rule 33 (termino -> termino / factor .)
-    /               reduce using rule 33 (termino -> termino / factor .)
-    >               reduce using rule 33 (termino -> termino / factor .)
-    <               reduce using rule 33 (termino -> termino / factor .)
-    EQ              reduce using rule 33 (termino -> termino / factor .)
-    GE              reduce using rule 33 (termino -> termino / factor .)
-    LE              reduce using rule 33 (termino -> termino / factor .)
-    NE              reduce using rule 33 (termino -> termino / factor .)
-    +               reduce using rule 33 (termino -> termino / factor .)
-    -               reduce using rule 33 (termino -> termino / factor .)
-    ;               reduce using rule 33 (termino -> termino / factor .)
-    ,               reduce using rule 33 (termino -> termino / factor .)
-    )               reduce using rule 33 (termino -> termino / factor .)
+    >               reduce using rule 12 (exp -> exp - termino .)
+    <               reduce using rule 12 (exp -> exp - termino .)
+    EQ              reduce using rule 12 (exp -> exp - termino .)
+    GE              reduce using rule 12 (exp -> exp - termino .)
+    LE              reduce using rule 12 (exp -> exp - termino .)
+    NE              reduce using rule 12 (exp -> exp - termino .)
+    +               reduce using rule 12 (exp -> exp - termino .)
+    -               reduce using rule 12 (exp -> exp - termino .)
+    ;               reduce using rule 12 (exp -> exp - termino .)
+    ,               reduce using rule 12 (exp -> exp - termino .)
+    )               reduce using rule 12 (exp -> exp - termino .)
+    *               shift and go to state 93
+    /               shift and go to state 94
 
 
 state 120
 
-    (20) factor -> ( expression ) .
+    (33) termino -> termino * factor .
 
-    *               reduce using rule 20 (factor -> ( expression ) .)
-    /               reduce using rule 20 (factor -> ( expression ) .)
-    >               reduce using rule 20 (factor -> ( expression ) .)
-    <               reduce using rule 20 (factor -> ( expression ) .)
-    EQ              reduce using rule 20 (factor -> ( expression ) .)
-    GE              reduce using rule 20 (factor -> ( expression ) .)
-    LE              reduce using rule 20 (factor -> ( expression ) .)
-    NE              reduce using rule 20 (factor -> ( expression ) .)
-    +               reduce using rule 20 (factor -> ( expression ) .)
-    -               reduce using rule 20 (factor -> ( expression ) .)
-    ;               reduce using rule 20 (factor -> ( expression ) .)
-    ,               reduce using rule 20 (factor -> ( expression ) .)
-    )               reduce using rule 20 (factor -> ( expression ) .)
+    *               reduce using rule 33 (termino -> termino * factor .)
+    /               reduce using rule 33 (termino -> termino * factor .)
+    >               reduce using rule 33 (termino -> termino * factor .)
+    <               reduce using rule 33 (termino -> termino * factor .)
+    EQ              reduce using rule 33 (termino -> termino * factor .)
+    GE              reduce using rule 33 (termino -> termino * factor .)
+    LE              reduce using rule 33 (termino -> termino * factor .)
+    NE              reduce using rule 33 (termino -> termino * factor .)
+    +               reduce using rule 33 (termino -> termino * factor .)
+    -               reduce using rule 33 (termino -> termino * factor .)
+    ;               reduce using rule 33 (termino -> termino * factor .)
+    ,               reduce using rule 33 (termino -> termino * factor .)
+    )               reduce using rule 33 (termino -> termino * factor .)
 
 
 state 121
 
-    (45) f_call -> ID ( expression f_call_ayuda ) . ;
+    (34) termino -> termino / factor .
 
-    ;               shift and go to state 133
+    *               reduce using rule 34 (termino -> termino / factor .)
+    /               reduce using rule 34 (termino -> termino / factor .)
+    >               reduce using rule 34 (termino -> termino / factor .)
+    <               reduce using rule 34 (termino -> termino / factor .)
+    EQ              reduce using rule 34 (termino -> termino / factor .)
+    GE              reduce using rule 34 (termino -> termino / factor .)
+    LE              reduce using rule 34 (termino -> termino / factor .)
+    NE              reduce using rule 34 (termino -> termino / factor .)
+    +               reduce using rule 34 (termino -> termino / factor .)
+    -               reduce using rule 34 (termino -> termino / factor .)
+    ;               reduce using rule 34 (termino -> termino / factor .)
+    ,               reduce using rule 34 (termino -> termino / factor .)
+    )               reduce using rule 34 (termino -> termino / factor .)
 
 
 state 122
 
-    (47) f_call_ayuda -> , expression . f_call_ayuda
-    (47) f_call_ayuda -> . , expression f_call_ayuda
-    (48) f_call_ayuda -> . empty
-    (1) empty -> .
+    (21) factor -> ( expression ) .
 
-    ,               shift and go to state 97
-    )               reduce using rule 1 (empty -> .)
+    *               reduce using rule 21 (factor -> ( expression ) .)
+    /               reduce using rule 21 (factor -> ( expression ) .)
+    >               reduce using rule 21 (factor -> ( expression ) .)
+    <               reduce using rule 21 (factor -> ( expression ) .)
+    EQ              reduce using rule 21 (factor -> ( expression ) .)
+    GE              reduce using rule 21 (factor -> ( expression ) .)
+    LE              reduce using rule 21 (factor -> ( expression ) .)
+    NE              reduce using rule 21 (factor -> ( expression ) .)
+    +               reduce using rule 21 (factor -> ( expression ) .)
+    -               reduce using rule 21 (factor -> ( expression ) .)
+    ;               reduce using rule 21 (factor -> ( expression ) .)
+    ,               reduce using rule 21 (factor -> ( expression ) .)
+    )               reduce using rule 21 (factor -> ( expression ) .)
 
-    f_call_ayuda                   shift and go to state 134
-    empty                          shift and go to state 98
 
 state 123
 
-    (38) condition -> IF ( expression ) marcar_if_inicio . body ;
-    (39) condition -> IF ( expression ) marcar_if_inicio . body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
-    (56) body -> . { statements }
+    (46) f_call -> ID ( expression f_call_ayuda ) . ;
 
-    {               shift and go to state 24
+    ;               shift and go to state 135
 
-    body                           shift and go to state 135
 
 state 124
 
-    (35) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE . ( expression ) ;
+    (48) f_call_ayuda -> , expression . f_call_ayuda
+    (48) f_call_ayuda -> . , expression f_call_ayuda
+    (49) f_call_ayuda -> . empty
+    (1) empty -> .
 
-    (               shift and go to state 136
+    ,               shift and go to state 99
+    )               reduce using rule 1 (empty -> .)
 
+    f_call_ayuda                   shift and go to state 136
+    empty                          shift and go to state 100
 
 state 125
 
-    (27) print -> PRINT ( expression print_ayuda ) . ;
+    (39) condition -> IF ( expression ) marcar_if_inicio . body ;
+    (40) condition -> IF ( expression ) marcar_if_inicio . body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+    (57) body -> . { statements }
 
-    ;               shift and go to state 137
+    {               shift and go to state 24
 
+    body                           shift and go to state 137
 
 state 126
 
-    (29) print_ayuda -> , expression . print_ayuda
-    (29) print_ayuda -> . , expression print_ayuda
-    (30) print_ayuda -> . , CONST_STRING print_ayuda
-    (31) print_ayuda -> . empty
-    (1) empty -> .
+    (36) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE . ( expression ) ;
 
-    ,               shift and go to state 103
-    )               reduce using rule 1 (empty -> .)
+    (               shift and go to state 138
 
-    print_ayuda                    shift and go to state 138
-    empty                          shift and go to state 104
 
 state 127
 
-    (30) print_ayuda -> , CONST_STRING . print_ayuda
-    (29) print_ayuda -> . , expression print_ayuda
-    (30) print_ayuda -> . , CONST_STRING print_ayuda
-    (31) print_ayuda -> . empty
-    (1) empty -> .
+    (28) print -> PRINT ( expression print_ayuda ) . ;
 
-    ,               shift and go to state 103
-    )               reduce using rule 1 (empty -> .)
+    ;               shift and go to state 139
 
-    print_ayuda                    shift and go to state 139
-    empty                          shift and go to state 104
 
 state 128
 
-    (28) print -> PRINT ( CONST_STRING print_ayuda ) . ;
+    (30) print_ayuda -> , expression . print_ayuda
+    (30) print_ayuda -> . , expression print_ayuda
+    (31) print_ayuda -> . , CONST_STRING print_ayuda
+    (32) print_ayuda -> . empty
+    (1) empty -> .
 
-    ;               shift and go to state 140
+    ,               shift and go to state 105
+    )               reduce using rule 1 (empty -> .)
 
+    print_ayuda                    shift and go to state 140
+    empty                          shift and go to state 106
 
 state 129
 
-    (59) func -> VOID ID ( ID : type funcs_ayuda ) func_start . [ vars body ] ;
-    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start . [ body ] ;
+    (31) print_ayuda -> , CONST_STRING . print_ayuda
+    (60) cte -> CONST_STRING .
+    (30) print_ayuda -> . , expression print_ayuda
+    (31) print_ayuda -> . , CONST_STRING print_ayuda
+    (32) print_ayuda -> . empty
+    (1) empty -> .
 
-    [               shift and go to state 141
+  ! shift/reduce conflict for , resolved as shift
+  ! reduce/reduce conflict for ) resolved using rule 1 (empty -> .)
+    *               reduce using rule 60 (cte -> CONST_STRING .)
+    /               reduce using rule 60 (cte -> CONST_STRING .)
+    >               reduce using rule 60 (cte -> CONST_STRING .)
+    <               reduce using rule 60 (cte -> CONST_STRING .)
+    EQ              reduce using rule 60 (cte -> CONST_STRING .)
+    GE              reduce using rule 60 (cte -> CONST_STRING .)
+    LE              reduce using rule 60 (cte -> CONST_STRING .)
+    NE              reduce using rule 60 (cte -> CONST_STRING .)
+    +               reduce using rule 60 (cte -> CONST_STRING .)
+    -               reduce using rule 60 (cte -> CONST_STRING .)
+    ,               shift and go to state 105
+    )               reduce using rule 1 (empty -> .)
 
+  ! ,               [ reduce using rule 60 (cte -> CONST_STRING .) ]
+  ! )               [ reduce using rule 60 (cte -> CONST_STRING .) ]
+
+    print_ayuda                    shift and go to state 141
+    empty                          shift and go to state 106
 
 state 130
 
-    (67) funcs_ayuda -> , ID : . type funcs_ayuda
-    (2) type -> . INT
-    (3) type -> . FLOAT
+    (29) print -> PRINT ( CONST_STRING print_ayuda ) . ;
 
-    INT             shift and go to state 28
-    FLOAT           shift and go to state 29
+    ;               shift and go to state 142
 
-    type                           shift and go to state 142
 
 state 131
 
-    (60) func -> VOID ID ( ) func_start [ vars body ] . ;
+    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start . [ vars body ] ;
+    (63) func -> VOID ID ( ID : type funcs_ayuda ) func_start . [ body ] ;
 
-    ;               shift and go to state 143
+    [               shift and go to state 143
 
 
 state 132
 
-    (62) func -> VOID ID ( ) func_start [ body ] ; .
+    (69) funcs_ayuda -> , ID : . type funcs_ayuda
+    (2) type -> . INT
+    (3) type -> . FLOAT
+    (4) type -> . STRING
 
-    MAIN            reduce using rule 62 (func -> VOID ID ( ) func_start [ body ] ; .)
-    VOID            reduce using rule 62 (func -> VOID ID ( ) func_start [ body ] ; .)
+    INT             shift and go to state 28
+    FLOAT           shift and go to state 29
+    STRING          shift and go to state 30
 
+    type                           shift and go to state 144
 
 state 133
 
-    (45) f_call -> ID ( expression f_call_ayuda ) ; .
+    (62) func -> VOID ID ( ) func_start [ vars body ] . ;
 
-    }               reduce using rule 45 (f_call -> ID ( expression f_call_ayuda ) ; .)
-    ID              reduce using rule 45 (f_call -> ID ( expression f_call_ayuda ) ; .)
-    IF              reduce using rule 45 (f_call -> ID ( expression f_call_ayuda ) ; .)
-    DO              reduce using rule 45 (f_call -> ID ( expression f_call_ayuda ) ; .)
-    PRINT           reduce using rule 45 (f_call -> ID ( expression f_call_ayuda ) ; .)
+    ;               shift and go to state 145
 
 
 state 134
 
-    (47) f_call_ayuda -> , expression f_call_ayuda .
+    (64) func -> VOID ID ( ) func_start [ body ] ; .
 
-    )               reduce using rule 47 (f_call_ayuda -> , expression f_call_ayuda .)
+    MAIN            reduce using rule 64 (func -> VOID ID ( ) func_start [ body ] ; .)
+    VOID            reduce using rule 64 (func -> VOID ID ( ) func_start [ body ] ; .)
 
 
 state 135
 
-    (38) condition -> IF ( expression ) marcar_if_inicio body . ;
-    (39) condition -> IF ( expression ) marcar_if_inicio body . marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
-    (41) marcar_if_final -> .
+    (46) f_call -> ID ( expression f_call_ayuda ) ; .
 
-    ;               shift and go to state 144
-    ELSE            reduce using rule 41 (marcar_if_final -> .)
+    }               reduce using rule 46 (f_call -> ID ( expression f_call_ayuda ) ; .)
+    ID              reduce using rule 46 (f_call -> ID ( expression f_call_ayuda ) ; .)
+    IF              reduce using rule 46 (f_call -> ID ( expression f_call_ayuda ) ; .)
+    DO              reduce using rule 46 (f_call -> ID ( expression f_call_ayuda ) ; .)
+    PRINT           reduce using rule 46 (f_call -> ID ( expression f_call_ayuda ) ; .)
 
-    marcar_if_final                shift and go to state 145
 
 state 136
 
-    (35) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( . expression ) ;
-    (13) expression -> . exp > exp
-    (14) expression -> . exp < exp
-    (15) expression -> . exp EQ exp
-    (16) expression -> . exp GE exp
-    (17) expression -> . exp LE exp
-    (18) expression -> . exp NE exp
-    (19) expression -> . exp
-    (10) exp -> . exp + termino
-    (11) exp -> . exp - termino
-    (12) exp -> . termino
-    (32) termino -> . termino * factor
-    (33) termino -> . termino / factor
-    (34) termino -> . factor
-    (20) factor -> . ( expression )
-    (21) factor -> . ID
-    (22) factor -> . cte
-    (23) factor -> . + ID
-    (24) factor -> . - ID
-    (25) factor -> . + cte
-    (26) factor -> . - cte
-    (57) cte -> . CONST_INT
-    (58) cte -> . CONST_FLOAT
+    (48) f_call_ayuda -> , expression f_call_ayuda .
 
-    (               shift and go to state 65
-    ID              shift and go to state 58
-    +               shift and go to state 61
-    -               shift and go to state 63
-    CONST_INT       shift and go to state 67
-    CONST_FLOAT     shift and go to state 68
+    )               reduce using rule 48 (f_call_ayuda -> , expression f_call_ayuda .)
 
-    expression                     shift and go to state 146
-    exp                            shift and go to state 60
-    termino                        shift and go to state 62
-    factor                         shift and go to state 64
-    cte                            shift and go to state 66
 
 state 137
 
-    (27) print -> PRINT ( expression print_ayuda ) ; .
+    (39) condition -> IF ( expression ) marcar_if_inicio body . ;
+    (40) condition -> IF ( expression ) marcar_if_inicio body . marcar_if_final ELSE marcar_else_inicio body marcar_else_final ;
+    (42) marcar_if_final -> .
 
-    }               reduce using rule 27 (print -> PRINT ( expression print_ayuda ) ; .)
-    ID              reduce using rule 27 (print -> PRINT ( expression print_ayuda ) ; .)
-    IF              reduce using rule 27 (print -> PRINT ( expression print_ayuda ) ; .)
-    DO              reduce using rule 27 (print -> PRINT ( expression print_ayuda ) ; .)
-    PRINT           reduce using rule 27 (print -> PRINT ( expression print_ayuda ) ; .)
+    ;               shift and go to state 146
+    ELSE            reduce using rule 42 (marcar_if_final -> .)
 
+    marcar_if_final                shift and go to state 147
 
 state 138
 
-    (29) print_ayuda -> , expression print_ayuda .
+    (36) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( . expression ) ;
+    (14) expression -> . exp > exp
+    (15) expression -> . exp < exp
+    (16) expression -> . exp EQ exp
+    (17) expression -> . exp GE exp
+    (18) expression -> . exp LE exp
+    (19) expression -> . exp NE exp
+    (20) expression -> . exp
+    (11) exp -> . exp + termino
+    (12) exp -> . exp - termino
+    (13) exp -> . termino
+    (33) termino -> . termino * factor
+    (34) termino -> . termino / factor
+    (35) termino -> . factor
+    (21) factor -> . ( expression )
+    (22) factor -> . ID
+    (23) factor -> . cte
+    (24) factor -> . + ID
+    (25) factor -> . - ID
+    (26) factor -> . + cte
+    (27) factor -> . - cte
+    (58) cte -> . CONST_INT
+    (59) cte -> . CONST_FLOAT
+    (60) cte -> . CONST_STRING
 
-    )               reduce using rule 29 (print_ayuda -> , expression print_ayuda .)
+    (               shift and go to state 66
+    ID              shift and go to state 59
+    +               shift and go to state 62
+    -               shift and go to state 64
+    CONST_INT       shift and go to state 68
+    CONST_FLOAT     shift and go to state 69
+    CONST_STRING    shift and go to state 70
 
+    expression                     shift and go to state 148
+    exp                            shift and go to state 61
+    termino                        shift and go to state 63
+    factor                         shift and go to state 65
+    cte                            shift and go to state 67
 
 state 139
 
-    (30) print_ayuda -> , CONST_STRING print_ayuda .
+    (28) print -> PRINT ( expression print_ayuda ) ; .
 
-    )               reduce using rule 30 (print_ayuda -> , CONST_STRING print_ayuda .)
+    }               reduce using rule 28 (print -> PRINT ( expression print_ayuda ) ; .)
+    ID              reduce using rule 28 (print -> PRINT ( expression print_ayuda ) ; .)
+    IF              reduce using rule 28 (print -> PRINT ( expression print_ayuda ) ; .)
+    DO              reduce using rule 28 (print -> PRINT ( expression print_ayuda ) ; .)
+    PRINT           reduce using rule 28 (print -> PRINT ( expression print_ayuda ) ; .)
 
 
 state 140
 
-    (28) print -> PRINT ( CONST_STRING print_ayuda ) ; .
+    (30) print_ayuda -> , expression print_ayuda .
 
-    }               reduce using rule 28 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
-    ID              reduce using rule 28 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
-    IF              reduce using rule 28 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
-    DO              reduce using rule 28 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
-    PRINT           reduce using rule 28 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    )               reduce using rule 30 (print_ayuda -> , expression print_ayuda .)
 
 
 state 141
 
-    (59) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ . vars body ] ;
-    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ . body ] ;
-    (4) vars -> . VAR var_ayuda
-    (56) body -> . { statements }
+    (31) print_ayuda -> , CONST_STRING print_ayuda .
+
+    )               reduce using rule 31 (print_ayuda -> , CONST_STRING print_ayuda .)
+
+
+state 142
+
+    (29) print -> PRINT ( CONST_STRING print_ayuda ) ; .
+
+    }               reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    ID              reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    IF              reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    DO              reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+    PRINT           reduce using rule 29 (print -> PRINT ( CONST_STRING print_ayuda ) ; .)
+
+
+state 143
+
+    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ . vars body ] ;
+    (63) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ . body ] ;
+    (5) vars -> . VAR var_ayuda
+    (57) body -> . { statements }
 
     VAR             shift and go to state 6
     {               shift and go to state 24
 
-    vars                           shift and go to state 147
-    body                           shift and go to state 148
-
-state 142
-
-    (67) funcs_ayuda -> , ID : type . funcs_ayuda
-    (67) funcs_ayuda -> . , ID : type funcs_ayuda
-    (68) funcs_ayuda -> . empty
-    (1) empty -> .
-
-    ,               shift and go to state 76
-    )               reduce using rule 1 (empty -> .)
-
-    funcs_ayuda                    shift and go to state 149
-    empty                          shift and go to state 77
-
-state 143
-
-    (60) func -> VOID ID ( ) func_start [ vars body ] ; .
-
-    MAIN            reduce using rule 60 (func -> VOID ID ( ) func_start [ vars body ] ; .)
-    VOID            reduce using rule 60 (func -> VOID ID ( ) func_start [ vars body ] ; .)
-
+    vars                           shift and go to state 149
+    body                           shift and go to state 150
 
 state 144
 
-    (38) condition -> IF ( expression ) marcar_if_inicio body ; .
+    (69) funcs_ayuda -> , ID : type . funcs_ayuda
+    (69) funcs_ayuda -> . , ID : type funcs_ayuda
+    (70) funcs_ayuda -> . empty
+    (1) empty -> .
 
-    }               reduce using rule 38 (condition -> IF ( expression ) marcar_if_inicio body ; .)
-    ID              reduce using rule 38 (condition -> IF ( expression ) marcar_if_inicio body ; .)
-    IF              reduce using rule 38 (condition -> IF ( expression ) marcar_if_inicio body ; .)
-    DO              reduce using rule 38 (condition -> IF ( expression ) marcar_if_inicio body ; .)
-    PRINT           reduce using rule 38 (condition -> IF ( expression ) marcar_if_inicio body ; .)
+    ,               shift and go to state 78
+    )               reduce using rule 1 (empty -> .)
 
+    funcs_ayuda                    shift and go to state 151
+    empty                          shift and go to state 79
 
 state 145
 
-    (39) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final . ELSE marcar_else_inicio body marcar_else_final ;
+    (62) func -> VOID ID ( ) func_start [ vars body ] ; .
 
-    ELSE            shift and go to state 150
+    MAIN            reduce using rule 62 (func -> VOID ID ( ) func_start [ vars body ] ; .)
+    VOID            reduce using rule 62 (func -> VOID ID ( ) func_start [ vars body ] ; .)
 
 
 state 146
 
-    (35) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression . ) ;
+    (39) condition -> IF ( expression ) marcar_if_inicio body ; .
 
-    )               shift and go to state 151
+    }               reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body ; .)
+    ID              reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body ; .)
+    IF              reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body ; .)
+    DO              reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body ; .)
+    PRINT           reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body ; .)
 
 
 state 147
 
-    (59) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars . body ] ;
-    (56) body -> . { statements }
+    (40) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final . ELSE marcar_else_inicio body marcar_else_final ;
 
-    {               shift and go to state 24
+    ELSE            shift and go to state 152
 
-    body                           shift and go to state 152
 
 state 148
 
-    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body . ] ;
+    (36) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression . ) ;
 
-    ]               shift and go to state 153
+    )               shift and go to state 153
 
 
 state 149
 
-    (67) funcs_ayuda -> , ID : type funcs_ayuda .
+    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars . body ] ;
+    (57) body -> . { statements }
 
-    )               reduce using rule 67 (funcs_ayuda -> , ID : type funcs_ayuda .)
+    {               shift and go to state 24
 
+    body                           shift and go to state 154
 
 state 150
 
-    (39) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE . marcar_else_inicio body marcar_else_final ;
-    (42) marcar_else_inicio -> .
+    (63) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body . ] ;
 
-    {               reduce using rule 42 (marcar_else_inicio -> .)
+    ]               shift and go to state 155
 
-    marcar_else_inicio             shift and go to state 154
 
 state 151
 
-    (35) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) . ;
+    (69) funcs_ayuda -> , ID : type funcs_ayuda .
 
-    ;               shift and go to state 155
+    )               reduce using rule 69 (funcs_ayuda -> , ID : type funcs_ayuda .)
 
 
 state 152
 
-    (59) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body . ] ;
+    (40) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE . marcar_else_inicio body marcar_else_final ;
+    (43) marcar_else_inicio -> .
 
-    ]               shift and go to state 156
+    {               reduce using rule 43 (marcar_else_inicio -> .)
 
+    marcar_else_inicio             shift and go to state 156
 
 state 153
 
-    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] . ;
+    (36) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) . ;
 
     ;               shift and go to state 157
 
 
 state 154
 
-    (39) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio . body marcar_else_final ;
-    (56) body -> . { statements }
+    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body . ] ;
 
-    {               shift and go to state 24
+    ]               shift and go to state 158
 
-    body                           shift and go to state 158
 
 state 155
 
-    (35) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .
-
-    }               reduce using rule 35 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
-    ID              reduce using rule 35 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
-    IF              reduce using rule 35 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
-    DO              reduce using rule 35 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
-    PRINT           reduce using rule 35 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
-
-
-state 156
-
-    (59) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] . ;
+    (63) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] . ;
 
     ;               shift and go to state 159
 
 
+state 156
+
+    (40) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio . body marcar_else_final ;
+    (57) body -> . { statements }
+
+    {               shift and go to state 24
+
+    body                           shift and go to state 160
+
 state 157
 
-    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ; .
+    (36) cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .
 
-    MAIN            reduce using rule 61 (func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ; .)
-    VOID            reduce using rule 61 (func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ; .)
+    }               reduce using rule 36 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
+    ID              reduce using rule 36 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
+    IF              reduce using rule 36 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
+    DO              reduce using rule 36 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
+    PRINT           reduce using rule 36 (cycle -> DO marcar_cycle_inicio body marcar_cycle_final WHILE ( expression ) ; .)
 
 
 state 158
 
-    (39) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body . marcar_else_final ;
-    (43) marcar_else_final -> .
-
-    ;               reduce using rule 43 (marcar_else_final -> .)
-
-    marcar_else_final              shift and go to state 160
-
-state 159
-
-    (59) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ; .
-
-    MAIN            reduce using rule 59 (func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ; .)
-    VOID            reduce using rule 59 (func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ; .)
-
-
-state 160
-
-    (39) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final . ;
+    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] . ;
 
     ;               shift and go to state 161
 
 
+state 159
+
+    (63) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ; .
+
+    MAIN            reduce using rule 63 (func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ; .)
+    VOID            reduce using rule 63 (func -> VOID ID ( ID : type funcs_ayuda ) func_start [ body ] ; .)
+
+
+state 160
+
+    (40) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body . marcar_else_final ;
+    (44) marcar_else_final -> .
+
+    ;               reduce using rule 44 (marcar_else_final -> .)
+
+    marcar_else_final              shift and go to state 162
+
 state 161
 
-    (39) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .
+    (61) func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ; .
 
-    }               reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
-    ID              reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
-    IF              reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
-    DO              reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
-    PRINT           reduce using rule 39 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
+    MAIN            reduce using rule 61 (func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ; .)
+    VOID            reduce using rule 61 (func -> VOID ID ( ID : type funcs_ayuda ) func_start [ vars body ] ; .)
+
+
+state 162
+
+    (40) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final . ;
+
+    ;               shift and go to state 163
+
+
+state 163
+
+    (40) condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .
+
+    }               reduce using rule 40 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
+    ID              reduce using rule 40 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
+    IF              reduce using rule 40 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
+    DO              reduce using rule 40 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
+    PRINT           reduce using rule 40 (condition -> IF ( expression ) marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ; .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
 WARNING: shift/reduce conflict for VOID in state 5 resolved as shift
+WARNING: shift/reduce conflict for , in state 76 resolved as shift
+WARNING: shift/reduce conflict for , in state 129 resolved as shift
+WARNING: reduce/reduce conflict in state 76 resolved using rule (empty -> <empty>)
+WARNING: rejected rule (cte -> CONST_STRING) in state 76
+WARNING: reduce/reduce conflict in state 129 resolved using rule (empty -> <empty>)
+WARNING: rejected rule (cte -> CONST_STRING) in state 129
