@@ -28,6 +28,7 @@ class Estructura:
     cte_int	= 0
     cte_float = 0
     cte_str = 0
+    error = 0
     isFunc = False
     var_dir = []
     var_tem = []
@@ -188,6 +189,7 @@ class Estructura:
         self.counter_temporales = 0
         self.cuadruples = [(1, "gotomain",-1,-1,-1)]
         self.linea = 1
+        self.error = 0
         self.linea_ciclo = 0
         self.detector_ciclo = False
         self.var_names = {}
@@ -1007,8 +1009,10 @@ def p_error(p):
          print(f"Syntax error at token '{p.value}' (type: {p.type}) on line {p.lineno}")
          # Just discard the token and tell the parser it's okay.
          parser.errok()
+         estructura.error += 1
     else:
          print("Syntax error at EOF")
+         estructura.error += 1
     
 parser = yacc.yacc()
 
@@ -1024,17 +1028,18 @@ for caso in documento:
         print('\n')
         result = parser.parse(codigo, lexer=m.lexer)
         print(result)
-        print("\nCuádruplos generados:")
-        convert_cuadruplos()
-        for i in estructura.cuadruples:
-            print(i)
-        print("\nTabla de funciones:")
-        for key, valor in estructura.dir_func.items():
-            print(f"\nkey: {key}, Tipo: {valor['tipo']}, Inicio: {valor['inicio']}, n_params: {valor['num_parametros']}")
-            print("Tabla de variables: ")
-            for var in valor['variables']:
-                print(f"    key: {var[0]}, Tipo: {var[1]}, Scope: {var[2]}")
-
+        if estructura.error == 0:
+            print("\nCuádruplos generados:")
+            convert_cuadruplos()
+            for i in estructura.cuadruples:
+                print(i)
+            print("\nTabla de funciones:")
+            for key, valor in estructura.dir_func.items():
+                print(f"\nkey: {key}, Tipo: {valor['tipo']}, Inicio: {valor['inicio']}, n_params: {valor['num_parametros']}")
+                print("Tabla de variables: ")
+                for var in valor['variables']:
+                    print(f"    key: {var[0]}, Tipo: {var[1]}, Scope: {var[2]}")
+        print(estructura.error)
     except SyntaxError as e:
         print(e)
 

@@ -3,7 +3,6 @@ Res: 	19000
 Res: 	19001
 10	17001
 20	17002
-10	17003
 hola mundo	19002
 
 global_int 3
@@ -16,7 +15,7 @@ local_str 0temp_int 2
 temp_float 0
 temp_str 0
 temp_bool 2
-cte_int 4
+cte_int 3
 cte_float 0
 cte_str 3
 
