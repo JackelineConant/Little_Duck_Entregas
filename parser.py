@@ -828,31 +828,37 @@ def p_body(p):
 # cte
 def p_cte_int(p):
     'cte : CONST_INT'
+    existe = any(valor == p[1] for valor, _ in estructura.var_dir)
+    if not existe:
+        estructura.cte_int += 1
+        m = estructura.len_cte_int
+        estructura.var_dir.append([p[1], (17000 + m)])
+        estructura.len_cte_int +=1
     estructura.stack_operandos.append([p[1], 'int'])
-    estructura.cte_int += 1
     p[0] = p[1]
-    m = estructura.len_cte_int
-    estructura.var_dir.append([p[1], (17000 + m)])
-    estructura.len_cte_int +=1
             
 
 def p_cte_float(p):
     'cte : CONST_FLOAT'
+    existe = any(valor == p[1] for valor, _ in estructura.var_dir)
+    if not existe:
+        estructura.cte_float += 1
+        m = estructura.len_cte_float
+        estructura.var_dir.append([p[1], (18000 + m)])
+        estructura.len_cte_float += 1
     estructura.stack_operandos.append([p[1], 'float'])
-    estructura.cte_float += 1
     p[0] = p[1]
-    m = estructura.len_cte_float
-    estructura.var_dir.append([p[1], (18000 + m)])
-    estructura.len_cte_float += 1
 
 def p_cte_str(p):
     'cte : CONST_STRING'
-    estructura.stack_operandos.append([p[1], 'float'])
-    estructura.cte_str += 1
+    existe = any(valor == p[1] for valor, _ in estructura.var_dir)
+    if not existe:
+        estructura.cte_str += 1
+        m = estructura.len_cte_str
+        estructura.var_dir.append([p[1], (19000 + m)])
+        estructura.len_cte_str += 1
+    estructura.stack_operandos.append([p[1], 'string'])
     p[0] = p[1]
-    m = estructura.len_cte_str
-    estructura.var_dir.append([p[1], (19000 + m)])
-    estructura.len_cte_str += 1
 
  
 # Funcs
