@@ -222,7 +222,7 @@ def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
 
             if result_type == 'error' or result_type is None:
                 estructura.error += 1
-                raise TypeError(f"Operación inválida: {tipo1} {operador} {tipo2}")
+                print(f"Operación inválida: {tipo1} {operador} {tipo2} \n")
                 
             
             temp = f"t{estructura.counter_temporales}"
@@ -247,6 +247,7 @@ def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
             estructura.cuadruples.append((estructura.linea,operador, op1, op2, temp, result_type))
             estructura.stack_operandos.append((temp, result_type))
             return temp
+
 
 def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
     elementos = []

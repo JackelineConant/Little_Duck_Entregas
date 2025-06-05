@@ -1,7 +1,7 @@
 0	17000
 Res: 	19000
-10	17001
-20	17002
+10.0	18000
+20	17001
 hola mundo	19001
 
 global_int 3
@@ -14,8 +14,8 @@ local_str 0temp_int 2
 temp_float 0
 temp_str 0
 temp_bool 2
-cte_int 3
-cte_float 0
+cte_int 2
+cte_float 1
 cte_str 2
 
 1	gotomain	-1	-1	14
@@ -31,9 +31,9 @@ cte_str 2
 11	Print	12001	-1	-1
 12	Println	-1	-1	-1
 13	endFun	-1	-1	14
-14	=	17001	-1	1000
-15	=	17002	-1	1001
-16	=	17001	-1	1002
+14	=	18000	-1	1000
+15	=	17001	-1	1001
+16	=	18000	-1	1002
 17	=	19001	-1	3000
 18	!=	1002	1001	14001
 19	GOTOF	14001	-1	21

@@ -14,7 +14,7 @@ void suma() [
 ];
 
 main {
-    A = 10;
+    A = 10.0;
     B = 20;
     C = 10;
     X = "hola mundo";
