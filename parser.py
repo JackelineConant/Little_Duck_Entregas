@@ -1,5 +1,6 @@
 from ply_lexer import MyLexer
 import ply.yacc as yacc
+from vm import ejecutar_simulador
 
 class Estructura:
     stack_operandos = []
@@ -213,13 +214,11 @@ start = 'program'
 # Creamos el parser
 
 def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
-            
             result_type = estructura.cubo[(tipo1, tipo2, operador)]
 
             if result_type == 'error' or result_type is None:
                 estructura.error += 1
                 print(f"Operación inválida: {tipo1} {operador} {tipo2} \n")
-                
             
             temp = f"t{estructura.counter_temporales}"
             estructura.counter_temporales += 1
@@ -364,7 +363,6 @@ def recolectar_ids(tupla):
 
 def convert_cuadruplos():
     nuevos_cuadruplos = []
-
     for cuad in estructura.cuadruples:
         linea = cuad[0]
         op = cuad[1]
@@ -409,22 +407,22 @@ def reemplazar_si_cte(valor):
     for cte in estructura.var_dir:
         if cte[0] == valor:
             return cte[1]
-    return valor  # Si no se encuentra, devuelve el mismo valor
+    return valor  
 def reemplazar_si_tem(valor):
     for cte in estructura.var_tem:
         if cte[0] == valor:
             return cte[1]
-    return valor  # Si no se encuentra, devuelve el mismo valor
+    return valor 
 def reemplazar_si_loc(valor):
     for cte in estructura.var_loc:
         if cte[0] == valor:
             return cte[1]
-    return valor  # Si no se encuentra, devuelve el mismo valor
+    return valor  
 def reemplazar_si_glo(valor):
     for cte in estructura.var_glo:
         if cte[0] == valor:
             return cte[1]
-    return valor  # Si no se encuentra, devuelve el mismo valor
+    return valor  
 
 def exportar_salida(nombre_archivo="salida.txt"):
     with open(nombre_archivo, 'w') as f:
@@ -1079,7 +1077,10 @@ for caso in documento:
             cte_int {estructura.cte_int}
             cte_float {estructura.cte_float}
             cte_str {estructura.cte_str}
-            """)
+            \n""")
+
+        archivo = "salida.txt"
+        ejecutar_simulador(archivo)
         print(estructura.error)
     except SyntaxError as e:
         print(e)

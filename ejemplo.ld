@@ -21,11 +21,10 @@ main {
     A = 5;
     B = 2;
     C = 10;
-    suma();
-    do {
+    if(B <= C)
         suma();
-        B = B + 1;
-    } while (B <= C );
+    };
+    print("adios");
     A = 1;
 }
 end
