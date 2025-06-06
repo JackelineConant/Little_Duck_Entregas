@@ -1078,6 +1078,9 @@ for caso in documento:
             cte_float {estructura.cte_float}
             cte_str {estructura.cte_str}
             \n""")
+            
+        exportar_salida("salida.txt")
+        print("Archivo 'salida.txt' generado exitosamente.\n")
 
         archivo = "salida.txt"
         ejecutar_simulador(archivo)
@@ -1085,16 +1088,7 @@ for caso in documento:
     except SyntaxError as e:
         print(e)
 
-
-    print("\n")
-    print(estructura.var_dir)
-    print(estructura.var_glo)
-    print(estructura.var_loc)
-
-    
    
-    exportar_salida("salida.txt")
-    print("Archivo 'salida.txt' generado exitosamente.")
     m.clear_table()
     estructura = Estructura()
 

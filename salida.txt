@@ -5,26 +5,28 @@ no valida	19001
 5	17001
 2	17002
 10	17003
+2.6	18001
+hola mundo	19002
 1	17004
 
 global_int 3
-global_float 0
-global_str 0
+global_float 2
+global_str 1
 global_void 2
 local_int 1
 local_float 1
 local_str 1temp_int 1
-temp_float 0
+temp_float 1
 temp_str 0
 temp_bool 2
 cte_int 5
-cte_float 1
-cte_str 2
+cte_float 2
+cte_str 3
 
 1	gotomain	-1	-1	14
 2	=	19000	-1	9000
 3	=	18000	-1	8000
-4	!=	8000	17000	14000
+4	<=	8000	17000	14000
 5	GOTOF	14000	-1	10
 6	Print	9000	-1	-1
 7	Print	8000	-1	-1
@@ -37,10 +39,16 @@ cte_str 2
 14	=	17001	-1	7000
 15	=	17002	-1	1001
 16	=	17003	-1	1002
-17	gosub	suma	-1	2
-18	gosub	suma	-1	2
-19	+	1001	17004	12000
-20	=	12000	-1	1001
-21	GOTOV	-1	-1	21
-22	<=	1001	1002	14001
-23	=	17004	-1	7000
+17	=	18001	-1	2001
+18	*	7000	1001	12000
+19	/	12000	17002	13000
+20	=	13000	-1	2000
+21	=	19002	-1	3000
+22	!=	1002	1001	14001
+23	GOTOF	14001	-1	25
+24	gosub	suma	-1	2
+25	=	17002	-1	1001
+26	Print	3000	-1	-1
+27	Print	2000	-1	-1
+28	Println	n	-1	-1
+29	=	17004	-1	7000
