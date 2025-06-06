@@ -8,7 +8,7 @@ class Estructura:
     cuadruples = []
     saltos = []
     destino = []
-    linea = 0
+    linea = 1
     linea_ciclo = 0
     detector_ciclo = False
     var_names = {}
@@ -69,8 +69,6 @@ class Estructura:
             ('string', 'string', '=') : 'string',
             ('string', 'int', '=') : 'error',
             ('string', 'float', '=') : 'error',
-
-            
             
             #suma
             ('int','int','+') : 'int',
@@ -82,7 +80,6 @@ class Estructura:
             ('string', 'string', '+') : 'string',
             ('string', 'int', '+') : 'error',
             ('string', 'float', '+') : 'error',
-
             
             #resta
             ('int','int','-') : 'int',
@@ -94,7 +91,6 @@ class Estructura:
             ('string', 'string', '-') : 'error',
             ('string', 'int', '-') : 'error',
             ('string', 'float', '-') : 'error',
-
             
             #divicion
             ('int','int','/') : 'float',
@@ -235,10 +231,6 @@ def generar_cuadruplo_binario(tipo1, op1, tipo2, op2, operador):
                 estructura.temp_float += 1
                 estructura.var_tem.append([temp,13000 + estructura.len_tem_float])
                 estructura.len_tem_float +=1
-            elif result_type == "string":
-                estructura.temp_str += 1
-                estructura.var_tem.append([temp,13000 + estructura.len_tem_str])
-                estructura.len_tem_str +=1
             else :
                 estructura.temp_bool +=1
                 estructura.var_tem.append([temp,14000 + estructura.len_tem_bool])
@@ -306,6 +298,7 @@ def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
 
         else:
             estructura.error += 1
+            print(f"La variable {var['key']} ya fue declarada previamente\n")
     estructura.dir_func[key] = {
         'tipo': tipo,
         'inicio': inicio,
@@ -315,31 +308,46 @@ def agregar_funcion_dir_func(key, tipo, inicio, parametros, variables):
     }
 
 def generar_goto_falso():
-    cond, tipo = estructura.stack_operandos.pop()
+    resultado, tipo = estructura.stack_operandos.pop()
     if tipo != 'bool':
-        raise TypeError("Condición no booleana para IF o WHILE")
+        print("Error: condición no booleana en IF")
+        estructura.error += 1
     estructura.linea += 1
-    estructura.cuadruples.append((estructura.linea, 'GOTOF', cond, -1, -1))
-    estructura.saltos.append(len(estructura.cuadruples) - 1)
+    estructura.cuadruples.append((estructura.linea, 'GOTOF', resultado, -1, -1))
+    estructura.saltos.append(estructura.linea - 1)
 
 def llenar_salto():
-    destino = len(estructura.cuadruples)
+    destino = estructura.linea + 1
     salto = estructura.saltos.pop()
     cuad = list(estructura.cuadruples[salto])
-    cuad[4] = destino + 1  # índice 4 es el destino del salto
+    cuad[4] = destino # índice 4 es el destino del salto
+    estructura.cuadruples[salto] = tuple(cuad)
+
+def llenar_salto_if():
+    destino = estructura.linea + 1
+    salto = estructura.saltos.pop()
+    cuad = list(estructura.cuadruples[salto])
+    cuad[4] = destino
+    estructura.cuadruples[salto] = tuple(cuad)
+
+def llenar_salto_if_else():
+    destino = estructura.linea + 2
+    salto = estructura.saltos.pop()
+    cuad = list(estructura.cuadruples[salto])
+    cuad[4] = destino
     estructura.cuadruples[salto] = tuple(cuad)
 
 def llenar_salto_else():
-    destino = len(estructura.cuadruples)
+    destino = estructura.linea + 1
     salto = estructura.saltos.pop()
     cuad = list(estructura.cuadruples[salto])
-    cuad[4] = destino + 2  # índice 4 es el destino del salto
+    cuad[4] = destino
     estructura.cuadruples[salto] = tuple(cuad)
 
 def generar_goto():
-    estructura.linea +=1
-    estructura.cuadruples.append((estructura.linea,'GOTO', -1, -1, -1))
-    estructura.saltos.append(len(estructura.cuadruples) - 1)
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea, 'GOTO', -1, -1, -1))
+    estructura.saltos.append(estructura.linea - 1)
 
 def hay_ciclo():
     if estructura.detector_ciclo == True: #& op2 != op2.startswith("t"):
@@ -352,16 +360,6 @@ def recolectar_ids(tupla):
         ids.append(tupla[0])
         tupla = tupla[1]
     return ids
-
-def unico_constante(constantes):
-    valores_vistos = set()
-    resultado = []
-    for const in constantes:
-        valor = const[0]
-        if valor not in valores_vistos:
-            valores_vistos.add(valor)
-            resultado.append(const)
-    return resultado
 
 
 def convert_cuadruplos():
@@ -380,22 +378,27 @@ def convert_cuadruplos():
             nuevos_cuadruplos.append(cuad)
             continue
 
-        # Reemplazar constantes si están en var_dir
-        izq = reemplazar_si_cte(izq)
-        der = reemplazar_si_cte(der)
-        res = reemplazar_si_cte(res)
+        if op in ("GOTOF",'GOTOV'):
+            izq = reemplazar_si_cte(izq)
+            izq = reemplazar_si_tem(izq)
+            izq = reemplazar_si_loc(izq)
+            izq = reemplazar_si_glo(izq)
+        else: 
+            izq = reemplazar_si_cte(izq)
+            der = reemplazar_si_cte(der)
+            res = reemplazar_si_cte(res)
 
-        izq = reemplazar_si_tem(izq)
-        der = reemplazar_si_tem(der)
-        res = reemplazar_si_tem(res)
+            izq = reemplazar_si_tem(izq)
+            der = reemplazar_si_tem(der)
+            res = reemplazar_si_tem(res)
 
-        izq = reemplazar_si_loc(izq)
-        der = reemplazar_si_loc(der)
-        res = reemplazar_si_loc(res)
+            izq = reemplazar_si_loc(izq)
+            der = reemplazar_si_loc(der)
+            res = reemplazar_si_loc(res)
 
-        izq = reemplazar_si_glo(izq)
-        der = reemplazar_si_glo(der)
-        res = reemplazar_si_glo(res)
+            izq = reemplazar_si_glo(izq)
+            der = reemplazar_si_glo(der)
+            res = reemplazar_si_glo(res)
 
         nuevo_cuad = (linea, op, izq, der, res) if tipo is None else (linea, op, izq, der, res, tipo)
         nuevos_cuadruplos.append(nuevo_cuad)
@@ -507,7 +510,7 @@ def p_var_ayuda_tail_empty(p):
 
 def p_var_doble_ayuda(p):
     'var_doble_ayuda : "," ID var_doble_ayuda'
-    p[0] = (p[2], p[3])  # Usamos tupla para después desarmar
+    p[0] = (p[2], p[3]) 
 
 def p_var_doble_ayuda_empty(p):
     'var_doble_ayuda : empty'
@@ -626,7 +629,7 @@ def p_print_expr(p):
         argumentos.extend(p[4])
 
     # Imprimir en orden correcto 
-    for arg in reversed(argumentos):
+    for arg in argumentos:
         estructura.linea += 1
         estructura.cuadruples.append((estructura.linea, "Print", arg, -1, -1, "string"))
 
@@ -666,7 +669,6 @@ def p_print_ayuda_expr(p):
 def p_print_ayuda_string(p):
     'print_ayuda : "," CONST_STRING print_ayuda'
     lista = [p[2]]
-    estructura.cte_str += 1
     existe = any(valor == p[2] for valor, _ in estructura.var_dir)
     if not existe:
         estructura.cte_str += 1
@@ -707,6 +709,10 @@ def p_termino_factor(p):
 def p_cycle(p):
     'cycle : DO marcar_cycle_inicio body marcar_cycle_final WHILE "(" expression ")" ";"'
     p[0] = (p[1], p[2], p[3], "(", p[5], ")", ";")
+    resultado, tipo = estructura.stack_operandos.pop()
+    if tipo != 'bool':
+        print("Error: condición no booleana en WHILE")
+        estructura.error += 1
     
 def p_marcar_cycle_inicio(p):
     'marcar_cycle_inicio :'
@@ -721,6 +727,7 @@ def p_marcar_cycle_final(p):
         if None in cuadruple[:5]:
             break
         saltos_dados += 1
+    estructura.linea += 1
     estructura.cuadruples.append((estructura.linea, 'GOTOV', -1, -1, saltos_dados))
     estructura.linea_ciclo = 0 
     estructura.detector_ciclo = False
@@ -729,12 +736,13 @@ def p_marcar_cycle_final(p):
 def p_condition_if(p):
     'condition : IF "(" expression ")" marcar_if_inicio body ";"'
     p[0] = (p[1], "(", p[3], ")", p[6], ";")
-    llenar_salto() #marcar el salto
+    llenar_salto_if() 
 
 # todavia no funciona
 def p_condition_if_else(p):
-    'condition : IF "(" expression ")" marcar_if_inicio  body marcar_if_final ELSE marcar_else_inicio body marcar_else_final ";"'
+    'condition : IF "(" expression ")" marcar_if_inicio body marcar_if_final ELSE marcar_else_inicio body ";"'
     p[0] = (p[1], "(", p[3], ")", p[6], p[8], p[10], ";")
+    llenar_salto_else()
 
 def p_marcar_if_inicio(p):
     'marcar_if_inicio :'
@@ -742,26 +750,34 @@ def p_marcar_if_inicio(p):
 
 def p_marcar_if_final(p):
     'marcar_if_final :'
-    llenar_salto_else()
+    llenar_salto_if_else()
 
 def p_marcar_else_inicio(p):
     'marcar_else_inicio :'
     generar_goto()
-
-def p_marcar_else_final(p):
-    'marcar_else_final :'
-    llenar_salto_else()
     
-
-# Assign
 def p_assign(p):
     'assign : ID "=" expression ";"'
-    valor, tipo = estructura.stack_operandos.pop()
-    estructura.linea +=1
-    estructura.cuadruples.append((estructura.linea,'=', valor, -1, p[1], tipo))
-    estructura.var_names[p[1]] = tipo
-    p[0] = (p[1], "=", p[3], ";")
-    
+    valor, tipo_expr = estructura.stack_operandos.pop()
+    id_name = p[1]
+
+    # Verificar si la variable ya fue declarada
+    if id_name in estructura.var_names:
+        tipo_id = estructura.var_names[id_name]
+
+        # Verificación de tipos
+        if tipo_id != tipo_expr:
+            print(f"Error semántico: no se puede asignar tipo '{tipo_expr}' a variable '{id_name}' de tipo '{tipo_id}'")
+            estructura.error +=1
+    else:
+        # Si no estaba en la tabla, se asume que la estamos declarando (esto depende de tu lenguaje)
+        tipo_id = tipo_expr
+        estructura.var_names[id_name] = tipo_expr
+
+    estructura.linea += 1
+    estructura.cuadruples.append((estructura.linea, '=', valor, -1, id_name, tipo_expr))
+    p[0] = (id_name, '=', p[3], ';')
+
 # f_call
 def p_f_call_args(p):
     'f_call : ID "(" expression f_call_ayuda ")" ";"'
@@ -774,7 +790,8 @@ def p_f_call_args(p):
     if p[1] in estructura.dir_func:
         des = estructura.dir_func[p[1]]["inicio"]
     else:
-        print(f"La función '{p[0]}' no existe en dir_func.")
+        print(f"La función '{p[0]}' no existe")
+        estructura.error += 1
         des = -1
     estructura.linea +=1
     estructura.cuadruples.append((estructura.linea, "gosub", p[1], -1, des))
@@ -785,7 +802,8 @@ def p_f_call_no_args(p):
     if p[1] in estructura.dir_func:
         des = estructura.dir_func[p[1]]["inicio"]
     else:
-        print(f"La función '{p[1]}' no existe en dir_func.")
+        print(f"La función '{p[1]}' no existe")
+        estructura.error += 1
         des = -1
     estructura.linea +=1
     estructura.cuadruples.append((estructura.linea, "gosub", p[1], -1, des))
@@ -1032,9 +1050,12 @@ for caso in documento:
     try:
         print('\n')
         result = parser.parse(codigo, lexer=m.lexer)
-        print(result)
+        #print(result)
         if estructura.error == 0:
             print("\nCuádruplos generados:")
+            for i in estructura.cuadruples:
+                print(i)
+            print()
             convert_cuadruplos()
             for i in estructura.cuadruples:
                 print(i)
@@ -1044,6 +1065,21 @@ for caso in documento:
                 print("Tabla de variables: ")
                 for var in valor['variables']:
                     print(f"    key: {var[0]}, Tipo: {var[1]}, Scope: {var[2]}")
+            print(f"""
+            global_int {estructura.global_int}
+            global_float {estructura.global_float}
+            global_str {estructura.global_str}
+            global_void {estructura.global_void}
+            local_int {estructura.local_int}
+            local_float {estructura.local_float}
+            local_str {estructura.local_str}
+            temp_int {estructura.temp_int}
+            temp_float {estructura.temp_float}
+            temp_bool {estructura.temp_bool}
+            cte_int {estructura.cte_int}
+            cte_float {estructura.cte_float}
+            cte_str {estructura.cte_str}
+            """)
         print(estructura.error)
     except SyntaxError as e:
         print(e)
@@ -1054,22 +1090,6 @@ for caso in documento:
     print(estructura.var_glo)
     print(estructura.var_loc)
 
-
-    print(f"""
-global_int {estructura.global_int}
-global_float {estructura.global_float}
-global_str {estructura.global_str}
-global_void {estructura.global_void}
-\nlocal_int {estructura.local_int}
-local_float {estructura.local_float}
-local_str {estructura.local_str}
-\ntemp_int {estructura.temp_int}
-temp_float {estructura.temp_float}
-temp_bool {estructura.temp_bool}
-\ncte_int {estructura.cte_int}
-cte_float {estructura.cte_float}
-cte_str {estructura.cte_str}
-""")
     
    
     exportar_salida("salida.txt")

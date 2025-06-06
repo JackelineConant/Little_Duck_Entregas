@@ -57,6 +57,7 @@ for l in test_split:
       cuads.append(Cuadruplo(linea))
 
 
+
 # simulación
 indx = 1
 while indx < len(cuads):
@@ -67,6 +68,9 @@ while indx < len(cuads):
         memo[q.destino] = memo[q.argIzq]
         indx += 1
     elif q.operador == '/':
+        if memo[q.argDer] == 0:
+            print(f"Error: División por cero en cuádruplo {indx}")
+            break
         memo[q.destino] = memo[q.argIzq] / memo[q.argDer]
         indx += 1
     elif q.operador == '*':

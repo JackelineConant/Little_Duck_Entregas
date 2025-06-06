@@ -106,13 +106,13 @@ class MyLexer(object):
         for line_number, line in enumerate(data.splitlines(), start=1):
             if line.strip() == "":
                 continue
-            print(f"\nLine {line_number}: {line}")
+            #print(f"\nLine {line_number}: {line}")
             self.lexer.input(line)
             while True:
                 tok = self.lexer.token()
                 if not tok:
                     break
-                print(f"  Type: {tok.type} | Value: {tok.value} | lexpos: {tok.lexpos}")
+                #print(f"  Type: {tok.type} | Value: {tok.value} | lexpos: {tok.lexpos}")
                 self.linea_parser.append(tok.type)
                 if tok.type == 'ID':
                     self.table_symbols(tok.value, None, tok.type, line_number, tok.lexpos)

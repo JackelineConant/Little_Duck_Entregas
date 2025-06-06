@@ -1,26 +1,31 @@
 program ejemplo;
 var A, B, C : int;
-    Z : float;
-    X : string;
 
 void suma() [
+    var x : string;
+        z : float;
+        A : int;
     {
-        if (C == 0){
-            print("Res: ", A * B);
+        x = "respuesta: ";
+        z = 4.5;
+        # print("#");
+        if (z != 0){
+            print(x , z );
         } else {
-            print("Res: ", A - B);
+            print(x, "no valida");
         };
     }
 ];
 
 main {
-    A = 10.0;
-    B = 20;
+    A = 5;
+    B = 2;
     C = 10;
-    X = "hola mundo";
-    if(C != B){
+    suma();
+    do {
         suma();
-    };
-    print(X);
+        B = B + 1;
+    } while (B <= C );
+    A = 1;
 }
 end
